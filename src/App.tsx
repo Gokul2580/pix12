@@ -30,6 +30,7 @@ import type { Product } from './types';
 import { db } from './lib/firebase';
 import { ref, get, onValue } from 'firebase/database';
 import { initAnalytics } from './utils/analytics';
+import { initPerformanceMonitoring } from './utils/performanceMonitoring';
 
 type Page = 'home' | 'shop' | 'admin' | 'checkout' | 'superadmin' | 'privacy-policy' | 'shipping-policy' | 'refund-policy' | 'contact';
 
