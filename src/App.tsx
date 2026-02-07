@@ -360,7 +360,8 @@ function AppContent() {
             </div>
           </div>
         )}
-      </div>
+        </div>
+      )}
     </>
   );
 }
