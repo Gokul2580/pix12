@@ -1482,25 +1482,6 @@ export default function Admin() {
                 Settings
               </div>
             </button>
-            <button
-              onClick={() => {
-                setActiveTab('maintenance');
-                setShowForm(false);
-                setShowCategoryForm(false);
-                setShowReviewForm(false);
-                setShowOfferForm(false);
-              }}
-              className={`pb-4 px-4 sm:px-6 font-bold transition-colors whitespace-nowrap text-sm sm:text-base ${
-                activeTab === 'maintenance'
-                  ? 'border-b-4 border-orange-500 text-orange-600'
-                  : 'text-gray-600 hover:text-orange-600'
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <Wrench className="w-4 h-4 sm:w-5 sm:h-5" />
-                Maintenance
-              </div>
-            </button>
           </div>
 
           {activeTab === 'products' && (
