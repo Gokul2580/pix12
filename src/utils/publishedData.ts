@@ -36,6 +36,16 @@ let cacheTimestamp: number = 0;
 const CACHE_DURATION = 60 * 1000; // 1 minute cache
 
 export async function getPublishedData(): Promise<PublishedData | null> {
+  // Check if we're in preview mode
+  const urlParams = new URLSearchParams(window.location.search);
+  const isPreviewMode = urlParams.get('preview') === 'true';
+  
+  // If preview mode, return null to force loading from Firebase
+  if (isPreviewMode) {
+    console.log('Preview mode active: loading from Firebase');
+    return null;
+  }
+  
   // Return cached data if still valid
   if (cachedData && Date.now() - cacheTimestamp < CACHE_DURATION) {
     return cachedData;
