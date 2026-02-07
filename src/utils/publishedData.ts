@@ -46,13 +46,18 @@ export async function getPublishedData(): Promise<PublishedData | null> {
     return null;
   }
   
-  // Return cached data if still valid
+  // Return cached data if still valid (increased to 5 minutes for better performance)
   if (cachedData && Date.now() - cacheTimestamp < CACHE_DURATION) {
     return cachedData;
   }
 
   try {
-    const response = await fetch('/api/get-published-data');
+    const response = await fetch('/api/get-published-data', {
+      // Add cache control headers for better performance
+      headers: {
+        'Cache-Control': 'public, max-age=300',
+      },
+    });
     
     // Get response as text first
     const responseText = await response.text();
