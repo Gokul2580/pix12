@@ -2,6 +2,7 @@ import { useState, useEffect, Component, ReactNode, lazy, Suspense } from 'react
 import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
 import { FavoritesProvider } from './contexts/FavoritesContext';
+import { PublishedDataProvider, usePublishedData } from './contexts/PublishedDataContext';
 import TopBanner from './components/TopBanner';
 import WelcomeBanner from './components/WelcomeBanner';
 import Navigation from './components/Navigation';
@@ -17,6 +18,7 @@ import SplashScreen from './components/SplashScreen';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
+import ComingSoon from './pages/ComingSoon';
 // Lazy load heavy admin pages for better initial load performance
 const Admin = lazy(() => import('./pages/Admin'));
 const Checkout = lazy(() => import('./pages/Checkout'));
