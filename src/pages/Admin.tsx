@@ -85,7 +85,7 @@ export default function Admin() {
   const [showCategoryForm, setShowCategoryForm] = useState(false);
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [showOfferForm, setShowOfferForm] = useState(false);
-  const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'offers' | 'orders' | 'carousel' | 'marquee' | 'sections' | 'card-design' | 'banner-social' | 'navigation' | 'coupons' | 'bulk-operations' | 'try-on' | 'tax' | 'footer' | 'ai-assistant' | 'traffic' | 'gallery' | 'settings'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'categories' | 'offers' | 'orders' | 'carousel' | 'marquee' | 'sections' | 'card-design' | 'banner-social' | 'navigation' | 'coupons' | 'bulk-operations' | 'try-on' | 'tax' | 'footer' | 'ai-assistant' | 'traffic' | 'gallery' | 'bill-customizer' | 'settings'>('products');
   const [isPublishing, setIsPublishing] = useState(false);
   const [lastPublished, setLastPublished] = useState<string | null>(null);
 
