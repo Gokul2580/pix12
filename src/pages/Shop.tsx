@@ -48,18 +48,6 @@ export default function Shop({ onCartClick }: ShopProps) {
         if (publishedData && publishedData.categories) {
           categoriesData = objectToArray<Category>(publishedData.categories);
           categoriesData.sort((a, b) => a.name.localeCompare(b.name));
-        } else {
-          // Fallback to Firebase
-          const categoriesRef = ref(db, 'categories');
-          const categoriesSnapshot = await get(categoriesRef);
-
-          if (categoriesSnapshot.exists()) {
-            const data = categoriesSnapshot.val();
-            Object.keys(data).forEach(key => {
-              categoriesData.push({ id: key, ...data[key] });
-            });
-            categoriesData.sort((a, b) => a.name.localeCompare(b.name));
-          }
         }
 
         setCategories(categoriesData);
