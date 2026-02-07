@@ -161,13 +161,28 @@ export default function Admin() {
     dispatch_details: ''
   });
 
+  const [billSettings, setBillSettings] = useState<any>(null);
+
   useEffect(() => {
     const savedAuth = localStorage.getItem('adminAuthenticated');
     if (savedAuth === 'true') {
       setIsAdminAuthenticated(true);
     }
     fetchData();
+    fetchBillSettings();
   }, []);
+
+  const fetchBillSettings = async () => {
+    try {
+      const billSettingsRef = ref(db, 'bill_settings');
+      const snapshot = await get(billSettingsRef);
+      if (snapshot.exists()) {
+        setBillSettings(snapshot.val());
+      }
+    } catch (error) {
+      console.error('Error fetching bill settings:', error);
+    }
+  };
 
   const handleAdminLogin = (e: React.FormEvent) => {
     e.preventDefault();
