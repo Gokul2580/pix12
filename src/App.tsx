@@ -90,6 +90,7 @@ function getInitialPage(): Page {
 }
 
 function AppContent() {
+  const { data: publishedData, loading: publishedDataLoading, error: publishedDataError } = usePublishedData();
   const [currentPage, setCurrentPage] = useState<Page>(getInitialPage());
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [cartModalOpen, setCartModalOpen] = useState(false);
