@@ -100,11 +100,6 @@ export default function Maintenance({ isAdminRoute = false }: MaintenanceProps) 
               <p className="text-sm text-gray-400">
                 Thank you for your patience and understanding. We appreciate your support!
               </p>
-              {isAdminRoute && (
-                <p className="text-xs text-gray-500 mt-2">
-                  Admin: Access with ?admin=true parameter
-                </p>
-              )}
             </div>
           </div>
         </div>
