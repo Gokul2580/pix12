@@ -920,7 +920,6 @@ export default function Admin() {
         footer_settings: ref(db, 'footer_settings'),
         footer_config: ref(db, 'footer_config'),
         policies: ref(db, 'policies'),
-        maintenance_settings: ref(db, 'maintenance_settings'),
         settings: ref(db, 'settings'),
         bill_settings: ref(db, 'bill_settings'),
       };
