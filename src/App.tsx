@@ -283,8 +283,15 @@ function AppContent() {
         setAppReady(true);
       }} />}
 
-      <div className={`min-h-screen bg-white transition-opacity duration-500 ${appReady ? 'opacity-100' : 'opacity-0'}`}>
-        <div className={`${temporarilyClosed && !hideNavigation ? 'grayscale pointer-events-none' : ''}`}>
+      {/* Show Coming Soon if no published data and not on admin pages */}
+      {appReady && publishedDataError && !isAdminPage && (
+        <ComingSoon />
+      )}
+
+      {/* Show normal app if data exists or on admin pages */}
+      {((!publishedDataError && appReady) || isAdminPage) && (
+        <div className={`min-h-screen bg-white transition-opacity duration-500 ${appReady ? 'opacity-100' : 'opacity-0'}`}>
+          <div className={`${temporarilyClosed && !hideNavigation ? 'grayscale pointer-events-none' : ''}`}>
           {!hideNavigation && (
             <>
               <TopBanner />
