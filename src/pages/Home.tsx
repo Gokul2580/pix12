@@ -294,7 +294,16 @@ export default function Home({ onNavigate, onCartClick }: HomeProps) {
           return;
         }
 
-        // Fallback to Firebase if no published data
+        // No published data available - will show Coming Soon page
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
         const productsRef = ref(db, 'products');
         const categoriesRef = ref(db, 'categories');
         const carouselRef = ref(db, 'carousel_images');
