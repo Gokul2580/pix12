@@ -945,14 +945,23 @@ export default function Admin() {
       const result = await response.json();
 
       if (!response.ok) {
+        if (result.error?.includes('R2_BUCKET')) {
+          throw new Error('R2 storage is not configured. Please deploy to Cloudflare Pages to use the publish feature, or add R2 bucket binding in Cloudflare Dashboard.');
+        }
         throw new Error(result.error || 'Failed to publish');
       }
 
       setLastPublished(result.published_at);
       alert('Data published successfully! Users will now see the updated content.');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error publishing data:', error);
-      alert('Failed to publish data. Please try again.');
+      if (error.message?.includes('Permission denied')) {
+        alert('Firebase permission denied. Please update your Firebase Database Rules to allow read/write access.');
+      } else if (error.message?.includes('R2')) {
+        alert(error.message);
+      } else {
+        alert(`Failed to publish data: ${error.message || 'Please try again.'}`);
+      }
     } finally {
       setIsPublishing(false);
     }
