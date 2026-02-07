@@ -294,14 +294,10 @@ export default function Home({ onNavigate, onCartClick }: HomeProps) {
           return;
         }
 
-        }
-
-        setFeaturedProducts(featuredProducts);
-        setCategories(categoriesData.slice(0, 4));
-        setNewArrivalCategories(newArrivals);
+        // No published data available - will show Coming Soon page
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
-      } finally {
         setLoading(false);
       }
     }
