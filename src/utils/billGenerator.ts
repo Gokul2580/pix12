@@ -37,7 +37,66 @@ interface SiteSettings {
   contact_phone: string;
 }
 
-export function generateBillHTML(order: Order, siteSettings: SiteSettings, shippingCharge: number = 0): string {
+interface BillSettings {
+  logo_url?: string;
+  company_name?: string;
+  company_tagline?: string;
+  company_address?: string;
+  company_email?: string;
+  company_phone?: string;
+  company_gst?: string;
+  layout_style?: 'modern' | 'classic' | 'minimal' | 'detailed';
+  show_product_images?: boolean;
+  show_shipping_label?: boolean;
+  show_cut_line?: boolean;
+  primary_color?: string;
+  secondary_color?: string;
+  header_bg_color?: string;
+  table_header_color?: string;
+  font_family?: string;
+  header_font_size?: number;
+  body_font_size?: number;
+  footer_text?: string;
+  thank_you_message?: string;
+  from_name?: string;
+  from_address?: string;
+  from_city?: string;
+  from_state?: string;
+  from_pincode?: string;
+  from_phone?: string;
+}
+
+const defaultBillSettings: BillSettings = {
+  logo_url: '',
+  company_name: 'Pixie Blooms',
+  company_tagline: '',
+  company_address: 'Atchukattu Street, Thiruppathur',
+  company_email: 'pixieblooms2512@gmail.com',
+  company_phone: '+91 9876543210',
+  company_gst: '',
+  layout_style: 'modern',
+  show_product_images: true,
+  show_shipping_label: true,
+  show_cut_line: true,
+  primary_color: '#000000',
+  secondary_color: '#333333',
+  header_bg_color: '#ffffff',
+  table_header_color: '#000000',
+  font_family: 'Inter',
+  header_font_size: 24,
+  body_font_size: 12,
+  footer_text: 'This is a computer-generated invoice and does not require a signature.',
+  thank_you_message: 'Thank you for your business!',
+  from_name: 'Pixie Blooms',
+  from_address: 'Atchukattu Street',
+  from_city: 'Thiruppathur',
+  from_state: 'Tamil Nadu',
+  from_pincode: '630211',
+  from_phone: '+91 9876543210',
+};
+
+export function generateBillHTML(order: Order, siteSettings: SiteSettings, shippingCharge: number = 0, customSettings?: BillSettings): string {
+  const s = { ...defaultBillSettings, ...customSettings };
   const orderDate = new Date(order.created_at).toLocaleDateString('en-IN', {
     day: 'numeric',
     month: 'long',
