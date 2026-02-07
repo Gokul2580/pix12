@@ -102,11 +102,6 @@ function AppContent() {
   const hideNavigation = currentPage === 'admin' || currentPage === 'checkout' || currentPage === 'superadmin' || currentPage === 'privacy-policy' || currentPage === 'shipping-policy' || currentPage === 'refund-policy' || currentPage === 'contact';
   const isAdminPage = currentPage === 'admin' || currentPage === 'superadmin';
 
-  const checkAdminBypass = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('admin') === 'true';
-  };
-
   useEffect(() => {
     // Initialize analytics tracking
     initAnalytics();
