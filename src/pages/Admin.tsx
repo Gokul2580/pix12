@@ -1010,19 +1010,44 @@ export default function Admin() {
     <div className="min-h-screen bg-gradient-to-br from-teal-50 to-mint-50 py-8 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-3xl shadow-xl p-4 sm:p-6 lg:p-8 mb-8">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
             <div>
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Admin Panel</h1>
               <p className="text-sm sm:text-base text-gray-600">Manage your products and categories</p>
             </div>
-            <button
-              onClick={handleAdminLogout}
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors flex items-center gap-2"
-            >
-              <X className="w-4 h-4" />
-              Logout
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handlePublish}
+                disabled={isPublishing}
+                className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white px-5 py-2.5 rounded-xl font-semibold transition-all flex items-center gap-2 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isPublishing ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Publishing...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="w-5 h-5" />
+                    Publish to Live
+                  </>
+                )}
+              </button>
+              <button
+                onClick={handleAdminLogout}
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2.5 rounded-xl font-semibold transition-colors flex items-center gap-2"
+              >
+                <X className="w-4 h-4" />
+                Logout
+              </button>
+            </div>
           </div>
+
+          {lastPublished && (
+            <div className="mb-4 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-lg text-sm text-emerald-700">
+              Last published: {new Date(lastPublished).toLocaleString()}
+            </div>
+          )}
 
           <UpgradeBanner />
 
