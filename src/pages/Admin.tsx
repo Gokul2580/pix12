@@ -2940,6 +2940,12 @@ export default function Admin() {
             </div>
           )}
 
+          {activeTab === 'bill-customizer' && (
+            <div className="space-y-6">
+              <BillCustomizer />
+            </div>
+          )}
+
           {activeTab === 'settings' && (
             <div className="space-y-6">
               <div className="bg-gradient-to-r from-teal-500 to-teal-600 rounded-2xl p-6 sm:p-8 text-white">
