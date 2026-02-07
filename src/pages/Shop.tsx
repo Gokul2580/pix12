@@ -12,6 +12,7 @@ import BottomSheet from '../components/BottomSheet';
 import ShimmerLoader from '../components/ShimmerLoader';
 import FilterBottomSheet from '../components/FilterBottomSheet';
 import LazyImage from '../components/LazyImage';
+import { getPublishedData, objectToArray } from '../utils/publishedData';
 import type { Product, Category } from '../types';
 
 interface ShopProps {
