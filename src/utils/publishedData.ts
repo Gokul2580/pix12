@@ -25,7 +25,6 @@ interface PublishedData {
   footer_settings: any | null;
   footer_config: any | null;
   policies: Record<string, any> | null;
-  maintenance_settings: any | null;
   settings: any | null;
   bill_settings: any | null;
   published_at?: string;
