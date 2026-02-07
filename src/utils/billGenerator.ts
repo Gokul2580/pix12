@@ -582,8 +582,8 @@ export function generateBillHTML(order: Order, siteSettings: SiteSettings, shipp
   `.trim();
 }
 
-async function createBillElement(order: Order, siteSettings: SiteSettings, shippingCharge: number = 0): Promise<HTMLDivElement> {
-  const billHTML = generateBillHTML(order, siteSettings, shippingCharge);
+async function createBillElement(order: Order, siteSettings: SiteSettings, shippingCharge: number = 0, customSettings?: BillSettings): Promise<HTMLDivElement> {
+  const billHTML = generateBillHTML(order, siteSettings, shippingCharge, customSettings);
 
   const tempDiv = document.createElement('div');
   tempDiv.style.position = 'absolute';
@@ -595,9 +595,9 @@ async function createBillElement(order: Order, siteSettings: SiteSettings, shipp
   return tempDiv;
 }
 
-export async function downloadBillAsPDF(order: Order, siteSettings: SiteSettings, shippingCharge: number = 0): Promise<void> {
+export async function downloadBillAsPDF(order: Order, siteSettings: SiteSettings, shippingCharge: number = 0, customSettings?: BillSettings): Promise<void> {
   try {
-    const tempDiv = await createBillElement(order, siteSettings, shippingCharge);
+    const tempDiv = await createBillElement(order, siteSettings, shippingCharge, customSettings);
     const invoiceContainer = tempDiv.querySelector('.invoice-container') as HTMLElement;
 
     if (!invoiceContainer) {
@@ -640,9 +640,9 @@ export async function downloadBillAsPDF(order: Order, siteSettings: SiteSettings
   }
 }
 
-export async function downloadBillAsJPG(order: Order, siteSettings: SiteSettings, shippingCharge: number = 0): Promise<void> {
+export async function downloadBillAsJPG(order: Order, siteSettings: SiteSettings, shippingCharge: number = 0, customSettings?: BillSettings): Promise<void> {
   try {
-    const tempDiv = await createBillElement(order, siteSettings, shippingCharge);
+    const tempDiv = await createBillElement(order, siteSettings, shippingCharge, customSettings);
     const invoiceContainer = tempDiv.querySelector('.invoice-container') as HTMLElement;
 
     if (!invoiceContainer) {
@@ -676,8 +676,8 @@ export async function downloadBillAsJPG(order: Order, siteSettings: SiteSettings
   }
 }
 
-export function printBill(order: Order, siteSettings: SiteSettings, shippingCharge: number = 0): void {
-  const billHTML = generateBillHTML(order, siteSettings, shippingCharge);
+export function printBill(order: Order, siteSettings: SiteSettings, shippingCharge: number = 0, customSettings?: BillSettings): void {
+  const billHTML = generateBillHTML(order, siteSettings, shippingCharge, customSettings);
 
   const printWindow = window.open('', '_blank');
   if (printWindow) {
