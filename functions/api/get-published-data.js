@@ -1,28 +1,39 @@
-const onRequestGet = async (context) => {
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+  "Cache-Control": "public, max-age=60"
+};
+const onRequest = async (context) => {
   const { request, env } = context;
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Cache-Control": "public, max-age=60"
-  };
   if (request.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
   try {
     if (!env.R2_BUCKET) {
-      throw new Error("R2_BUCKET binding not configured. Please add R2 bucket binding in Cloudflare Dashboard.");
+      console.error("R2_BUCKET binding not configured");
+      return new Response(
+        JSON.stringify({ error: "R2_BUCKET binding not configured. Please add R2 bucket binding in Cloudflare Dashboard." }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" }
+        }
+      );
     }
     const fileName = "site-data.json";
+    console.log("Fetching file:", fileName);
     const object = await env.R2_BUCKET.get(fileName);
     if (!object) {
-      return new Response(JSON.stringify({ error: "No published data found" }), {
+      console.log("File not found in R2:", fileName);
+      return new Response(JSON.stringify({ error: "No published data found", fallback: true }), {
         status: 404,
         headers: { ...corsHeaders, "Content-Type": "application/json" }
       });
     }
     const data = await object.text();
+    console.log("Successfully fetched data, size:", data.length);
     return new Response(data, {
+      status: 200,
       headers: { ...corsHeaders, "Content-Type": "application/json" }
     });
   } catch (error) {
@@ -37,5 +48,5 @@ const onRequestGet = async (context) => {
   }
 };
 export {
-  onRequestGet
+  onRequest
 };
