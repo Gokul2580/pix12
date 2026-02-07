@@ -25,6 +25,7 @@ import TrafficAnalytics from '../components/admin/TrafficAnalytics';
 import MaintenanceManager from '../components/admin/MaintenanceManager';
 import UpgradeBanner from '../components/admin/UpgradeBanner';
 import R2GalleryManager from '../components/admin/R2GalleryManager';
+import BillCustomizer from '../components/admin/BillCustomizer';
 import ImageUpload from '../components/ImageUpload';
 import MultipleImageUpload from '../components/MultipleImageUpload';
 import LazyImage from '../components/LazyImage';
