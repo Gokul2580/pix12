@@ -179,8 +179,9 @@ export default function Admin() {
       if (snapshot.exists()) {
         setBillSettings(snapshot.val());
       }
-    } catch (error) {
-      console.error('Error fetching bill settings:', error);
+    } catch (error: any) {
+      // Silently fail - bill settings are optional
+      console.warn('Bill settings not available:', error.message);
     }
   };
 
