@@ -25,7 +25,6 @@ const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const ShippingPolicy = lazy(() => import('./pages/ShippingPolicy'));
 const RefundPolicy = lazy(() => import('./pages/RefundPolicy'));
 const Contact = lazy(() => import('./pages/Contact'));
-const Maintenance = lazy(() => import('./pages/Maintenance'));
 import type { Product } from './types';
 import { db } from './lib/firebase';
 import { ref, get, onValue } from 'firebase/database';
