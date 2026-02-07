@@ -241,7 +241,7 @@ function AppContent() {
     }
   };
 
-  if (maintenanceMode && !checkAdminBypass() && appReady) {
+  if (maintenanceMode && appReady) {
     return <Maintenance isAdminRoute={currentPage === 'admin'} />;
   }
 
