@@ -48,6 +48,7 @@ const getColorCode = (colorName: string): string => {
 };
 
 export default function ProductDetailsSheet({ product, isOpen, onClose, onCartClick }: ProductDetailsSheetProps) {
+  const { data: publishedData } = usePublishedData();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState('');
