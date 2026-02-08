@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { ShoppingBag, Search, Home as HomeIcon, Store, User, LogOut, Settings, X, ShoppingCart, Package } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
-import { db } from '../lib/firebase';
-import { ref, get } from 'firebase/database';
+import { usePublishedData } from '../contexts/PublishedDataContext';
+import { objectToArray } from '../utils/publishedData';
 import type { Product } from '../types';
 
 interface NavigationProps {
