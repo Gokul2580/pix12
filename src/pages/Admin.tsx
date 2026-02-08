@@ -30,6 +30,10 @@ import ImageUpload from '../components/ImageUpload';
 import MultipleImageUpload from '../components/MultipleImageUpload';
 import LazyImage from '../components/LazyImage';
 import { downloadBillAsPDF, downloadBillAsJPG, printBill } from '../utils/billGenerator';
+import DataValidationPanel from '../components/admin/DataValidationPanel';
+import { validateFirebaseData, type ValidationResult } from '../utils/dataValidator';
+import PublishHistoryPanel from '../components/admin/PublishHistoryPanel';
+import { addPublishRecord } from '../utils/publishHistory';
 
 interface Order {
   id: string;
@@ -90,6 +94,9 @@ export default function Admin() {
   const [isPublishing, setIsPublishing] = useState(false);
   const [lastPublished, setLastPublished] = useState<string | null>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [validation, setValidation] = useState<ValidationResult | null>(null);
+  const [isValidating, setIsValidating] = useState(false);
+  const [historyRefresh, setHistoryRefresh] = useState(0);
 
   const [productSearch, setProductSearch] = useState('');
   const [categorySearch, setCategorySearch] = useState('');
@@ -888,13 +895,60 @@ export default function Admin() {
     return matchesSearch && matchesStatus;
   });
 
+  const validateCurrentData = async () => {
+    setIsValidating(true);
+    try {
+      console.log('[ADMIN] Validating current data...');
+      
+      // Collect current data from state
+      const dataToValidate = {
+        products: products.reduce((acc, p) => {
+          acc[p.id] = p;
+          return acc;
+        }, {} as Record<string, any>),
+        categories: categories.reduce((acc, c) => {
+          acc[c.id] = c;
+          return acc;
+        }, {} as Record<string, any>),
+        reviews: reviews.reduce((acc, r) => {
+          acc[r.id] = r;
+          return acc;
+        }, {} as Record<string, any>),
+        offers: offers.reduce((acc, o) => {
+          acc[o.id] = o;
+          return acc;
+        }, {} as Record<string, any>),
+      };
+
+      const validationResult = validateFirebaseData(dataToValidate);
+      setValidation(validationResult);
+      
+      console.log('[ADMIN] Validation complete:', validationResult);
+      return validationResult;
+    } catch (error) {
+      console.error('[ADMIN] Validation error:', error);
+    } finally {
+      setIsValidating(false);
+    }
+  };
+
   const handlePublish = async () => {
+    // First validate the data
+    const validationResult = await validateCurrentData();
+    
+    if (!validationResult || !validationResult.valid) {
+      alert('Cannot publish: Your data has errors that must be fixed first.\n\nPlease check the validation panel for details.');
+      return;
+    }
+
     if (!confirm('Are you sure you want to publish all data to the live site? Users will see this data.')) {
       return;
     }
 
     setIsPublishing(true);
     try {
+      console.log('[ADMIN] Starting publish process...');
+      
       // Fetch all Firebase data
       const dataRefs = {
         products: ref(db, 'products'),
@@ -924,23 +978,51 @@ export default function Admin() {
         bill_settings: ref(db, 'bill_settings'),
       };
 
+      console.log('[ADMIN] Fetching Firebase data...');
       const snapshots = await Promise.all(
         Object.entries(dataRefs).map(async ([key, refPath]) => {
           try {
             const snapshot = await get(refPath);
-            return [key, snapshot.exists() ? snapshot.val() : null];
+            const hasData = snapshot.exists();
+            console.log(`[ADMIN] Fetched ${key}: ${hasData ? 'data exists' : 'no data'}`);
+            return [key, hasData ? snapshot.val() : null];
           } catch (err) {
-            console.warn(`Failed to fetch ${key}:`, err);
+            console.warn(`[ADMIN] Failed to fetch ${key}:`, err);
             return [key, null];
           }
         })
       );
 
       const allData: Record<string, any> = {};
+      let dataCount = 0;
+      let productCount = 0;
+      let categoryCount = 0;
+      
       snapshots.forEach(([key, value]) => {
         allData[key as string] = value;
+        if (value) {
+          dataCount++;
+          if (key === 'products' && typeof value === 'object') {
+            productCount = Object.keys(value).length;
+          }
+          if (key === 'categories' && typeof value === 'object') {
+            categoryCount = Object.keys(value).length;
+          }
+        }
       });
 
+      console.log(`[ADMIN] Data collected: ${dataCount} sections with ${productCount} products and ${categoryCount} categories`);
+
+      // Validate data exists
+      if (productCount === 0) {
+        throw new Error('No products found in Firebase. Please add products before publishing.');
+      }
+      if (categoryCount === 0) {
+        throw new Error('No categories found in Firebase. Please add categories before publishing.');
+      }
+
+      console.log('[ADMIN] Sending to R2...');
+      
       // Upload to R2
       const response = await fetch('/api/publish-data', {
         method: 'POST',
@@ -962,17 +1044,69 @@ export default function Admin() {
 
       if (!response.ok) {
         const errorMsg = result.error || 'Failed to publish';
+        const details = result.details ? '\n' + result.details.join('\n') : '';
+        
         if (errorMsg.includes('R2_BUCKET') || errorMsg.includes('R2 bucket')) {
           throw new Error('R2 storage is not configured. Please add R2 bucket binding in Cloudflare Dashboard → Pages → Settings → Functions → R2 bucket bindings.');
         }
+        
+        if (errorMsg.includes('validation')) {
+          throw new Error(`Data validation failed:${details}`);
+        }
+        
         throw new Error(errorMsg);
       }
 
+      console.log('[ADMIN] Publish successful!');
+      console.log('[ADMIN] Response:', result);
+      
       setLastPublished(result.published_at);
-      alert('Data published successfully! Users will now see the updated content.');
+      
+      // Log successful publish to history
+      addPublishRecord({
+        timestamp: new Date().toISOString(),
+        status: 'success',
+        message: 'Data published successfully',
+        dataStats: {
+          productCount: result.productCount || productCount,
+          categoryCount: result.categoryCount || categoryCount,
+          totalSize: result.size || 0,
+        },
+        uploadTime: result.uploadTime,
+        verifyTime: result.verifyTime,
+      });
+      
+      // Refresh history panel
+      setHistoryRefresh(prev => prev + 1);
+      
+      const successMsg = `Data published successfully!
+Products: ${result.productCount || productCount}
+Categories: ${result.categoryCount || categoryCount}
+Size: ${result.size ? (result.size / 1024).toFixed(2) + ' KB' : 'unknown'}
+Upload Time: ${result.uploadTime || '?'}ms
+Verify Time: ${result.verifyTime || '?'}ms
+Users will now see the updated content.`;
+      
+      alert(successMsg);
+      
+      // Clear the published data cache so users get fresh data
+      const { clearPublishedDataCache } = await import('../utils/publishedData');
+      clearPublishedDataCache();
+      
     } catch (error: any) {
-      console.error('Error publishing data:', error);
+      console.error('[ADMIN] Error publishing data:', error);
       const errorMessage = error?.message || String(error) || 'Unknown error';
+      
+      // Log failed publish to history
+      addPublishRecord({
+        timestamp: new Date().toISOString(),
+        status: 'failed',
+        message: 'Failed to publish data',
+        errorMessage: errorMessage,
+      });
+      
+      // Refresh history panel
+      setHistoryRefresh(prev => prev + 1);
       
       if (errorMessage.includes('Permission denied')) {
         alert('Firebase permission denied. Please make sure you are logged in and have admin access.');
@@ -980,6 +1114,8 @@ export default function Admin() {
         alert(errorMessage);
       } else if (errorMessage.includes('Failed to fetch')) {
         alert('Network error. Please check your internet connection and try again.');
+      } else if (errorMessage.includes('No products') || errorMessage.includes('No categories')) {
+        alert(errorMessage);
       } else {
         alert(`Failed to publish data: ${errorMessage}`);
       }
@@ -1101,6 +1237,31 @@ export default function Admin() {
               Last published: {new Date(lastPublished).toLocaleString()}
             </div>
           )}
+
+          <div className="mb-6 space-y-4">
+            <div>
+              <button
+                onClick={validateCurrentData}
+                disabled={isValidating}
+                className="mb-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 flex items-center gap-2"
+              >
+                {isValidating ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Validating...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle className="w-4 h-4" />
+                    Validate Data
+                  </>
+                )}
+              </button>
+              <DataValidationPanel validation={validation} isValidating={isValidating} />
+            </div>
+
+            <PublishHistoryPanel refreshTrigger={historyRefresh} />
+          </div>
 
           <UpgradeBanner />
 

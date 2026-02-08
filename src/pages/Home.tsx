@@ -118,12 +118,17 @@ export default function Home({ onNavigate, onCartClick }: HomeProps) {
   useEffect(() => {
     async function fetchData() {
       try {
+        console.log('[HOME] Starting data fetch...');
+        
         // Try to load from R2 first (published data for users)
         const publishedData = await getPublishedData();
         
         if (publishedData) {
+          console.log('[HOME] Published data loaded successfully');
+          
           // Use published data from R2
           const allProducts: Product[] = objectToArray<Product>(publishedData.products);
+          console.log(`[HOME] Loaded ${allProducts.length} products`);
 
           const featuredProducts = allProducts
             .filter(p => p.featured)
@@ -291,13 +296,16 @@ export default function Home({ onNavigate, onCartClick }: HomeProps) {
           setCategories(categoriesData.slice(0, 4));
           setNewArrivalCategories(newArrivals);
           setLoading(false);
+          console.log('[HOME] Data loading complete');
           return;
         }
 
         // No published data available - will show Coming Soon page
+        console.log('[HOME] No published data available - showing coming soon page');
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('[HOME] Error fetching data:', error);
+        console.log('[HOME] Failed to load data, showing coming soon page');
         setLoading(false);
       }
     }

@@ -40,6 +40,8 @@ export default function Shop({ onCartClick }: ShopProps) {
   useEffect(() => {
     async function fetchCategories() {
       try {
+        console.log('[SHOP] Loading categories...');
+        
         // Try to load from R2 first
         const publishedData = await getPublishedData();
         
@@ -48,6 +50,7 @@ export default function Shop({ onCartClick }: ShopProps) {
         if (publishedData && publishedData.categories) {
           categoriesData = objectToArray<Category>(publishedData.categories);
           categoriesData.sort((a, b) => a.name.localeCompare(b.name));
+          console.log(`[SHOP] Loaded ${categoriesData.length} categories`);
         }
 
         setCategories(categoriesData);
@@ -89,6 +92,8 @@ export default function Shop({ onCartClick }: ShopProps) {
     async function fetchProducts() {
       setLoading(true);
       try {
+        console.log('[SHOP] Loading products...');
+        
         // Try to load from R2 first
         const publishedData = await getPublishedData();
         
@@ -96,6 +101,7 @@ export default function Shop({ onCartClick }: ShopProps) {
         
         if (publishedData && publishedData.products) {
           productsData = objectToArray<Product>(publishedData.products);
+          console.log(`[SHOP] Loaded ${productsData.length} products`);
         }
 
         if (selectedCategory) {
