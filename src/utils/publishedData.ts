@@ -32,7 +32,7 @@ interface PublishedData {
 
 let cachedData: PublishedData | null = null;
 let cacheTimestamp: number = 0;
-const CACHE_DURATION = 60 * 1000; // 1 minute cache
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minute cache
 
 export async function getPublishedData(): Promise<PublishedData | null> {
   // Check if we're in preview mode
