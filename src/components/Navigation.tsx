@@ -49,43 +49,36 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
   });
 
   useEffect(() => {
-    async function loadNavStyle() {
-      try {
-        const styleRef = ref(db, 'navigation/style');
-        const styleSnap = await get(styleRef);
+    if (!publishedData?.navigation_settings) return;
 
-        if (styleSnap.exists()) {
-          const style = styleSnap.val();
-          setNavStyle({
-            background: style.background || '#ffffff',
-            text: style.text || '#111827',
-            activeTab: style.activeTab || '#14b8a6',
-            inactiveButton: style.inactiveButton || '#f3f4f6',
-            borderRadius: style.borderRadius || 'full',
-            buttonSize: style.buttonSize || 'md',
-            themeMode: style.themeMode || 'default'
-          });
+    try {
+      const style = publishedData.navigation_settings;
+      setNavStyle({
+        background: style.background || '#ffffff',
+        text: style.text || '#111827',
+        activeTab: style.activeTab || '#14b8a6',
+        inactiveButton: style.inactiveButton || '#f3f4f6',
+        borderRadius: style.borderRadius || 'full',
+        buttonSize: style.buttonSize || 'md',
+        themeMode: style.themeMode || 'default'
+      });
 
-          if (style.buttonLabels) {
-            setButtonLabels({
-              home: style.buttonLabels.home || 'Home',
-              shop: style.buttonLabels.shop || 'Shop All',
-              search: style.buttonLabels.search || 'Search',
-              cart: style.buttonLabels.cart || 'Cart',
-              myOrders: style.buttonLabels.myOrders || 'My Orders',
-              login: style.buttonLabels.login || 'Login',
-              signOut: style.buttonLabels.signOut || 'Sign Out',
-              admin: style.buttonLabels.admin || 'Admin'
-            });
-          }
-        }
-      } catch (error) {
-        console.error('Error loading navigation style:', error);
+      if (style.buttonLabels) {
+        setButtonLabels({
+          home: style.buttonLabels.home || 'Home',
+          shop: style.buttonLabels.shop || 'Shop All',
+          search: style.buttonLabels.search || 'Search',
+          cart: style.buttonLabels.cart || 'Cart',
+          myOrders: style.buttonLabels.myOrders || 'My Orders',
+          login: style.buttonLabels.login || 'Login',
+          signOut: style.buttonLabels.signOut || 'Sign Out',
+          admin: style.buttonLabels.admin || 'Admin'
+        });
       }
+    } catch (error) {
+      console.error('Error loading navigation style:', error);
     }
-
-    loadNavStyle();
-  }, []);
+  }, [publishedData]);
 
   useEffect(() => {
     async function checkAdminStatus() {
