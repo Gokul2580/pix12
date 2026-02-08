@@ -115,11 +115,13 @@ export default function NavigationCustomizer() {
 
   const loadNavigation = async () => {
     try {
-      const styleRef = ref(db, 'navigation/style');
+      // Load from the published settings path for consistency with publish
+      const styleRef = ref(db, 'navigation_settings');
       const styleSnap = await get(styleRef);
 
       if (styleSnap.exists()) {
         const style = styleSnap.val();
+        console.log('[NAV] Loaded navigation settings:', style);
         setNavBgColor(style.background || '#ffffff');
         setNavTextColor(style.text || '#111827');
         setActiveTabColor(style.activeTab || '#14b8a6');
@@ -141,7 +143,7 @@ export default function NavigationCustomizer() {
         }
       }
     } catch (error) {
-      console.error('Error loading navigation:', error);
+      console.error('[NAV] Error loading navigation:', error);
     }
   };
 
@@ -159,11 +161,14 @@ export default function NavigationCustomizer() {
         buttonLabels: buttonLabels
       };
 
-      await set(ref(db, 'navigation/style'), styleData);
+      console.log('[NAV] Saving navigation settings to navigation_settings:', styleData);
+      
+      // Save to the published settings path for consistency with publish
+      await set(ref(db, 'navigation_settings'), styleData);
 
-      alert('Navigation settings saved successfully!');
+      alert('Navigation settings saved successfully! Remember to publish to update the live site.');
     } catch (error) {
-      console.error('Error saving navigation:', error);
+      console.error('[NAV] Error saving navigation:', error);
       alert('Failed to save navigation settings');
     } finally {
       setSaving(false);

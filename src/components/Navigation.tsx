@@ -49,10 +49,15 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
   });
 
   useEffect(() => {
-    if (!publishedData?.navigation_settings) return;
+    if (!publishedData?.navigation_settings) {
+      console.log('[NAVIGATION] No navigation_settings in published data');
+      return;
+    }
 
     try {
       const style = publishedData.navigation_settings;
+      console.log('[NAVIGATION] Loaded navigation settings from R2:', style);
+      
       setNavStyle({
         background: style.background || '#ffffff',
         text: style.text || '#111827',
@@ -64,6 +69,7 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
       });
 
       if (style.buttonLabels) {
+        console.log('[NAVIGATION] Applying button labels:', style.buttonLabels);
         setButtonLabels({
           home: style.buttonLabels.home || 'Home',
           shop: style.buttonLabels.shop || 'Shop All',
@@ -74,9 +80,11 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
           signOut: style.buttonLabels.signOut || 'Sign Out',
           admin: style.buttonLabels.admin || 'Admin'
         });
+      } else {
+        console.log('[NAVIGATION] No button labels found, using defaults');
       }
     } catch (error) {
-      console.error('Error loading navigation style:', error);
+      console.error('[NAVIGATION] Error loading navigation style:', error);
     }
   }, [publishedData]);
 
