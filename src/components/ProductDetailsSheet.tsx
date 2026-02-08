@@ -107,32 +107,23 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
   }, [isOpen]);
 
   const loadSuggestedProducts = async () => {
-    if (!product) return;
+    if (!product || !publishedData?.products) return;
 
     try {
-      const productsRef = ref(db, 'products');
-      const snapshot = await get(productsRef);
+      const allProducts = objectToArray<Product>(publishedData.products)
+        .filter((p: Product) => p.id !== product.id && p.in_stock && (p.isVisible !== false));
 
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        const allProducts = Object.entries(data)
-          .map(([id, prod]: [string, any]) => ({
-            id,
-            ...prod,
-          }))
-          .filter((p: Product) => p.id !== product.id && p.in_stock && (p.isVisible !== false));
+      const sameCategoryProducts = allProducts.filter(
+        (p: Product) => p.category === product.category
+      );
 
-        const sameCategoryProducts = allProducts.filter(
-          (p: Product) => p.category === product.category
-        );
+      const nameMatchedProducts = allProducts.filter((p: Product) => {
+        const productWords = product.name.toLowerCase().split(' ');
+        const pWords = p.name.toLowerCase().split(' ');
+        return productWords.some((word) => pWords.includes(word));
+      });
 
-        const nameMatchedProducts = allProducts.filter((p: Product) => {
-          const productWords = product.name.toLowerCase().split(' ');
-          const pWords = p.name.toLowerCase().split(' ');
-          return productWords.some((word) => pWords.includes(word));
-        });
-
-        const shuffled = [...new Set([...sameCategoryProducts, ...nameMatchedProducts, ...allProducts])]
+      const shuffled = [...new Set([...sameCategoryProducts, ...nameMatchedProducts, ...allProducts])]
           .sort(() => Math.random() - 0.5)
           .slice(0, 6);
 
