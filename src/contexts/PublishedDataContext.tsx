@@ -49,14 +49,29 @@ export function PublishedDataProvider({ children }: { children: ReactNode }) {
     setLoading(true);
     setError(false);
     try {
-      const publishedData = await getPublishedData();
-      if (publishedData) {
-        setData(publishedData);
+      // Check if in preview mode
+      const urlParams = new URLSearchParams(window.location.search);
+      const isPreviewMode = urlParams.get('preview') === 'true';
+
+      if (isPreviewMode) {
+        console.log('Preview mode: Loading from Firebase');
+        const firebaseData = await loadPreviewDataFromFirebase();
+        if (firebaseData) {
+          setData(firebaseData as any);
+        } else {
+          setError(true);
+        }
       } else {
-        setError(true); // No published data available
+        // Normal mode: Load from R2
+        const publishedData = await getPublishedData();
+        if (publishedData) {
+          setData(publishedData);
+        } else {
+          setError(true);
+        }
       }
     } catch (err) {
-      console.error('Error loading published data:', err);
+      console.error('Error loading data:', err);
       setError(true);
     } finally {
       setLoading(false);
