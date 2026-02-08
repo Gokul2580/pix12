@@ -50,6 +50,9 @@ export default function PublishManager({ onPublishComplete }: { onPublishComplet
   const [isLoading, setIsLoading] = useState(false);
   const [dataPreview, setDataPreview] = useState<any>(null);
 
+  const navigationSettingsRef = ref(db, 'navigation_settings');
+  const navigationStyleRef = ref(db, 'navigation/style');
+
   // Collect all data from Firebase
   const collectAllData = async (): Promise<PublishData> => {
     console.log('[PUBLISH] Starting data collection from Firebase...');
@@ -71,7 +74,7 @@ export default function PublishManager({ onPublishComplete }: { onPublishComplet
       video_overlay_items: ref(db, 'video_overlay_items'),
       default_sections_visibility: ref(db, 'default_sections_visibility'),
       card_designs: ref(db, 'card_designs'),
-      navigation_settings: ref(db, 'navigation_settings'),
+      navigation_settings: navigationSettingsRef,
       coupons: ref(db, 'coupons'),
       try_on_models: ref(db, 'try_on_models'),
       tax_settings: ref(db, 'tax_settings'),
@@ -87,6 +90,7 @@ export default function PublishManager({ onPublishComplete }: { onPublishComplet
     };
 
     try {
+      // Collect standard refs
       const snapshots = await Promise.all(
         Object.entries(dataRefs).map(async ([key, refPath]) => {
           try {
@@ -110,6 +114,29 @@ export default function PublishManager({ onPublishComplete }: { onPublishComplet
       snapshots.forEach(([key, value]) => {
         allData[key as string] = value;
       });
+
+      // Try to get navigation_settings from both possible paths
+      try {
+        // First try navigation_settings (new structure)
+        const navSettingsSnapshot = await get(navigationSettingsRef);
+        if (navSettingsSnapshot.exists()) {
+          allData.navigation_settings = navSettingsSnapshot.val();
+          console.log('[PUBLISH] navigation_settings: found at navigation_settings path');
+        } else {
+          // Fall back to navigation/style (old structure)
+          const navStyleSnapshot = await get(navigationStyleRef);
+          if (navStyleSnapshot.exists()) {
+            allData.navigation_settings = navStyleSnapshot.val();
+            console.log('[PUBLISH] navigation_settings: found at navigation/style path');
+          } else {
+            console.log('[PUBLISH] navigation_settings: not found, will use defaults');
+            allData.navigation_settings = null;
+          }
+        }
+      } catch (err) {
+        console.warn('[PUBLISH] Failed to fetch navigation settings:', err);
+        allData.navigation_settings = null;
+      }
 
       const collectedKeys = Object.keys(allData).filter(k => allData[k] !== null && allData[k] !== undefined);
       console.log(`[PUBLISH] Data collection complete. Collected ${collectedKeys.length} non-empty sections`);
