@@ -1,8 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { ChevronLeft, ChevronRight, ShoppingCart, Heart } from 'lucide-react';
 import { Product, Category, HomepageSection } from '../types';
-import { db } from '../lib/firebase';
-import { ref, get } from 'firebase/database';
+import { usePublishedData } from '../contexts/PublishedDataContext';
 import LazyImage from './LazyImage';
 import { useCart } from '../contexts/CartContext';
 import { useFavorites } from '../contexts/FavoritesContext';
