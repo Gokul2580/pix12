@@ -21,11 +21,12 @@ function validateData(data: Record<string, any>): { valid: boolean; warnings: st
   const warnings: string[] = [];
 
   // Critical sections that should exist
-  const criticalSections = ['products', 'categories', 'site_settings', 'navigation_settings'];
+  const criticalSections = ['products', 'categories'];
   
-  // Optional sections that can be empty
+  // Optional sections that can be empty (navigation_settings has UI defaults)
   const optionalSections = [
-    'reviews', 'offers', 'carousel_images', 'carousel_settings', 'homepage_sections',
+    'site_settings', 'navigation_settings', 'reviews', 'offers', 
+    'carousel_images', 'carousel_settings', 'homepage_sections',
     'info_sections', 'marquee_sections', 'video_sections',
     'video_section_settings', 'video_overlay_sections', 'video_overlay_items',
     'default_sections_visibility', 'card_designs',
@@ -40,29 +41,43 @@ function validateData(data: Record<string, any>): { valid: boolean; warnings: st
     }
   });
 
-  // Validate products structure if present
-  if (data.products && typeof data.products === 'object') {
-    const productCount = Object.keys(data.products).length;
-    if (productCount === 0) {
-      warnings.push('No products found - this is optional');
-    } else {
-      Object.entries(data.products).forEach(([id, product]: any) => {
-        if (!product.name) warnings.push(`Product ${id} missing name`);
-        if (!product.price && product.price !== 0) warnings.push(`Product ${id} missing price`);
-      });
-    }
+  // Provide default navigation_settings if missing (matches UI defaults)
+  if (!data.navigation_settings || Object.keys(data.navigation_settings).length === 0) {
+    console.log('[PUBLISH] Adding default navigation_settings');
+    data.navigation_settings = {
+      background: '#ffffff',
+      text: '#111827',
+      activeTab: '#14b8a6',
+      inactiveButton: '#f3f4f6',
+      borderRadius: 'full',
+      buttonSize: 'md',
+      themeMode: 'default',
+      buttonLabels: {
+        home: 'Home',
+        shop: 'Shop All',
+        search: 'Search',
+        cart: 'Cart',
+        myOrders: 'My Orders',
+        login: 'Login',
+        signOut: 'Sign Out',
+        admin: 'Admin'
+      }
+    };
   }
 
-  // Validate categories structure if present
-  if (data.categories && typeof data.categories === 'object') {
-    const categoryCount = Object.keys(data.categories).length;
-    if (categoryCount === 0) {
-      warnings.push('No categories found - this is optional');
-    } else {
-      Object.entries(data.categories).forEach(([id, category]: any) => {
-        if (!category.name) warnings.push(`Category ${id} missing name`);
-      });
-    }
+  // Validate products have required fields if present
+  if (data.products && typeof data.products === 'object' && Object.keys(data.products).length > 0) {
+    Object.entries(data.products).forEach(([id, product]: any) => {
+      if (!product.name) warnings.push(`Product ${id} missing name`);
+      if (!product.price && product.price !== 0) warnings.push(`Product ${id} missing price`);
+    });
+  }
+
+  // Validate categories have required fields if present
+  if (data.categories && typeof data.categories === 'object' && Object.keys(data.categories).length > 0) {
+    Object.entries(data.categories).forEach(([id, category]: any) => {
+      if (!category.name) warnings.push(`Category ${id} missing name`);
+    });
   }
 
   // Always allow publish to happen
