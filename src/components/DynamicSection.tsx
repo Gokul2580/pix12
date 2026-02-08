@@ -14,6 +14,7 @@ interface DynamicSectionProps {
 }
 
 export default function DynamicSection({ section, onProductClick, onCategoryClick }: DynamicSectionProps) {
+  const { data: publishedData } = usePublishedData();
   const [items, setItems] = useState<(Product | Category)[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -25,20 +26,26 @@ export default function DynamicSection({ section, onProductClick, onCategoryClic
 
   useEffect(() => {
     fetchItems();
-  }, [section]);
+  }, [section, publishedData]);
 
   const fetchItems = async () => {
+    if (!publishedData) {
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       const itemsData: (Product | Category)[] = [];
 
       const selectedItems = section.selected_items || [];
-      for (const itemId of selectedItems) {
-        const itemRef = ref(db, `${section.content_type === 'product' ? 'products' : 'categories'}/${itemId}`);
-        const snapshot = await get(itemRef);
+      const dataSource = section.content_type === 'product' ? publishedData.products : publishedData.categories;
 
-        if (snapshot.exists()) {
-          itemsData.push({ id: itemId, ...snapshot.val() });
+      if (dataSource) {
+        for (const itemId of selectedItems) {
+          if (dataSource[itemId]) {
+            itemsData.push({ id: itemId, ...dataSource[itemId] });
+          }
         }
       }
 
