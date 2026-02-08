@@ -35,21 +35,19 @@ let cacheTimestamp: number = 0;
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minute cache
 
 export async function getPublishedData(): Promise<PublishedData | null> {
-  // Check if we're in preview mode - if so, load from Firebase directly
+  // Check if we're in preview mode
   const urlParams = new URLSearchParams(window.location.search);
   const isPreviewMode = urlParams.get('preview') === 'true';
   
+  // In preview mode, bypass cache to get latest data
   if (isPreviewMode) {
-    console.log('Preview mode active: loading directly from Firebase');
-    // In preview mode, we need to load from Firebase
-    // This will be handled by the components that have Firebase access
-    // Return a special marker to indicate preview mode
-    return null; // Components will check for preview param and load from Firebase
-  }
-  
-  // Return cached data if still valid (5 minutes for better performance)
-  if (cachedData && Date.now() - cacheTimestamp < CACHE_DURATION) {
-    return cachedData;
+    console.log('Preview mode active: bypassing cache');
+    // Continue to load from R2 but bypass cache
+  } else {
+    // Return cached data if still valid (5 minutes for better performance)
+    if (cachedData && Date.now() - cacheTimestamp < CACHE_DURATION) {
+      return cachedData;
+    }
   }
 
   try {
