@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { Save, RotateCcw } from 'lucide-react';
 import { db } from '../../lib/firebase';
@@ -115,9 +117,16 @@ export default function NavigationCustomizer() {
 
   const loadNavigation = async () => {
     try {
-      // Load from the published settings path for consistency with publish
-      const styleRef = ref(db, 'navigation_settings');
-      const styleSnap = await get(styleRef);
+      // Try loading from navigation_settings path first (new structure)
+      const navSettingsRef = ref(db, 'navigation_settings');
+      let styleSnap = await get(navSettingsRef);
+
+      // If not found, try navigation/style path (old structure)
+      if (!styleSnap.exists()) {
+        console.log('[NAV] navigation_settings not found, trying navigation/style...');
+        const navStyleRef = ref(db, 'navigation/style');
+        styleSnap = await get(navStyleRef);
+      }
 
       if (styleSnap.exists()) {
         const style = styleSnap.val();
@@ -141,6 +150,8 @@ export default function NavigationCustomizer() {
             admin: style.buttonLabels.admin || 'Admin'
           });
         }
+      } else {
+        console.log('[NAV] No navigation settings found, using defaults');
       }
     } catch (error) {
       console.error('[NAV] Error loading navigation:', error);
@@ -161,15 +172,32 @@ export default function NavigationCustomizer() {
         buttonLabels: buttonLabels
       };
 
-      console.log('[NAV] Saving navigation settings to navigation_settings:', styleData);
+      console.log('[NAV] Saving navigation settings:', styleData);
       
-      // Save to the published settings path for consistency with publish
-      await set(ref(db, 'navigation_settings'), styleData);
+      // Try saving to navigation_settings path first (new structure)
+      try {
+        await set(ref(db, 'navigation_settings'), styleData);
+        console.log('[NAV] Successfully saved to navigation_settings');
+      } catch (navSettingsError) {
+        console.warn('[NAV] Failed to save to navigation_settings, trying navigation/style:', navSettingsError);
+        // Fallback to navigation/style path (old structure) if navigation_settings fails
+        await set(ref(db, 'navigation/style'), styleData);
+        console.log('[NAV] Successfully saved to navigation/style');
+      }
 
-      alert('Navigation settings saved successfully! Remember to publish to update the live site.');
+      alert('Navigation settings saved successfully! Remember to click "Publish to Live" to update the live site.');
     } catch (error) {
-      console.error('[NAV] Error saving navigation:', error);
-      alert('Failed to save navigation settings');
+      console.error('[NAV] Error saving navigation to both paths:', error);
+      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      
+      // Provide helpful error message
+      if (errorMsg.includes('Permission denied')) {
+        alert('Failed to save: Firebase permissions issue. Please check admin access and try again.');
+      } else if (errorMsg.includes('PERMISSION_DENIED')) {
+        alert('Failed to save: You do not have permission to modify navigation settings. Contact an admin.');
+      } else {
+        alert('Failed to save navigation settings. ' + errorMsg);
+      }
     } finally {
       setSaving(false);
     }
