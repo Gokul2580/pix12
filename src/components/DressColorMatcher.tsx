@@ -205,18 +205,10 @@ export default function DressColorMatcher({ isOpen, onClose, currentProduct }: D
   };
 
   const matchProductsByColors = async (colors: ColorInfo[]) => {
+    if (!publishedData?.products) return;
+
     try {
-      const productsRef = ref(db, 'products');
-      const snapshot = await get(productsRef);
-
-      if (!snapshot.exists()) return;
-
-      const data = snapshot.val();
-      const allProducts = Object.entries(data)
-        .map(([id, prod]: [string, any]) => ({
-          id,
-          ...prod,
-        }))
+      const allProducts = objectToArray<Product>(publishedData.products)
         .filter((p: Product) => {
           if (!p.in_stock || p.isVisible === false || !p.availableColors || p.availableColors.length === 0) {
             return false;
