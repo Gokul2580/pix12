@@ -4,11 +4,11 @@ import Confetti from './Confetti';
 import type { Product } from '../types';
 import { useCart } from '../contexts/CartContext';
 import { useFavorites } from '../contexts/FavoritesContext';
+import { usePublishedData } from '../contexts/PublishedDataContext';
+import { objectToArray } from '../utils/publishedData';
 import LazyImage from './LazyImage';
 import VirtualTryOn from './VirtualTryOn';
 import DressColorMatcher from './DressColorMatcher';
-import { db } from '../lib/firebase';
-import { ref, get } from 'firebase/database';
 
 interface ProductDetailsSheetProps {
   product: Product | null;
