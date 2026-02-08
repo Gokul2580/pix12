@@ -186,6 +186,11 @@ export default function NavigationCustomizer() {
       }
 
       alert('Navigation settings saved successfully! Remember to click "Publish to Live" to update the live site.');
+      
+      // Reload to verify persistence
+      setTimeout(() => {
+        loadNavigation();
+      }, 500);
     } catch (error) {
       console.error('[NAV] Error saving navigation to both paths:', error);
       const errorMsg = error instanceof Error ? error.message : 'Unknown error';
