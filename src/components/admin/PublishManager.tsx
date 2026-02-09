@@ -179,6 +179,7 @@ export default function PublishManager({ onPublishComplete }: { onPublishComplet
       // Collect all data
       const data = await collectAllData();
       console.log('[PUBLISH] Collected data, keys:', Object.keys(data));
+      console.log('[PUBLISH] Navigation settings:', data.navigation_settings);
 
       const productCount = Object.keys(data.products || {}).length;
       const categoryCount = Object.keys(data.categories || {}).length;

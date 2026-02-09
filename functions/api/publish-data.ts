@@ -43,7 +43,8 @@ function validateData(data: Record<string, any>): { valid: boolean; warnings: st
 
   // Provide default navigation_settings if missing (matches UI defaults)
   if (!data.navigation_settings || Object.keys(data.navigation_settings).length === 0) {
-    console.log('[PUBLISH] Adding default navigation_settings');
+    console.log('[PUBLISH] WARNING: navigation_settings is empty, using defaults');
+    warnings.push('navigation_settings was empty, using default values');
     data.navigation_settings = {
       background: '#ffffff',
       text: '#111827',
@@ -63,6 +64,8 @@ function validateData(data: Record<string, any>): { valid: boolean; warnings: st
         admin: 'Admin'
       }
     };
+  } else {
+    console.log('[PUBLISH] navigation_settings found and will be published:', data.navigation_settings);
   }
 
   // Validate products have required fields if present
