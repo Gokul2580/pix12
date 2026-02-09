@@ -117,15 +117,18 @@ export default function PublishManager({ onPublishComplete }: { onPublishComplet
       try {
         console.log('[PUBLISH] Reading navigation/style from Firebase...');
         const navStyleSnapshot = await get(navigationStyleRef);
+        console.log('[PUBLISH] Navigation snapshot exists:', navStyleSnapshot.exists());
+        console.log('[PUBLISH] Navigation snapshot value:', navStyleSnapshot.val());
+        
         if (navStyleSnapshot.exists()) {
           allData.navigation_settings = navStyleSnapshot.val();
-          console.log('[PUBLISH] navigation_settings: successfully loaded from navigation/style');
+          console.log('[PUBLISH] navigation_settings: successfully loaded from navigation/style', allData.navigation_settings);
         } else {
-          console.log('[PUBLISH] navigation_settings: navigation/style is empty, will use defaults');
+          console.log('[PUBLISH] WARNING: navigation/style path does not exist in Firebase - no data to read');
           allData.navigation_settings = null;
         }
       } catch (err) {
-        console.warn('[PUBLISH] Failed to fetch navigation/style:', err);
+        console.warn('[PUBLISH] Failed to fetch navigation/style - possible Firebase permissions issue:', err);
         allData.navigation_settings = null;
       }
 

@@ -167,7 +167,15 @@ export default function NavigationCustomizer() {
 
       console.log('[NAV] Saving to navigation/style:', styleData);
       await set(ref(db, 'navigation/style'), styleData);
-      console.log('[NAV] Successfully saved to navigation/style');
+      console.log('[NAV] Successfully saved to navigation/style - confirming save...');
+
+      // Verify the save worked by reading it back
+      const verifySnapshot = await get(ref(db, 'navigation/style'));
+      if (verifySnapshot.exists()) {
+        console.log('[NAV] Verification SUCCESS: Data was saved and can be read back:', verifySnapshot.val());
+      } else {
+        console.log('[NAV] Verification FAILED: Data was not saved or cannot be read back');
+      }
 
       alert('Navigation settings saved successfully! Remember to click "Publish to Live" to update the live site.');
       
