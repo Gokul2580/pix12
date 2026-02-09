@@ -113,22 +113,30 @@ export default function PublishManager({ onPublishComplete }: { onPublishComplet
         allData[key as string] = value;
       });
 
-      // Get navigation_settings from navigation/style path in Firebase
+      // Get navigation_settings from navigation/style path in Firebase with fallback
       try {
         console.log('[PUBLISH] Reading navigation/style from Firebase...');
         const navStyleSnapshot = await get(navigationStyleRef);
-        console.log('[PUBLISH] Navigation snapshot exists:', navStyleSnapshot.exists());
-        console.log('[PUBLISH] Navigation snapshot value:', navStyleSnapshot.val());
+        console.log('[PUBLISH] navigation/style exists:', navStyleSnapshot.exists());
         
         if (navStyleSnapshot.exists()) {
           allData.navigation_settings = navStyleSnapshot.val();
           console.log('[PUBLISH] navigation_settings: successfully loaded from navigation/style', allData.navigation_settings);
         } else {
-          console.log('[PUBLISH] WARNING: navigation/style path does not exist in Firebase - no data to read');
-          allData.navigation_settings = null;
+          // Fallback: try to read from settings/navigation
+          console.log('[PUBLISH] navigation/style not found, trying backup location settings/navigation...');
+          const backupSnapshot = await get(ref(db, 'settings/navigation'));
+          
+          if (backupSnapshot.exists()) {
+            allData.navigation_settings = backupSnapshot.val();
+            console.log('[PUBLISH] navigation_settings: successfully loaded from backup location settings/navigation', allData.navigation_settings);
+          } else {
+            console.log('[PUBLISH] WARNING: navigation settings not found in either location - will use defaults on publish');
+            allData.navigation_settings = null;
+          }
         }
       } catch (err) {
-        console.warn('[PUBLISH] Failed to fetch navigation/style - possible Firebase permissions issue:', err);
+        console.warn('[PUBLISH] Failed to fetch navigation settings:', err);
         allData.navigation_settings = null;
       }
 

@@ -162,22 +162,29 @@ export default function NavigationCustomizer() {
         borderRadius: borderRadius,
         buttonSize: buttonSize,
         themeMode: themeMode,
-        buttonLabels: buttonLabels
+        buttonLabels: buttonLabels,
+        savedAt: new Date().toISOString()
       };
 
       console.log('[NAV] Saving to navigation/style:', styleData);
+      
+      // Save to navigation/style
       await set(ref(db, 'navigation/style'), styleData);
-      console.log('[NAV] Successfully saved to navigation/style - confirming save...');
+      console.log('[NAV] Successfully saved to navigation/style');
+
+      // Also save to a backup location for redundancy
+      await set(ref(db, 'settings/navigation'), styleData);
+      console.log('[NAV] Saved backup copy to settings/navigation');
 
       // Verify the save worked by reading it back
       const verifySnapshot = await get(ref(db, 'navigation/style'));
       if (verifySnapshot.exists()) {
         console.log('[NAV] Verification SUCCESS: Data was saved and can be read back:', verifySnapshot.val());
+        alert('Navigation settings saved successfully! Remember to click "Publish to Live" to update the live site.');
       } else {
         console.log('[NAV] Verification FAILED: Data was not saved or cannot be read back');
+        alert('Navigation settings saved, but verification failed. Please check browser console.');
       }
-
-      alert('Navigation settings saved successfully! Remember to click "Publish to Live" to update the live site.');
       
       // Reload to verify persistence
       setTimeout(() => {
