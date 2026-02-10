@@ -3,15 +3,7 @@ import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        plugins: [
-          ['@babel/plugin-proposal-class-properties', { loose: true }],
-        ],
-      },
-    }),
-  ],
+  plugins: [react()],
   build: {
     target: 'ES2020',
     rollupOptions: {
