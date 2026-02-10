@@ -3,14 +3,14 @@
  * Provides smooth scrolling, animations, and transitions
  */
 
-// Smooth scroll to element
+// Scroll to element (auto - no smooth)
 export const smoothScrollTo = (element: Element, offset: number = 0) => {
   const yOffset = -offset;
   const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
   window.scrollTo({
     top: y,
-    behavior: 'smooth'
+    behavior: 'auto'
   });
 };
 
@@ -41,21 +41,9 @@ export const staggerAnimate = (
   });
 };
 
-// Smooth scroll snap
+// Scroll snap disabled - normal scroll behavior
 export const enableSmoothScrollSnap = () => {
-  const style = document.createElement('style');
-  style.textContent = `
-    html {
-      scroll-behavior: smooth;
-      scroll-snap-type: y proximity;
-    }
-    
-    main > section {
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
-    }
-  `;
-  document.head.appendChild(style);
+  // Disabled smooth scroll snap
 };
 
 // Parallax effect helper
@@ -127,28 +115,9 @@ export const addSmoothHoverEffect = (selector: string) => {
   });
 };
 
-// Scroll to top smoothly
+// Scroll to top
 export const scrollToTopSmooth = (duration: number = 300) => {
-  const startPosition = window.pageYOffset;
-  const startTime = performance.now();
-
-  const ease = (t: number) => {
-    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-  };
-
-  const scroll = (currentTime: number) => {
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    const ease_value = ease(progress);
-    
-    window.scrollTo(0, startPosition * (1 - ease_value));
-
-    if (progress < 1) {
-      requestAnimationFrame(scroll);
-    }
-  };
-
-  requestAnimationFrame(scroll);
+  window.scrollTo(0, 0);
 };
 
 // Smooth modal transitions

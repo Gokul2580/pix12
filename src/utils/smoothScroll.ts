@@ -5,11 +5,11 @@ export function smoothScrollTo(target: HTMLElement | number, options: ScrollInto
   if (typeof target === 'number') {
     window.scrollTo({
       top: target,
-      behavior: 'smooth',
+      behavior: 'auto',
     });
   } else {
     target.scrollIntoView({
-      behavior: 'smooth',
+      behavior: 'auto',
       block: 'start',
       inline: 'nearest',
       ...options,
@@ -55,17 +55,8 @@ export function initSmoothScroll() {
 }
 
 /**
- * Add smooth scroll CSS to document
+ * Add normal scroll behavior (disabled smooth scroll)
  */
 export function enableSmoothScrollCSS() {
-  if (document.querySelector('style[data-smooth-scroll]')) return;
-
-  const style = document.createElement('style');
-  style.setAttribute('data-smooth-scroll', 'true');
-  style.textContent = `
-    html {
-      scroll-behavior: smooth;
-    }
-  `;
-  document.head.appendChild(style);
+  // Smooth scroll disabled - using normal scroll behavior
 }
