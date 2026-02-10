@@ -129,8 +129,8 @@ export default function MyOrdersSheet({ isOpen, onClose, onLoginClick }: MyOrder
   if (!user) {
     return (
       <>
-        <div className="fixed inset-0 bg-black/40 z-[999] transition-opacity" onClick={onClose}></div>
-        <div className="fixed inset-x-0 bottom-0 z-[1000] bg-white rounded-t-3xl h-[90vh] sm:h-auto flex flex-col animate-slide-up">
+        <div className="fixed inset-0 bg-black/40 z-50 transition-opacity" onClick={onClose}></div>
+        <div className="fixed inset-x-0 bottom-0 bg-white rounded-t-3xl h-[90vh] sm:h-auto flex flex-col animate-slide-up">
           <div className="p-6 text-center">
             <div className="flex justify-end mb-4">
               <button
@@ -162,8 +162,8 @@ export default function MyOrdersSheet({ isOpen, onClose, onLoginClick }: MyOrder
 
   return (
     <>
-      <div className="fixed inset-0 bg-black/40 z-[999] transition-opacity" onClick={onClose}></div>
-      <div className="fixed inset-x-0 bottom-0 z-[1000] bg-white rounded-t-3xl h-[90vh] sm:h-auto flex flex-col animate-slide-up">
+      <div className="fixed inset-0 bg-black/40 z-50 transition-opacity" onClick={onClose}></div>
+      <div className="fixed inset-x-0 bottom-0 bg-white rounded-t-3xl h-[90vh] sm:h-auto flex flex-col animate-slide-up">
         <div className="p-6 pb-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">

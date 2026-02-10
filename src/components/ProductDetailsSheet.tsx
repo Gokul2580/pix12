@@ -319,7 +319,7 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
       <Confetti isActive={showConfetti} onComplete={() => setShowConfetti(false)} />
 
       <div
-        className={`fixed inset-0 z-[999] transition-all duration-500 ${
+        className={`fixed inset-0 z-50 transition-all duration-500 ${
           isOpen ? 'visible' : 'invisible'
         }`}
       >

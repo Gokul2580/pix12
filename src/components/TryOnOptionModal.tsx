@@ -26,8 +26,8 @@ export default function TryOnOptionModal({
   const hasColorMatcher = product.availableColors && product.availableColors.length > 0;
 
   return (
-    <div className="fixed inset-0 z-[999] flex items-end md:items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300 overflow-y-auto">
-      <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-2xl max-w-md w-full overflow-hidden animate-in slide-in-from-bottom md:zoom-in duration-300 border-4 border-black z-[1000] md:my-4">
+    <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300 overflow-y-auto">
+      <div className="bg-white rounded-t-3xl md:rounded-3xl shadow-2xl max-w-md w-full overflow-hidden animate-in slide-in-from-bottom md:zoom-in duration-300 border-4 border-black md:my-4">
         <div className="bg-[#B5E5CF] p-4 md:p-6 relative border-b-4 border-black rounded-t-3xl">
           <button
             onClick={onClose}

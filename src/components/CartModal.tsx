@@ -18,10 +18,10 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[999]">
+    <div className="fixed inset-0 z-50 flex flex-col">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t-4 border-black w-full h-[90vh] sm:h-[85vh] overflow-hidden flex flex-col animate-slide-up rounded-t-3xl z-[1000]">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t-4 border-black w-full h-[90vh] sm:h-[85vh] overflow-hidden flex flex-col animate-slide-up rounded-t-3xl">
         <div className="flex-shrink-0 pt-2 pb-4 px-4 sm:px-6 border-b-4 border-black bg-[#B5E5CF] rounded-t-3xl">
           <div className="w-12 h-1.5 bg-black rounded-full mx-auto mb-4"></div>
 
