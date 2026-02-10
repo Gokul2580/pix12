@@ -37,6 +37,9 @@ import { initPerformanceMonitoring } from './utils/performanceMonitoring';
 import { initFetchInterceptor } from './utils/fetchInterceptor';
 import { enableSmoothScrollCSS } from './utils/smoothScroll';
 import PageLoader from './components/PageLoader';
+import { monitorWebVitals, enableGPUAcceleration, respectReducedMotion, preloadCriticalImages } from './utils/performanceOptimization';
+import { generateAISiteDescription, generateAIKeywords, generateOrganizationSchema, injectSchema } from './utils/seoOptimization';
+import { preloadCriticalImages as preloadImages } from './utils/imageOptimization';
 
 type Page = 'home' | 'shop' | 'admin' | 'checkout' | 'superadmin' | 'privacy-policy' | 'shipping-policy' | 'refund-policy' | 'contact';
 
@@ -111,6 +114,11 @@ function AppContent() {
   const isAdminPage = currentPage === 'admin' || currentPage === 'superadmin';
 
   useEffect(() => {
+    // Performance optimizations
+    enableGPUAcceleration();
+    respectReducedMotion();
+    monitorWebVitals();
+    
     // Enable smooth scrolling
     enableSmoothScrollCSS();
     // Initialize fetch interceptor to suppress validation warnings
@@ -119,6 +127,27 @@ function AppContent() {
     initAnalytics();
     // Initialize performance monitoring
     initPerformanceMonitoring();
+    
+    // SEO Initialization
+    try {
+      // Inject organization schema
+      injectSchema(generateOrganizationSchema());
+      
+      // Add AI-generated description to meta tags
+      const aiDescription = generateAISiteDescription();
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) {
+        metaDescription.setAttribute('content', aiDescription);
+      }
+      
+      // Update keywords with AI-generated ones
+      const metaKeywords = document.querySelector('meta[name="keywords"]');
+      if (metaKeywords) {
+        metaKeywords.setAttribute('content', generateAIKeywords().join(', '));
+      }
+    } catch (error) {
+      console.error('[SEO] Error initializing SEO:', error);
+    }
 
     const checkStoreStatus = async () => {
       try {
