@@ -21,13 +21,35 @@
   background: #999;
 }
 
-/* Ensure normal scroll behavior everywhere */
-html, body {
-  scroll-behavior: auto !important;
+/* Proper scroll behavior and modal support */
+html {
+  scroll-behavior: auto;
 }
 
-* {
-  scroll-behavior: auto !important;
+body {
+  scroll-behavior: auto;
+}
+
+/* Allow smooth scroll for specific elements, but not * */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* Modal overflow fix - prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Ensure modals are above everything */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.modal-content {
+  position: fixed;
+  z-index: 50;
 }
 
 
