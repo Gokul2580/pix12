@@ -38,8 +38,8 @@ export default function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
     <div className="fixed inset-0 z-50">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl max-w-md mx-auto w-full border-t-4 border-black animate-slide-up">
-        <div className="bg-[#B5E5CF] p-6 relative border-b-4 border-black rounded-t-3xl">
+      <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl max-w-md mx-auto w-full border-t-4 border-black animate-slide-up max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="bg-[#B5E5CF] p-4 sm:p-6 relative border-b-4 border-black rounded-t-3xl flex-shrink-0">
           <div className="w-12 h-1.5 bg-black rounded-full mx-auto mb-4"></div>
           <button
             onClick={onClose}
@@ -52,7 +52,7 @@ export default function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
           <p className="text-black mb-4 font-medium">Fill in your details and we'll get back to you on WhatsApp</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 p-6 bg-white">
+        <form onSubmit={handleSubmit} className="space-y-4 p-4 sm:p-6 bg-white flex-1 overflow-y-auto">
           <div>
             <label htmlFor="name" className="block text-sm font-bold text-black mb-1">
               Your Name *

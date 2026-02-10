@@ -21,8 +21,8 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
     <div className="fixed inset-0 z-50">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t-4 border-black w-full max-h-[85vh] overflow-hidden flex flex-col animate-slide-up rounded-t-3xl">
-        <div className="flex-shrink-0 pt-2 pb-4 px-6 border-b-4 border-black bg-[#B5E5CF] rounded-t-3xl">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t-4 border-black w-full max-h-[90vh] sm:max-h-[85vh] overflow-hidden flex flex-col animate-slide-up rounded-t-3xl">
+        <div className="flex-shrink-0 pt-2 pb-4 px-4 sm:px-6 border-b-4 border-black bg-[#B5E5CF] rounded-t-3xl">
           <div className="w-12 h-1.5 bg-black rounded-full mx-auto mb-4"></div>
 
           <div className="flex items-center justify-between">
@@ -41,7 +41,7 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 bg-white">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-white">
           {items.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-black font-medium text-lg">Add some products to get started</p>
@@ -120,7 +120,7 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
         </div>
 
         {items.length > 0 && (
-          <div className="bg-white p-6 border-t-4 border-black flex-shrink-0">
+          <div className="bg-white p-4 sm:p-6 border-t-4 border-black flex-shrink-0">
             {subtotal < 2000 && (
               <div className="mb-4 p-3 bg-[#B5E5CF] rounded-xl border-2 border-black">
                 <p className="text-sm font-bold text-black mb-1">

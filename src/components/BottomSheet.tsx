@@ -23,8 +23,8 @@ export default function BottomSheet({ isOpen, onClose, title, children }: Bottom
         onClick={onClose}
       ></div>
 
-      <div className="relative bg-white w-full max-w-md rounded-2xl max-h-[80vh] flex flex-col animate-scale-in overflow-hidden border-4 border-black">
-        <div className="flex items-center justify-between p-5 border-b-4 border-black bg-[#B5E5CF]">
+      <div className="relative bg-white w-full max-w-md rounded-2xl max-h-[85vh] sm:max-h-[80vh] flex flex-col animate-scale-in overflow-hidden border-4 border-black">
+        <div className="flex items-center justify-between p-3 sm:p-5 border-b-4 border-black bg-[#B5E5CF] flex-shrink-0">
           <h2 className="text-lg font-semibold text-black">{title}</h2>
           <button
             onClick={onClose}
@@ -34,7 +34,7 @@ export default function BottomSheet({ isOpen, onClose, title, children }: Bottom
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-5 bg-[#B5E5CF]">
+        <div className="flex-1 overflow-y-auto p-3 sm:p-5 bg-[#B5E5CF]">
           <div className="prose prose-sm prose-gray max-w-none text-black">
             {children}
           </div>

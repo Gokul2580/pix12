@@ -382,7 +382,7 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
             )}
           </div>
 
-          <div className="overflow-y-auto h-[calc(100vh-4rem)] pb-32">
+          <div className="overflow-y-auto h-[calc(100vh-4rem)] pb-32 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
             <div className="max-w-5xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-4 sm:p-6">
                 <div className="space-y-4">

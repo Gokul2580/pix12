@@ -40,7 +40,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
 
-      <div className="relative bg-white rounded-3xl border-4 border-black w-full max-w-md">
+      <div className="relative bg-white rounded-3xl border-4 border-black w-full max-w-md max-h-[90vh] sm:max-h-none flex flex-col">
         <div className="bg-[#B5E5CF] p-6 sm:p-8 text-black relative overflow-hidden rounded-t-3xl border-b-4 border-black">
           <button
             onClick={onClose}
@@ -67,8 +67,8 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </div>
         </div>
 
-        <div className="p-6 sm:p-8">
-          <div className="space-y-4">
+        <div className="p-4 sm:p-8">
+          <div className="space-y-4 max-h-[70vh] overflow-y-auto">
             {error && (
               <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4">
                 <p className="text-sm text-red-600">{error}</p>
