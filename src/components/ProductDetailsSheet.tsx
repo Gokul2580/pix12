@@ -97,17 +97,6 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
   }, [product?.id]);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
-
-  useEffect(() => {
     if (!isOpen) return;
 
     const interval = setInterval(() => {

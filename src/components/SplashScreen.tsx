@@ -11,26 +11,18 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
   const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    // Lock body scroll when splash is visible
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-
     const timer1 = setTimeout(() => {
       setFadeOut(true);
-    }, 1800);
+    }, 1500);
 
     const timer2 = setTimeout(() => {
       setIsVisible(false);
       onComplete();
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-    }, 2300);
+    }, 2000);
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
     };
   }, [onComplete]);
 

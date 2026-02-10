@@ -1,7 +1,6 @@
 'use client';
 
 import { X, CheckCircle, Download } from 'lucide-react';
-import { useEffect } from 'react';
 
 interface PaymentSuccessDialogProps {
   isOpen: boolean;
@@ -19,16 +18,7 @@ export default function PaymentSuccessDialog({
   onClose,
   orderDetails
 }: PaymentSuccessDialogProps) {
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+
 
   if (!isOpen) {
     return null;

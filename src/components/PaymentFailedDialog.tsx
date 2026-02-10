@@ -1,7 +1,6 @@
 'use client';
 
 import { X, AlertCircle } from 'lucide-react';
-import { useEffect } from 'react';
 
 interface PaymentFailedDialogProps {
   isOpen: boolean;
@@ -16,16 +15,7 @@ export default function PaymentFailedDialog({
   onRetry,
   errorMessage
 }: PaymentFailedDialogProps) {
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+
 
   if (!isOpen) return null;
 

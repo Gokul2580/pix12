@@ -3,7 +3,7 @@
 import React from "react"
 
 import { X } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface EnquiryModalProps {
   isOpen: boolean;
@@ -17,22 +17,7 @@ export default function EnquiryModal({ isOpen, onClose }: EnquiryModalProps) {
     message: ''
   });
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none';
-      document.documentElement.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
-      document.documentElement.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
-      document.documentElement.style.overflow = '';
-    };
-  }, [isOpen]);
+
 
   if (!isOpen) return null;
 

@@ -11,17 +11,6 @@ export default function WelcomeCouponDialog() {
   const [hasBeenShown, setHasBeenShown] = useState(false);
 
   useEffect(() => {
-    if (isVisible) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isVisible]);
-
-  useEffect(() => {
     if (!publishedData?.settings || hasBeenShown) return;
 
     try {

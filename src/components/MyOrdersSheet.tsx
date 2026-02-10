@@ -50,23 +50,6 @@ export default function MyOrdersSheet({ isOpen, onClose, onLoginClick }: MyOrder
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none';
-      document.documentElement.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
-      document.documentElement.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
-      document.documentElement.style.overflow = '';
-    };
-  }, [isOpen]);
-
-  useEffect(() => {
     if (isOpen && user) {
       fetchOrders();
     }

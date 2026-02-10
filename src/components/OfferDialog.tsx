@@ -20,17 +20,6 @@ export default function OfferDialog() {
   const [popupEnabled, setPopupEnabled] = useState(true);
 
   useEffect(() => {
-    if (isVisible) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isVisible]);
-
-  useEffect(() => {
     if (!publishedData) return;
 
     try {
