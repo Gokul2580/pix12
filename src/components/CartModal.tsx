@@ -16,39 +16,24 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
 
   useEffect(() => {
     if (isOpen) {
-      // Prevent body scroll when modal is open
-      const scrollTop = window.scrollY;
       document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollTop}px`;
-      document.body.style.width = '100%';
     } else {
-      // Restore body scroll
-      const scrollTop = parseInt(document.body.style.top || '0') * -1;
       document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      window.scrollTo(0, scrollTop);
     }
-
     return () => {
       document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
     };
   }, [isOpen]);
 
   if (!isOpen) return null;
 
   return (
-    <>
-      {/* Backdrop */}
-      <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
+    // Backdrop
+    <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
 
-      {/* Modal */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t-4 border-black w-full h-[90vh] sm:h-[85vh] overflow-hidden flex flex-col animate-slide-up rounded-t-3xl z-50 pointer-events-auto">
+    // Modal
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-end sm:justify-center">
+      <div className="bg-white border-4 border-black w-full sm:w-full sm:max-w-2xl h-[90vh] sm:h-[85vh] overflow-hidden flex flex-col animate-slide-up rounded-t-3xl sm:rounded-3xl">
         <div className="flex-shrink-0 pt-2 pb-4 px-4 sm:px-6 border-b-4 border-black bg-[#B5E5CF] rounded-t-3xl">
           <div className="w-12 h-1.5 bg-black rounded-full mx-auto mb-4"></div>
 
@@ -209,6 +194,6 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
