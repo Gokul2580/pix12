@@ -40,7 +40,6 @@ import PageLoader from './components/PageLoader';
 import { monitorWebVitals, enableGPUAcceleration, respectReducedMotion, preloadCriticalImages } from './utils/performanceOptimization';
 import { generateAISiteDescription, generateAIKeywords, generateOrganizationSchema, injectSchema } from './utils/seoOptimization';
 import { preloadCriticalImages as preloadImages } from './utils/imageOptimization';
-import MaterialLoader from './components/MaterialLoader'; // Import MaterialLoader
 
 type Page = 'home' | 'shop' | 'admin' | 'checkout' | 'superadmin' | 'privacy-policy' | 'shipping-policy' | 'refund-policy' | 'contact';
 
@@ -110,7 +109,6 @@ function AppContent() {
   const [appReady, setAppReady] = useState(false);
   const [temporarilyClosed, setTemporarilyClosed] = useState(false);
   const [showWelcomeBanner, setShowWelcomeBanner] = useState(true);
-  const [showLoader, setShowLoader] = useState(false); // Declare showLoader and setShowLoader
 
   const hideNavigation = currentPage === 'admin' || currentPage === 'checkout' || currentPage === 'superadmin' || currentPage === 'privacy-policy' || currentPage === 'shipping-policy' || currentPage === 'refund-policy' || currentPage === 'contact';
   const isAdminPage = currentPage === 'admin' || currentPage === 'superadmin';
@@ -316,12 +314,6 @@ function AppContent() {
 
   return (
     <>
-      <PageLoader 
-        isVisible={showSplash && publishedDataLoading} 
-        progress={showSplash ? 50 : 100}
-        message="Loading Pixie Blooms..."
-      />
-      
       {showSplash && (
         <SplashScreen onComplete={() => {
           setShowSplash(false);

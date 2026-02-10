@@ -34,24 +34,24 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
     >
-      <div className="text-center">
-        <div className="relative mb-8 animate-float">
-          <div className="w-32 h-32 mx-auto relative">
+      <div className="text-center px-4">
+        <div className="relative mb-6 sm:mb-8 animate-float">
+          <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto relative">
             <div className="absolute inset-0 bg-gradient-to-br from-teal-400 to-mint-400 rounded-3xl animate-pulse-slow opacity-20 scale-110"></div>
             <div className="absolute inset-0 flex items-center justify-center">
               <img
                 src="/logo.png"
                 alt="Pixie Blooms"
-                className="w-28 h-28 object-contain animate-fade-in"
+                className="w-20 h-20 sm:w-28 sm:h-28 object-contain animate-fade-in"
               />
             </div>
           </div>
         </div>
 
-        <h1 className="text-4xl font-bold text-gray-900 mb-2 animate-slide-up">
+        <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-1 sm:mb-2 animate-slide-up">
           Pixie Blooms
         </h1>
-        <p className="text-lg text-gray-600 mb-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+        <p className="text-sm sm:text-lg text-gray-600 mb-6 sm:mb-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
           Handcrafted with Love
         </p>
 
