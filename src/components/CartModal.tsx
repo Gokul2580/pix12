@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Plus, Minus, Trash2, CreditCard } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
+import { useModalScroll } from '../hooks/useModalScroll';
 import LazyImage from './LazyImage';
 
 interface CartModalProps {
@@ -14,27 +15,18 @@ interface CartModalProps {
 export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProps) {
   const { items, updateQuantity, removeFromCart, subtotal, shippingCharge, taxAmount, total, getItemPrice, updateCartItem, taxSettings } = useCart();
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
+  useModalScroll(isOpen);
 
   if (!isOpen) return null;
 
-  return (
+  const modalContent = (
     <>
       {/* Backdrop */}
-      <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
+      <div className="fixed inset-0 z-[9998] bg-black/60 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
 
       {/* Modal */}
-      <div className="fixed inset-0 z-50 flex flex-col items-center justify-end sm:justify-center">
-        <div className="bg-white border-4 border-black w-full sm:w-full sm:max-w-2xl h-[90vh] sm:h-[85vh] overflow-hidden flex flex-col animate-slide-up rounded-t-3xl sm:rounded-3xl">
+      <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-end sm:justify-center">
+        <div className="bg-white border-4 border-black w-full sm:w-full sm:max-w-2xl h-[90dvh] sm:h-[85dvh] overflow-hidden flex flex-col animate-slide-up rounded-t-3xl sm:rounded-3xl">
           <div className="flex-shrink-0 pt-2 pb-4 px-4 sm:px-6 border-b-4 border-black bg-[#B5E5CF] rounded-t-3xl">
             <div className="w-12 h-1.5 bg-black rounded-full mx-auto mb-4"></div>
 
@@ -54,7 +46,7 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-white">
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-white" style={{ overscrollBehavior: 'contain' }}>
             {items.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-black font-medium text-lg">Add some products to get started</p>
@@ -101,7 +93,7 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
                       )}
 
                       <p className="text-xl font-bold text-black mb-3">
-                        ₹{(getItemPrice(item) * item.quantity).toFixed(2)}
+                        {'₹'}{(getItemPrice(item) * item.quantity).toFixed(2)}
                       </p>
 
                       <div className="flex items-center gap-2 mt-auto">
@@ -137,7 +129,7 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
               {subtotal < 2000 && (
                 <div className="mb-4 p-3 bg-[#B5E5CF] rounded-xl border-2 border-black">
                   <p className="text-sm font-bold text-black mb-1">
-                    Add ₹{(2000 - subtotal).toFixed(2)} more for FREE shipping!
+                    {'Add ₹'}{(2000 - subtotal).toFixed(2)}{' more for FREE shipping!'}
                   </p>
                   <div className="w-full bg-white rounded-full h-2 border-2 border-black">
                     <div
@@ -150,14 +142,14 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
               {subtotal >= 2000 && (
                 <div className="mb-4 p-3 bg-[#B5E5CF] rounded-xl border-2 border-black">
                   <p className="text-sm font-bold text-black text-center">
-                    You've unlocked FREE shipping!
+                    {"You've unlocked FREE shipping!"}
                   </p>
                 </div>
               )}
               <div className="space-y-2 mb-4">
                 <div className="flex items-center justify-between text-black">
                   <span className="text-base font-medium">Subtotal</span>
-                  <span className="font-bold">₹{subtotal.toFixed(2)}</span>
+                  <span className="font-bold">{'₹'}{subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex items-center justify-between text-black">
                   <span className="text-base font-medium">Shipping</span>
@@ -168,18 +160,18 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
                 {taxSettings?.is_enabled && !taxSettings?.include_in_price && taxAmount > 0 && (
                   <div className="flex items-center justify-between text-black">
                     <span className="text-base font-medium">{taxSettings.tax_label} ({taxSettings.tax_percentage}%)</span>
-                    <span className="font-bold">₹{taxAmount.toFixed(2)}</span>
+                    <span className="font-bold">{'₹'}{taxAmount.toFixed(2)}</span>
                   </div>
                 )}
                 {taxSettings?.is_enabled && taxSettings?.include_in_price && items.length > 0 && (
                   <div className="flex items-center justify-between text-black text-sm">
                     <span className="font-medium">Inclusive of {taxSettings.tax_label} ({taxSettings.tax_percentage}%)</span>
-                    <span className="font-bold">₹{(subtotal - (subtotal / (1 + taxSettings.tax_percentage / 100))).toFixed(2)}</span>
+                    <span className="font-bold">{'₹'}{(subtotal - (subtotal / (1 + taxSettings.tax_percentage / 100))).toFixed(2)}</span>
                   </div>
                 )}
                 <div className="border-t-2 border-black pt-2 flex items-center justify-between">
                   <span className="text-xl font-bold text-black">Total</span>
-                  <span className="text-3xl font-bold text-black">₹{total.toFixed(2)}</span>
+                  <span className="text-3xl font-bold text-black">{'₹'}{total.toFixed(2)}</span>
                 </div>
               </div>
               <button
@@ -198,4 +190,6 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
       </div>
     </>
   );
+
+  return createPortal(modalContent, document.body);
 }

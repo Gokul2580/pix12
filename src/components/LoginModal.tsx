@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Shield, Sparkles } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { useModalScroll } from '../hooks/useModalScroll';
 import BottomSheet from './BottomSheet';
 
 interface LoginModalProps {
@@ -17,18 +19,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const [showTerms, setShowTerms] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
 
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
-
-
+  useModalScroll(isOpen);
 
   const handleGoogleSignIn = async () => {
     setError('');
@@ -47,14 +38,14 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
   if (!isOpen) return null;
 
-  return (
+  const modalContent = (
     <>
       {/* Backdrop */}
-      <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
+      <div className="fixed inset-0 z-[9998] bg-black/60 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
 
       {/* Modal Container */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="relative bg-white rounded-3xl border-4 border-black w-full max-w-md flex flex-col">
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+        <div className="relative bg-white rounded-3xl border-4 border-black w-full max-w-md flex flex-col max-h-[90dvh]">
           <div className="bg-[#B5E5CF] p-6 sm:p-8 text-black relative overflow-hidden rounded-t-3xl border-b-4 border-black">
             <button
               onClick={onClose}
@@ -81,8 +72,8 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
             </div>
           </div>
 
-          <div className="p-4 sm:p-8">
-            <div className="space-y-4 max-h-[70vh] overflow-y-auto">
+          <div className="p-4 sm:p-8 overflow-y-auto" style={{ overscrollBehavior: 'contain' }}>
+            <div className="space-y-4">
               {error && (
                 <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4">
                   <p className="text-sm text-red-600">{error}</p>
@@ -132,13 +123,13 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               </button>
 
               <p className="text-center text-xs text-black leading-relaxed font-medium">
-                By continuing, you agree to our{' '}
+                {'By continuing, you agree to our '}
                 <button
                   onClick={() => setShowTerms(true)}
                   className="text-black font-bold hover:text-gray-800 underline"
                 >
-                  Terms & Conditions
-                </button> and{' '}
+                  {'Terms & Conditions'}
+                </button>{' and '}
                 <button
                   onClick={() => setShowPrivacy(true)}
                   className="text-black font-bold hover:text-gray-800 underline"
@@ -150,7 +141,14 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           </div>
         </div>
       </div>
+    </>
+  );
 
+  return (
+    <>
+      {createPortal(modalContent, document.body)}
+
+      {/* BottomSheet renders via its own portal - always outside LoginModal DOM */}
       <BottomSheet isOpen={showTerms} onClose={() => setShowTerms(false)} title="Terms & Conditions">
         <div className="space-y-4">
           <p className="text-gray-700 text-sm leading-relaxed">

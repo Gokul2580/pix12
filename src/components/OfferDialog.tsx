@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
+import { useModalScroll } from '../hooks/useModalScroll';
 import { usePublishedData } from '../contexts/PublishedDataContext';
 
 interface Offer {
@@ -18,6 +20,8 @@ export default function OfferDialog() {
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenShown, setHasBeenShown] = useState(false);
   const [popupEnabled, setPopupEnabled] = useState(true);
+
+  useModalScroll(isVisible);
 
   useEffect(() => {
     if (!publishedData) return;
@@ -66,9 +70,9 @@ export default function OfferDialog() {
     return null;
   }
 
-  return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn overflow-y-auto">
-      <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all animate-scaleIn my-4">
+  const modalContent = (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 animate-fadeIn overflow-y-auto">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all animate-scaleIn my-4 relative">
         {offer.image_url && (
           <div className="relative h-48">
             <img
@@ -79,14 +83,14 @@ export default function OfferDialog() {
           </div>
         )}
 
-        <div className="p-6">
-          <button
-            onClick={handleClose}
-            className="absolute top-4 right-4 bg-white/90 hover:bg-white p-2 rounded-full transition-colors shadow-lg"
-          >
-            <X className="w-5 h-5 text-gray-600" />
-          </button>
+        <button
+          onClick={handleClose}
+          className="absolute top-4 right-4 bg-white/90 hover:bg-white p-2 rounded-full transition-colors shadow-lg z-10"
+        >
+          <X className="w-5 h-5 text-gray-600" />
+        </button>
 
+        <div className="p-6">
           <div className="mb-4">
             <span className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
               SPECIAL OFFER
@@ -106,4 +110,6 @@ export default function OfferDialog() {
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }

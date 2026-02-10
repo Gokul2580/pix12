@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, ShoppingCart, ChevronLeft, ChevronRight, Heart, Copy, Check } from 'lucide-react';
 import { useModalScroll } from '../hooks/useModalScroll';
 import type { Product } from '../types';
@@ -32,7 +33,7 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
       setSelectedSize(product.default_size || '');
       setSelectedColor(product.default_color || '');
     }
-  }, [product]); // Updated dependency to product
+  }, [product]);
 
   if (!isOpen || !product) return null;
 
@@ -71,18 +72,18 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
     setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
   };
 
-  return (
+  const modalContent = (
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
+        className="fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm transition-opacity duration-300"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Modal Container */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl border-4 border-black">
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+        <div className="w-full max-w-2xl max-h-[90dvh] overflow-y-auto bg-white rounded-2xl shadow-2xl border-4 border-black" style={{ overscrollBehavior: 'contain' }}>
           {/* Header */}
           <div className="sticky top-0 z-20 bg-gradient-to-r from-teal-50 to-mint-50 px-4 sm:px-6 py-4 flex items-center justify-between border-b-4 border-black">
             <h2 className="text-lg sm:text-xl font-bold text-gray-900 truncate">{product.name}</h2>
@@ -155,9 +156,9 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
             {/* Price Section */}
             <div className="bg-gradient-to-r from-teal-50 to-mint-50 p-4 rounded-xl border-4 border-black">
               <div className="flex items-baseline gap-3">
-                <span className="text-3xl font-bold text-gray-900">₹{currentPrice?.toFixed(2)}</span>
+                <span className="text-3xl font-bold text-gray-900">{'₹'}{currentPrice?.toFixed(2)}</span>
                 {hasDiscount && (
-                  <span className="text-lg text-gray-500 line-through">₹{product.price?.toFixed(2)}</span>
+                  <span className="text-lg text-gray-500 line-through">{'₹'}{product.price?.toFixed(2)}</span>
                 )}
               </div>
               {product.description && (
@@ -220,7 +221,7 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="px-4 py-2 bg-white hover:bg-gray-200 rounded-lg font-bold transition-colors"
                 >
-                  −
+                  {'−'}
                 </button>
                 <span className="text-lg font-bold text-gray-900 w-8 text-center">{quantity}</span>
                 <button
@@ -283,4 +284,6 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
       </div>
     </>
   );
+
+  return createPortal(modalContent, document.body);
 }
