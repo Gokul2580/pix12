@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { Save, RotateCcw } from 'lucide-react';
-import { db } from '../../lib/firebase';
+import { db, auth } from '../../lib/firebase';
 import { ref, get, set } from 'firebase/database';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface NavTheme {
   name: string;
@@ -92,6 +93,7 @@ const BORDER_RADIUS_OPTIONS = [
 ];
 
 export default function NavigationCustomizer() {
+  const { user } = useAuth();
   const [navBgColor, setNavBgColor] = useState('#ffffff');
   const [navTextColor, setNavTextColor] = useState('#111827');
   const [activeTabColor, setActiveTabColor] = useState('#14b8a6');
@@ -154,6 +156,17 @@ export default function NavigationCustomizer() {
   const saveNavigation = async () => {
     setSaving(true);
     try {
+      // Check if user is authenticated
+      if (!user) {
+        alert('You must be logged in to save navigation settings. Please sign in first.');
+        setSaving(false);
+        return;
+      }
+
+      // Get fresh auth token to ensure valid credentials
+      const idToken = await user.getIdToken();
+      console.log('[NAV] User authenticated, ID token obtained:', user.uid);
+
       const styleData = {
         background: navBgColor,
         text: navTextColor,
@@ -189,13 +202,17 @@ export default function NavigationCustomizer() {
     } catch (error) {
       console.error('[NAV] Error saving navigation:', error);
       const errorMsg = error instanceof Error ? error.message : 'Unknown error';
+      console.error('[NAV] Current user:', user);
+      console.error('[NAV] Error details:', error);
       
-      if (errorMsg.includes('Permission denied')) {
-        alert('Failed to save: Firebase permissions issue. Please check admin access and try again.');
-      } else if (errorMsg.includes('PERMISSION_DENIED')) {
-        alert('Failed to save: You do not have permission to modify navigation settings. Contact an admin.');
+      if (errorMsg.includes('Permission denied') || errorMsg.includes('PERMISSION_DENIED')) {
+        const debugMsg = user ? `User ${user.uid} doesn't have write permission to navigation_settings` : 'User is not authenticated';
+        console.error('[NAV] Permission error details:', debugMsg);
+        alert(`Failed to save: Firebase permissions issue.\n\n${debugMsg}\n\nMake sure you are signed in with the correct admin account.`);
+      } else if (errorMsg.includes('Network')) {
+        alert('Network error: Please check your connection and try again.');
       } else {
-        alert('Failed to save navigation settings. ' + errorMsg);
+        alert('Failed to save navigation settings.\n\nError: ' + errorMsg + '\n\nPlease check the browser console for more details.');
       }
     } finally {
       setSaving(false);
@@ -229,6 +246,13 @@ export default function NavigationCustomizer() {
 
   return (
     <div className="space-y-6">
+      {/* Auth Status Indicator */}
+      <div className={`p-3 rounded-lg ${user ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+        <p className={`text-sm font-medium ${user ? 'text-green-800' : 'text-red-800'}`}>
+          {user ? `✓ Signed in as ${user.email}` : '✗ Not authenticated - Please sign in to save navigation settings'}
+        </p>
+      </div>
+
       <div className="flex justify-between items-center flex-wrap gap-3">
         <h3 className="text-lg font-semibold text-gray-900">Navigation Settings</h3>
         <div className="flex gap-2">

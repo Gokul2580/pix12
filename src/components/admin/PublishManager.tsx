@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Upload, CheckCircle, AlertCircle, Loader2, RefreshCw } from 'lucide-react';
 import { db } from '../../lib/firebase';
 import { ref, get } from 'firebase/database';
+import { useAuth } from '../../contexts/AuthContext';
 import { addPublishRecord } from '../../utils/publishHistory';
 
 interface PublishData {
@@ -46,6 +47,7 @@ interface PublishStatus {
 }
 
 export default function PublishManager({ onPublishComplete }: { onPublishComplete?: () => void }) {
+  const { user } = useAuth();
   const [publishStatus, setPublishStatus] = useState<PublishStatus>({ status: 'idle', message: '' });
   const [isLoading, setIsLoading] = useState(false);
   const [dataPreview, setDataPreview] = useState<any>(null);
@@ -170,6 +172,16 @@ export default function PublishManager({ onPublishComplete }: { onPublishComplet
 
   // Publish to R2
   const handlePublish = async () => {
+    // Check authentication
+    if (!user) {
+      setPublishStatus({ 
+        status: 'error', 
+        message: 'Authentication required',
+        details: 'You must be logged in to publish data. Please sign in first.'
+      });
+      return;
+    }
+
     if (!confirm('Are you sure you want to publish all changes to live? This will update the data visible to all users.')) {
       return;
     }
@@ -177,6 +189,7 @@ export default function PublishManager({ onPublishComplete }: { onPublishComplet
     try {
       setIsLoading(true);
       setPublishStatus({ status: 'loading', message: 'Collecting all Firebase data...' });
+      console.log('[PUBLISH] User authenticated:', user.uid);
 
       // Collect all data
       const data = await collectAllData();
