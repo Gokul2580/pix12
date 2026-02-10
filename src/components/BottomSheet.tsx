@@ -49,8 +49,8 @@ export default function BottomSheet({ isOpen, onClose, title, children }: Bottom
       />
 
       {/* Modal Container */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-        <div className="relative bg-white w-full max-w-md rounded-2xl flex flex-col animate-scale-in overflow-hidden border-4 border-black pointer-events-auto max-h-[90vh] flex-shrink-0">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="relative bg-white w-full max-w-md rounded-2xl flex flex-col animate-scale-in overflow-hidden border-4 border-black max-h-[90vh] flex-shrink-0">
           <div className="flex items-center justify-between p-3 sm:p-5 border-b-4 border-black bg-[#B5E5CF] flex-shrink-0">
             <h2 className="text-lg font-semibold text-black">{title}</h2>
             <button

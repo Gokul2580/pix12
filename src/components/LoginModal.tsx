@@ -65,11 +65,11 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   return (
     <>
       {/* Backdrop */}
-      <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" onClick={onClose} aria-hidden="true"></div>
+      <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
 
       {/* Modal Container */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
-        <div className="relative bg-white rounded-3xl border-4 border-black w-full max-w-md flex flex-col pointer-events-auto">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="relative bg-white rounded-3xl border-4 border-black w-full max-w-md flex flex-col">
           <div className="bg-[#B5E5CF] p-6 sm:p-8 text-black relative overflow-hidden rounded-t-3xl border-b-4 border-black">
             <button
               onClick={onClose}
