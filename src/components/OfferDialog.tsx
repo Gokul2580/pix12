@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { usePublishedData } from '../contexts/PublishedDataContext';
@@ -16,6 +18,17 @@ export default function OfferDialog() {
   const [isVisible, setIsVisible] = useState(false);
   const [hasBeenShown, setHasBeenShown] = useState(false);
   const [popupEnabled, setPopupEnabled] = useState(true);
+
+  useEffect(() => {
+    if (isVisible) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isVisible]);
 
   useEffect(() => {
     if (!publishedData) return;
@@ -70,7 +83,7 @@ export default function OfferDialog() {
         {offer.image_url && (
           <div className="relative h-48">
             <img
-              src={offer.image_url}
+              src={offer.image_url || "/placeholder.svg"}
               alt={offer.title}
               className="w-full h-full object-cover"
             />

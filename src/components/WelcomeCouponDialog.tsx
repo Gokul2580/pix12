@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { X, Gift } from 'lucide-react';
 import { usePublishedData } from '../contexts/PublishedDataContext';
@@ -7,6 +9,17 @@ export default function WelcomeCouponDialog() {
   const [isVisible, setIsVisible] = useState(false);
   const [couponCode, setCouponCode] = useState('');
   const [hasBeenShown, setHasBeenShown] = useState(false);
+
+  useEffect(() => {
+    if (isVisible) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isVisible]);
 
   useEffect(() => {
     if (!publishedData?.settings || hasBeenShown) return;

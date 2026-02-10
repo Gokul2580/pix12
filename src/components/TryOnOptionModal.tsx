@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect } from 'react';
 import { X, Camera, Palette, Sparkles } from 'lucide-react';
 import type { Product } from '../types';
 
@@ -17,6 +19,17 @@ export default function TryOnOptionModal({
   onSelectColorMatcher,
   product
 }: TryOnOptionModalProps) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const hasColorMatcher = product.availableColors && product.availableColors.length > 0;

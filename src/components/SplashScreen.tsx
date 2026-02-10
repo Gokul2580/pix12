@@ -9,20 +9,37 @@ interface SplashScreenProps {
 export default function SplashScreen({ onComplete }: SplashScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [fadeOut, setFadeOut] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    // Lock body scroll when splash is visible
+    document.body.style.overflow = 'hidden';
+    
+    const progressInterval = setInterval(() => {
+      setProgress(prev => {
+        if (prev < 90) {
+          return prev + Math.random() * 30;
+        }
+        return prev;
+      });
+    }, 200);
+
     const timer1 = setTimeout(() => {
+      setProgress(100);
       setFadeOut(true);
     }, 2000);
 
     const timer2 = setTimeout(() => {
       setIsVisible(false);
       onComplete();
+      document.body.style.overflow = '';
     }, 2500);
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
+      clearInterval(progressInterval);
+      document.body.style.overflow = '';
     };
   }, [onComplete]);
 
@@ -55,10 +72,15 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
           Handcrafted with Love
         </p>
 
-        <div className="flex justify-center gap-2 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+        <div className="flex justify-center gap-2 animate-slide-up mb-6" style={{ animationDelay: '0.2s' }}>
           <div className="w-2 h-2 bg-teal-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
           <div className="w-2 h-2 bg-mint-500 rounded-full animate-bounce" style={{ animationDelay: '0.15s' }}></div>
           <div className="w-2 h-2 bg-peach-500 rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></div>
+        </div>
+
+        <div className="flex items-center justify-center gap-4 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+          <div className="w-12 h-12 rounded-full border-4 border-teal-200 border-t-teal-500 animate-spin"></div>
+          <div className="text-sm font-semibold text-gray-600">{Math.min(100, Math.round(progress))}%</div>
         </div>
       </div>
 

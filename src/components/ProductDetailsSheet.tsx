@@ -1,3 +1,7 @@
+'use client';
+
+import React from "react"
+
 import { useState, useEffect, useRef } from 'react';
 import { X, ShoppingCart, ChevronLeft, ChevronRight, Heart, ZoomIn, Sparkles, ShoppingBag, TrendingUp, Eye, Tag, CheckCircle2, Zap, Scan, Box, Share2, Copy, Check, Upload, Palette } from 'lucide-react';
 import Confetti from './Confetti';
@@ -91,6 +95,17 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
       loadSuggestedProducts();
     }
   }, [product?.id]);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -554,7 +569,7 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
                           } : {}}
                         >
                           <img
-                            src={image}
+                            src={image || "/placeholder.svg"}
                             alt={`${product.name} ${index + 1}`}
                             className="w-full h-full object-cover"
                           />
@@ -908,7 +923,7 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
                         >
                           <div className="aspect-square overflow-hidden bg-gray-50 relative">
                             <img
-                              src={wishlistProduct.image_url}
+                              src={wishlistProduct.image_url || "/placeholder.svg"}
                               alt={wishlistProduct.name}
                               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                             />
@@ -988,7 +1003,7 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
                             background: 'linear-gradient(to bottom right, #fafafa, rgba(168, 213, 186, 0.1))'
                           }}>
                             <img
-                              src={suggestedProduct.image_url}
+                              src={suggestedProduct.image_url || "/placeholder.svg"}
                               alt={suggestedProduct.name}
                               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                             />
@@ -1044,7 +1059,7 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
 
           <div className="relative max-w-6xl max-h-full animate-scaleIn">
             <img
-              src={fullScreenImage}
+              src={fullScreenImage || "/placeholder.svg"}
               alt={product.name}
               className="max-w-full max-h-[90vh] object-contain rounded-xl border-4 border-white/10"
               onClick={(e) => e.stopPropagation()}

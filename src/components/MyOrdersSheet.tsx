@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { X, Package, CheckCircle, Clock, Truck, Loader } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
@@ -46,6 +48,17 @@ export default function MyOrdersSheet({ isOpen, onClose, onLoginClick }: MyOrder
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     if (isOpen && user) {

@@ -1,5 +1,8 @@
+'use client';
+
 import { X, Plus, Minus, Trash2, CreditCard } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
+import { useEffect } from 'react';
 import LazyImage from './LazyImage';
 
 interface CartModalProps {
@@ -10,6 +13,17 @@ interface CartModalProps {
 
 export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProps) {
   const { items, updateQuantity, removeFromCart, subtotal, shippingCharge, taxAmount, total, getItemPrice, updateCartItem, taxSettings } = useCart();
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 

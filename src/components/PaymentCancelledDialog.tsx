@@ -1,4 +1,7 @@
+'use client';
+
 import { X, XCircle } from 'lucide-react';
+import { useEffect } from 'react';
 
 interface PaymentCancelledDialogProps {
   isOpen: boolean;
@@ -11,6 +14,17 @@ export default function PaymentCancelledDialog({
   onClose,
   onRetry
 }: PaymentCancelledDialogProps) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
