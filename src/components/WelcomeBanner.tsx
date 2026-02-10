@@ -69,11 +69,15 @@ export default function WelcomeBanner() {
     return null;
   }
 
+  // Determine if text color is light or dark for better contrast
+  const textColor = bannerContent.text_color || '#ffffff';
+  const bgColor = bannerContent.bg_color || '#06b6d4';
+
   return (
-    <div className="bg-gradient-to-r from-teal-500 to-mint-500 text-white py-6 px-4 text-center">
+    <div className="py-6 px-4 text-center" style={{ backgroundColor: bgColor }}>
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-2xl md:text-3xl font-bold mb-2">{bannerContent.title}</h2>
-        <p className="text-sm md:text-base mb-4">{bannerContent.subtitle}</p>
+        <h2 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: textColor }}>{bannerContent.title}</h2>
+        <p className="text-sm md:text-base mb-4" style={{ color: textColor, opacity: 0.95 }}>{bannerContent.subtitle}</p>
         
         <div className="flex justify-center items-center gap-4 mt-4">
           {socialLinks.map((social) => {

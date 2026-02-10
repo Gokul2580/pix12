@@ -6,7 +6,8 @@ export default function TopBanner() {
   const defaultContent = {
     text: '🎉 Grand Opening Sale! Get 20% OFF on all items!',
     isVisible: true,
-    backgroundColor: '#f59e0b'
+    backgroundColor: '#f59e0b',
+    textColor: '#ffffff'
   };
 
   let bannerContent = defaultContent;
@@ -28,8 +29,11 @@ export default function TopBanner() {
 
   return (
     <div
-      className="text-white py-2 overflow-hidden"
-      style={{ backgroundColor: bannerContent.backgroundColor }}
+      className="py-2 overflow-hidden"
+      style={{
+        backgroundColor: bannerContent.backgroundColor,
+        color: bannerContent.textColor || '#ffffff'
+      }}
     >
       <div className="animate-marquee whitespace-nowrap inline-block">
         <span className="text-sm font-semibold mx-8">{bannerContent.text}</span>

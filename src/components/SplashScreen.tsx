@@ -30,44 +30,35 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-white flex items-center justify-center transition-opacity duration-500 ${
+      className={`fixed inset-0 z-[9999] bg-gradient-to-br from-teal-50 via-mint-50 to-peach-50 flex items-center justify-center transition-opacity duration-500 ${
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
     >
-      <div className="text-center space-y-8">
-        {/* Logo container */}
-        <div className="flex justify-center">
-          <div className="relative animate-float">
-            <div className="w-24 h-24 flex items-center justify-center">
+      <div className="text-center">
+        <div className="relative mb-8 animate-float">
+          <div className="w-32 h-32 mx-auto relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-teal-400 to-mint-400 rounded-3xl animate-pulse-slow opacity-20 scale-110"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
               <img
                 src="/logo.png"
-                alt="Pixie Blooms Logo"
-                onError={(e) => {
-                  console.log('[v0] Logo failed to load from /logo.png');
-                  e.currentTarget.style.display = 'none';
-                }}
-                className="w-24 h-24 object-contain animate-fade-in"
+                alt="Pixie Blooms"
+                className="w-28 h-28 object-contain animate-fade-in"
               />
             </div>
           </div>
         </div>
 
-        {/* Brand name and tagline */}
-        <div className="space-y-2">
-          <h1 className="text-4xl font-bold text-gray-900 animate-slide-up">
-            Pixie Blooms
-          </h1>
-          <p className="text-base text-gray-500 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            Handcrafted with Love
-          </p>
-        </div>
+        <h1 className="text-4xl font-bold text-gray-900 mb-2 animate-slide-up">
+          Pixie Blooms
+        </h1>
+        <p className="text-lg text-gray-600 mb-8 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+          Handcrafted with Love
+        </p>
 
-        {/* Google-style loading dots */}
-        <div className="flex justify-center gap-2 pt-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
-          <div className="w-2.5 h-2.5 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0s', animationDuration: '1.4s' }}></div>
-          <div className="w-2.5 h-2.5 bg-red-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s', animationDuration: '1.4s' }}></div>
-          <div className="w-2.5 h-2.5 bg-yellow-500 rounded-full animate-bounce" style={{ animationDelay: '0.4s', animationDuration: '1.4s' }}></div>
-          <div className="w-2.5 h-2.5 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0.6s', animationDuration: '1.4s' }}></div>
+        <div className="flex justify-center gap-2 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <div className="w-2 h-2 bg-teal-500 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
+          <div className="w-2 h-2 bg-mint-500 rounded-full animate-bounce" style={{ animationDelay: '0.15s' }}></div>
+          <div className="w-2 h-2 bg-peach-500 rounded-full animate-bounce" style={{ animationDelay: '0.3s' }}></div>
         </div>
       </div>
 
