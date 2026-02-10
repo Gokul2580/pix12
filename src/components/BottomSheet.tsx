@@ -1,3 +1,7 @@
+'use client';
+
+import React from "react"
+
 import { X } from 'lucide-react';
 import { useEffect } from 'react';
 
@@ -12,12 +16,18 @@ export default function BottomSheet({ isOpen, onClose, title, children }: Bottom
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+      document.documentElement.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+      document.documentElement.style.overflow = '';
     }
 
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+      document.documentElement.style.overflow = '';
     };
   }, [isOpen]);
 

@@ -17,6 +17,7 @@ import WelcomeCouponDialog from './components/WelcomeCouponDialog';
 import FeedbackPanel from './components/FeedbackPanel';
 import ProductDetailsSheet from './components/ProductDetailsSheet';
 import SplashScreen from './components/SplashScreen';
+import MaterialLoader from './components/MaterialLoader';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
@@ -106,6 +107,7 @@ function AppContent() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showProductDetails, setShowProductDetails] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
+  const [showLoader, setShowLoader] = useState(false);
   const [appReady, setAppReady] = useState(false);
   const [temporarilyClosed, setTemporarilyClosed] = useState(false);
   const [showWelcomeBanner, setShowWelcomeBanner] = useState(true);
@@ -322,10 +324,20 @@ function AppContent() {
         message="Loading Pixie Blooms..."
       />
       
-      {showSplash && <SplashScreen onComplete={() => {
-        setShowSplash(false);
-        setAppReady(true);
-      }} />}
+      {showSplash && (
+        <SplashScreen onComplete={() => {
+          setShowSplash(false);
+          setShowLoader(true);
+        }} />
+      )}
+
+      <MaterialLoader 
+        isVisible={showLoader} 
+        onComplete={() => {
+          setShowLoader(false);
+          setAppReady(true);
+        }} 
+      />
 
       {/* Show Coming Soon if no published data and not on admin pages */}
       {appReady && publishedDataError && !isAdminPage && (
