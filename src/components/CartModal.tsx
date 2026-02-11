@@ -26,7 +26,7 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
 
       {/* Modal */}
       <div className="modal-content flex flex-col items-end justify-end sm:items-center sm:justify-center w-full px-0 sm:px-4">
-        <div className="bg-white border-0 sm:border-4 border-b-4 border-black w-full sm:w-full sm:max-w-2xl h-[90dvh] sm:h-[85dvh] overflow-hidden flex flex-col animate-slide-up rounded-t-3xl sm:rounded-3xl">
+        <div className="bg-white border-0 sm:border-4 border-b-4 border-black w-full sm:w-full sm:max-w-2xl max-h-[90vh] sm:max-h-[90vh] overflow-hidden flex flex-col animate-slide-up rounded-t-3xl sm:rounded-3xl">
           {/* Header */}
           <div className="flex-shrink-0 pt-4 pb-3 sm:pt-2 sm:pb-4 px-4 sm:px-6 border-b-2 sm:border-b-4 border-black bg-[#B5E5CF] rounded-t-3xl sm:rounded-t-3xl">
             <div className="hidden sm:block w-10 sm:w-12 h-1 sm:h-1.5 bg-black rounded-full mx-auto mb-2 sm:mb-4"></div>

@@ -29,11 +29,24 @@ body {
   width: 100%;
   height: 100%;
   scroll-behavior: auto;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
 }
 
 /* Allow smooth scroll for specific elements */
 .smooth-scroll {
   scroll-behavior: smooth;
+}
+
+/* Prevent scroll lock issues */
+html.modal-open,
+body.modal-open {
+  overflow: hidden !important;
+  height: 100vh !important;
 }
 
 /* FAB FIX - prevents scrolling with page */

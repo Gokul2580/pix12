@@ -83,7 +83,7 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
 
       {/* Modal Container */}
       <div className="modal-content flex flex-col items-center justify-end sm:justify-center w-full px-0 sm:px-4">
-        <div className="w-full sm:w-full sm:max-w-2xl max-h-[95dvh] sm:max-h-[90dvh] overflow-y-auto bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border-0 sm:border-4 border-b-4 border-black" style={{ overscrollBehavior: 'contain' }}>
+        <div className="w-full sm:w-full sm:max-w-2xl max-h-[90vh] sm:max-h-[90vh] overflow-y-auto bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border-0 sm:border-4 border-b-4 border-black" style={{ overscrollBehavior: 'contain' }}>
           {/* Header */}
           <div className="sticky top-0 z-20 bg-gradient-to-r from-teal-50 to-mint-50 px-4 sm:px-6 py-4 flex items-center justify-between border-b-4 border-black rounded-t-3xl sm:rounded-t-none">
             <h2 className="text-base sm:text-lg font-bold text-gray-900 line-clamp-2">{product.name}</h2>

@@ -343,38 +343,44 @@ function AppContent({ onPageChange, onShowTryOnList, onShowColorMatchList, onSma
 
       {/* Show normal app if data exists or on admin pages */}
       {((!publishedDataError && appReady) || isAdminPage) && (
-        <div className={`min-h-screen w-full bg-white transition-opacity duration-500 flex flex-col ${appReady ? 'opacity-100' : 'opacity-0'}`}>
-          <div className={`flex flex-col w-full ${temporarilyClosed && !hideNavigation ? 'grayscale pointer-events-none' : ''}`}>
-            {!hideNavigation && (
-              <>
-                <TopBanner />
-                {showWelcomeBanner && <WelcomeBanner />}
-                <Navigation
-                  currentPage={currentPage}
-                  onNavigate={handleNavigate}
-                  onLoginClick={() => setLoginModalOpen(true)}
-                  onCartClick={() => setCartModalOpen(true)}
-                  onOrdersClick={() => setOrdersSheetOpen(true)}
-                  onProductClick={handleProductClick}
-                  onTryOnClick={() => setShowTryOnList(true)}
-                  onColorMatchClick={() => setShowColorMatchList(true)}
-                />
-              </>
-            )}
+        <div className={`w-full h-screen flex flex-col transition-opacity duration-500 ${appReady ? 'opacity-100' : 'opacity-0'}`} style={{ backgroundColor: '#ffffff' }}>
+          {/* Header Section */}
+          {!hideNavigation && (
+            <header className="flex-shrink-0 w-full">
+              <TopBanner />
+              {showWelcomeBanner && <WelcomeBanner />}
+              <Navigation
+                currentPage={currentPage}
+                onNavigate={handleNavigate}
+                onLoginClick={() => setLoginModalOpen(true)}
+                onCartClick={() => setCartModalOpen(true)}
+                onOrdersClick={() => setOrdersSheetOpen(true)}
+                onProductClick={handleProductClick}
+                onTryOnClick={() => setShowTryOnList(true)}
+                onColorMatchClick={() => setShowColorMatchList(true)}
+              />
+            </header>
+          )}
 
-            <main className="flex-1 w-full overflow-x-hidden">
+          {/* Main Content - Scrollable */}
+          <main className="flex-1 w-full overflow-y-auto overflow-x-hidden">
+            <div className={`w-full ${temporarilyClosed && !hideNavigation ? 'grayscale pointer-events-none' : ''}`}>
               {renderPage()}
-            </main>
 
-            <PurchaseNotification />
-            <OfferDialog />
-            <WelcomeCouponDialog />
+              {!hideNavigation && (
+                <>
+                  <PurchaseNotification />
+                  <OfferDialog />
+                  <WelcomeCouponDialog />
+                  <Footer onNavigate={handleNavigate} />
+                </>
+              )}
+            </div>
+          </main>
 
-            {!hideNavigation && <Footer onNavigate={handleNavigate} />}
-          </div>
-
+          {/* Temporarily Closed Overlay */}
           {temporarilyClosed && !hideNavigation && (
-            <div className="fixed top-32 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
+            <div className="fixed top-32 left-0 right-0 z-40 flex justify-center px-4 pointer-events-none">
               <div className="bg-gradient-to-r from-red-500 to-orange-500 rounded-2xl shadow-2xl p-6 border-4 border-white max-w-2xl w-full pointer-events-auto animate-pulse">
                 <div className="text-center">
                   <div className="flex items-center justify-center gap-3 mb-3">
@@ -391,7 +397,7 @@ function AppContent({ onPageChange, onShowTryOnList, onShowColorMatchList, onSma
         </div>
       )}
 
-      {/* Modals rendered OUTSIDE all containers for proper fixed positioning */}
+      {/* Portal Modals - Rendered in document.body for proper z-index handling */}
       <LoginModal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
       <CartModal
         isOpen={cartModalOpen}
@@ -427,6 +433,9 @@ function AppContent({ onPageChange, onShowTryOnList, onShowColorMatchList, onSma
         isOpen={showColorMatchList}
         onClose={() => setShowColorMatchList(false)}
       />
+      <WhatsAppFAB />
+      <SmartFeatureFAB />
+      <FeedbackPanel />
     </>
   );
 }

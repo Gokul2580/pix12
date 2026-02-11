@@ -169,7 +169,7 @@ export default function MyOrdersSheet({ isOpen, onClose, onLoginClick }: MyOrder
   const modalContent = (
     <>
       <div className="fixed inset-0 bg-black/40 z-[9998] transition-opacity" onClick={onClose}></div>
-      <div className="fixed inset-x-0 bottom-0 z-[9999] bg-white rounded-t-3xl h-[90dvh] sm:h-auto flex flex-col animate-slide-up max-h-[90dvh]">
+      <div className="fixed inset-x-0 bottom-0 z-[9999] bg-white rounded-t-3xl max-h-[90vh] sm:max-h-[90vh] flex flex-col animate-slide-up overflow-hidden">
         <div className="p-4 sm:p-6 pb-3 sm:pb-4 flex-shrink-0">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
