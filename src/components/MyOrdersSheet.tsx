@@ -134,12 +134,13 @@ export default function MyOrdersSheet({ isOpen, onClose, onLoginClick }: MyOrder
     const notLoggedInContent = (
       <>
         <div className="fixed inset-0 bg-black/40 z-[9998] transition-opacity" onClick={onClose}></div>
-        <div className="fixed inset-x-0 bottom-0 z-[9999] bg-white rounded-t-3xl h-[90dvh] sm:h-auto flex flex-col animate-slide-up">
+        <div className="fixed inset-x-0 bottom-0 z-[9999] bg-white rounded-t-3xl h-auto sm:h-auto flex flex-col animate-slide-up">
           <div className="p-6 text-center">
             <div className="flex justify-end mb-4">
               <button
                 onClick={onClose}
                 className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors flex items-center justify-center"
+                aria-label="Close"
               >
                 <X className="w-5 h-5 text-gray-600" />
               </button>
@@ -147,14 +148,14 @@ export default function MyOrdersSheet({ isOpen, onClose, onLoginClick }: MyOrder
             <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Package className="w-8 h-8 text-teal-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Login Required</h2>
-            <p className="text-gray-600 mb-6">Please log in to view your orders</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Login Required</h2>
+            <p className="text-sm sm:text-base text-gray-600 mb-6">Please log in to view your orders</p>
             <button
               onClick={() => {
                 onClose();
                 onLoginClick();
               }}
-              className="bg-teal-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-teal-600 transition-colors"
+              className="bg-teal-500 text-white px-8 py-3 rounded-xl font-bold hover:bg-teal-600 transition-colors active:scale-95 text-sm sm:text-base"
             >
               Login
             </button>
@@ -168,28 +169,29 @@ export default function MyOrdersSheet({ isOpen, onClose, onLoginClick }: MyOrder
   const modalContent = (
     <>
       <div className="fixed inset-0 bg-black/40 z-[9998] transition-opacity" onClick={onClose}></div>
-      <div className="fixed inset-x-0 bottom-0 z-[9999] bg-white rounded-t-3xl h-[90dvh] sm:h-auto flex flex-col animate-slide-up">
-        <div className="p-6 pb-4">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center">
+      <div className="fixed inset-x-0 bottom-0 z-[9999] bg-white rounded-t-3xl h-[90dvh] sm:h-auto flex flex-col animate-slide-up max-h-[90dvh]">
+        <div className="p-4 sm:p-6 pb-3 sm:pb-4 flex-shrink-0">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+              <div className="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center flex-shrink-0">
                 <Package className="w-5 h-5 text-teal-600" />
               </div>
-              <div>
-                <h2 className="text-xl font-bold text-gray-900">My Orders</h2>
-                <p className="text-sm text-gray-600">{orders.length} {orders.length === 1 ? 'order' : 'orders'}</p>
+              <div className="min-w-0">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900">My Orders</h2>
+                <p className="text-xs sm:text-sm text-gray-600">{orders.length} {orders.length === 1 ? 'order' : 'orders'}</p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors flex items-center justify-center"
+              className="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors flex items-center justify-center flex-shrink-0"
+              aria-label="Close orders"
             >
               <X className="w-5 h-5 text-gray-600" />
             </button>
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-6 pb-6" style={{ overscrollBehavior: 'contain' }}>
+        <div className="flex-1 overflow-y-auto px-4 sm:px-6 pb-4 sm:pb-6" style={{ overscrollBehavior: 'contain' }}>
           {loading ? (
             <div className="text-center py-12">
               <Loader className="w-8 h-8 animate-spin text-teal-600 mx-auto mb-3" />
@@ -210,123 +212,121 @@ export default function MyOrdersSheet({ isOpen, onClose, onLoginClick }: MyOrder
               </button>
             </div>
           ) : selectedOrder ? (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4 pb-4">
               <button
                 onClick={() => setSelectedOrder(null)}
-                className="text-teal-600 font-semibold text-sm hover:text-teal-700 mb-2"
+                className="text-teal-600 font-semibold text-sm hover:text-teal-700 mb-2 flex items-center gap-1"
               >
-                {'← Back to Orders'}
+                {'←'} Back
               </button>
 
-              <div className="bg-gradient-to-br from-teal-50 to-mint-50 rounded-2xl p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <p className="text-sm text-gray-600 font-semibold">Order ID</p>
-                    <p className="text-lg font-bold text-gray-900">{'#'}{selectedOrder.id.slice(0, 8).toUpperCase()}</p>
+              <div className="bg-gradient-to-br from-teal-50 to-mint-50 rounded-xl sm:rounded-2xl p-3 sm:p-4">
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm text-gray-600 font-semibold">Order ID</p>
+                    <p className="text-base sm:text-lg font-bold text-gray-900">{'#'}{selectedOrder.id.slice(0, 8).toUpperCase()}</p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 flex-shrink-0">
                     {getStatusIcon(selectedOrder.order_status)}
-                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${getStatusColor(selectedOrder.order_status)}`}>
+                    <span className={`px-2 sm:px-3 py-0.5 rounded-full text-xs font-bold whitespace-nowrap ${getStatusColor(selectedOrder.order_status)}`}>
                       {getStatusText(selectedOrder.order_status)}
                     </span>
                   </div>
                 </div>
-                <p className="text-sm text-gray-600">
+                <p className="text-xs sm:text-sm text-gray-600">
                   {new Date(selectedOrder.created_at).toLocaleDateString('en-IN', {
                     day: 'numeric',
-                    month: 'long',
+                    month: 'short',
                     year: 'numeric'
                   })}
                 </p>
               </div>
 
-              <div className="bg-gray-50 rounded-2xl p-4">
-                <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+              <div className="bg-gray-50 rounded-xl sm:rounded-2xl p-3 sm:p-4">
+                <h4 className="font-bold text-gray-900 mb-3 text-sm flex items-center gap-2">
                   <Package className="w-4 h-4 text-teal-600" />
-                  Order Items
+                  Items
                 </h4>
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {selectedOrder.order_items.map((item, index) => (
-                    <div key={index} className="bg-white rounded-xl p-3">
-                      <div className="flex justify-between items-start mb-1">
-                        <div className="flex-1">
-                          <p className="font-semibold text-gray-900 text-sm">{item.product_name}</p>
+                    <div key={index} className="bg-white rounded-lg sm:rounded-xl p-2.5 sm:p-3">
+                      <div className="flex justify-between items-start gap-2 mb-1">
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-gray-900 text-xs sm:text-sm line-clamp-2">{item.product_name}</p>
                           {(item.selected_size || item.selected_color) && (
-                            <div className="flex gap-2 mt-1">
+                            <div className="flex gap-1 mt-1 flex-wrap">
                               {item.selected_size && (
                                 <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">
-                                  Size: {item.selected_size}
+                                  {item.selected_size}
                                 </span>
                               )}
                               {item.selected_color && (
                                 <span className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">
-                                  Color: {item.selected_color}
+                                  {item.selected_color}
                                 </span>
                               )}
                             </div>
                           )}
                         </div>
-                        <p className="font-bold text-teal-600 ml-2">{'₹'}{Number(item.subtotal).toFixed(2)}</p>
+                        <p className="font-bold text-teal-600 text-sm flex-shrink-0">{'₹'}{Number(item.subtotal).toFixed(2)}</p>
                       </div>
-                      <p className="text-xs text-gray-600">Qty: {item.quantity} {'× ₹'}{Number(item.product_price).toFixed(2)}</p>
+                      <p className="text-xs text-gray-600">Qty: {item.quantity}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="bg-gray-50 rounded-2xl p-4">
-                <h4 className="font-bold text-gray-900 mb-3 text-sm">Shipping Address</h4>
-                <div className="text-sm text-gray-700 space-y-1">
+              <div className="bg-gray-50 rounded-xl sm:rounded-2xl p-3 sm:p-4">
+                <h4 className="font-bold text-gray-900 mb-2 text-xs sm:text-sm">Address</h4>
+                <div className="text-xs sm:text-sm text-gray-700 space-y-1">
                   <p>{selectedOrder.shipping_address.address}</p>
-                  <p>{selectedOrder.shipping_address.city}, {selectedOrder.shipping_address.state}</p>
-                  <p>PIN: {selectedOrder.shipping_address.pincode}</p>
+                  <p>{selectedOrder.shipping_address.city}, {selectedOrder.shipping_address.state} {selectedOrder.shipping_address.pincode}</p>
                 </div>
               </div>
 
               {selectedOrder.dispatch_details && selectedOrder.dispatch_details.trim() !== '' && (
-                <div className="bg-blue-50 rounded-2xl p-4 border-2 border-blue-200">
-                  <h4 className="font-bold text-gray-900 mb-2 text-sm flex items-center gap-2">
-                    <Truck className="w-4 h-4 text-blue-600" />
-                    Dispatch Details
+                <div className="bg-blue-50 rounded-xl sm:rounded-2xl p-3 sm:p-4 border-2 border-blue-200">
+                  <h4 className="font-bold text-gray-900 mb-2 text-xs sm:text-sm flex items-center gap-2">
+                    <Truck className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
+                    Dispatch
                   </h4>
-                  <p className="text-sm text-gray-700 whitespace-pre-wrap">{selectedOrder.dispatch_details}</p>
+                  <p className="text-xs sm:text-sm text-gray-700 whitespace-pre-wrap">{selectedOrder.dispatch_details}</p>
                 </div>
               )}
 
-              <div className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl p-4 text-white">
+              <div className="bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-white sticky bottom-0">
                 <div className="flex justify-between items-center">
-                  <p className="font-semibold">Total Amount</p>
-                  <p className="text-2xl font-bold">{'₹'}{Number(selectedOrder.total_amount).toFixed(2)}</p>
+                  <p className="font-semibold text-sm sm:text-base">Total</p>
+                  <p className="text-xl sm:text-2xl font-bold">{'₹'}{Number(selectedOrder.total_amount).toFixed(2)}</p>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               {orders.map((order) => (
                 <button
                   key={order.id}
                   onClick={() => setSelectedOrder(order)}
-                  className="w-full bg-gray-50 hover:bg-gray-100 rounded-2xl p-4 transition-colors text-left"
+                  className="w-full bg-gray-50 hover:bg-gray-100 rounded-lg sm:rounded-2xl p-3 sm:p-4 transition-colors text-left active:scale-95"
                 >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <p className="font-bold text-gray-900 text-sm">{'#'}{order.id.slice(0, 8).toUpperCase()}</p>
-                      <div className="flex items-center gap-1.5">
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                      <p className="font-bold text-gray-900 text-xs sm:text-sm truncate">{'#'}{order.id.slice(0, 8).toUpperCase()}</p>
+                      <div className="flex items-center gap-1">
                         {getStatusIcon(order.order_status)}
-                        <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold ${getStatusColor(order.order_status)}`}>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold whitespace-nowrap ${getStatusColor(order.order_status)}`}>
                           {getStatusText(order.order_status)}
                         </span>
                       </div>
                     </div>
-                    <p className="text-lg font-bold text-teal-600">{'₹'}{Number(order.total_amount).toFixed(2)}</p>
+                    <p className="text-base sm:text-lg font-bold text-teal-600 flex-shrink-0">{'₹'}{Number(order.total_amount).toFixed(2)}</p>
                   </div>
                   <div className="flex items-center justify-between text-xs text-gray-600">
-                    <p>{order.order_items.length} {order.order_items.length === 1 ? 'item' : 'items'}</p>
+                    <p>{order.order_items.length} item{order.order_items.length !== 1 ? 's' : ''}</p>
                     <p>
                       {new Date(order.created_at).toLocaleDateString('en-IN', {
                         day: 'numeric',
-                        month: 'short',
-                        year: 'numeric'
+                        month: 'short'
                       })}
                     </p>
                   </div>

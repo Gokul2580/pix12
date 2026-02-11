@@ -1,6 +1,6 @@
 'use client';
 
-import { X, Plus, Minus, Trash2, CreditCard } from 'lucide-react';
+import { X, Plus, Minus, Trash2, CreditCard, ShoppingCart } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useModalScroll } from '../hooks/useModalScroll';
 import LazyImage from './LazyImage';
@@ -25,30 +25,34 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
       <div className="modal-overlay" onClick={onClose} aria-hidden="true" />
 
       {/* Modal */}
-      <div className="modal-content flex flex-col items-end justify-end sm:items-center sm:justify-center w-full">
-        <div className="bg-white border-2 sm:border-4 border-black w-full max-w-2xl h-[85dvh] sm:h-[85dvh] overflow-hidden flex flex-col animate-slide-up rounded-t-2xl sm:rounded-3xl">
-          <div className="flex-shrink-0 pt-2 pb-2 sm:pb-4 px-3 sm:px-6 border-b-2 sm:border-b-4 border-black bg-[#B5E5CF] rounded-t-2xl sm:rounded-t-3xl">
-            <div className="w-10 sm:w-12 h-1 sm:h-1.5 bg-black rounded-full mx-auto mb-2 sm:mb-4"></div>
+      <div className="modal-content flex flex-col items-end justify-end sm:items-center sm:justify-center w-full px-0 sm:px-4">
+        <div className="bg-white border-0 sm:border-4 border-b-4 border-black w-full sm:w-full sm:max-w-2xl h-[90dvh] sm:h-[85dvh] overflow-hidden flex flex-col animate-slide-up rounded-t-3xl sm:rounded-3xl">
+          {/* Header */}
+          <div className="flex-shrink-0 pt-4 pb-3 sm:pt-2 sm:pb-4 px-4 sm:px-6 border-b-2 sm:border-b-4 border-black bg-[#B5E5CF] rounded-t-3xl sm:rounded-t-3xl">
+            <div className="hidden sm:block w-10 sm:w-12 h-1 sm:h-1.5 bg-black rounded-full mx-auto mb-2 sm:mb-4"></div>
 
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center justify-between gap-3">
               <div className="flex-1 min-w-0">
-                <h2 className="text-lg sm:text-2xl font-bold text-black truncate">Shopping Cart</h2>
-                <p className="text-black font-medium text-[11px] sm:text-sm mt-0.5 truncate">
-                  {items.length === 0 ? 'Your cart is empty' : `${items.length} ${items.length === 1 ? 'item' : 'items'} in cart`}
+                <h2 className="text-xl sm:text-2xl font-bold text-black">Shopping Cart</h2>
+                <p className="text-black font-medium text-xs sm:text-sm mt-1">
+                  {items.length === 0 ? 'Your cart is empty' : `${items.length} ${items.length === 1 ? 'item' : 'items'}`}
                 </p>
               </div>
               <button
                 onClick={onClose}
-                className="w-8 sm:w-10 h-8 sm:h-10 rounded-full flex items-center justify-center border-2 border-black hover:bg-white transition-all hover:scale-110 bg-white flex-shrink-0"
+                className="w-10 h-10 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border-2 border-black hover:bg-white transition-all hover:scale-110 bg-white flex-shrink-0"
+                aria-label="Close cart"
               >
-                <X className="w-4 sm:w-5 h-4 sm:h-5 text-black" />
+                <X className="w-5 h-5 text-black" />
               </button>
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-3 sm:p-6 bg-white" style={{ overscrollBehavior: 'contain' }}>
+          {/* Cart Items */}
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-white" style={{ overscrollBehavior: 'contain' }}>
             {items.length === 0 ? (
-              <div className="text-center py-12 px-3">
+              <div className="text-center py-16 px-4">
+                <ShoppingCart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <p className="text-black font-medium text-base sm:text-lg">Add some products to get started</p>
               </div>
             ) : (
@@ -58,64 +62,71 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
                     <LazyImage
                       src={item.image_url}
                       alt={item.name}
-                      className="w-20 sm:w-24 h-20 sm:h-24 object-cover rounded-lg sm:rounded-xl border-2 border-black flex-shrink-0"
+                      className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg border-2 border-black flex-shrink-0"
                     />
-                    <div className="flex-1 flex flex-col min-w-0">
-                      <h3 className="font-bold text-black mb-1 text-sm sm:text-lg line-clamp-2">{item.name}</h3>
+                    <div className="flex-1 flex flex-col min-w-0 justify-between">
+                      <div>
+                        <h3 className="font-bold text-black text-sm sm:text-base line-clamp-2">{item.name}</h3>
 
-                      {(item.sizes && item.sizes.length > 0 || item.colors && item.colors.length > 0) && (
-                        <div className="flex gap-2 mb-2">
-                          {item.sizes && item.sizes.length > 0 && (
-                            <select
-                              value={item.selectedSize || ''}
-                              onChange={(e) => updateCartItem(item.cart_item_id!, e.target.value, item.selectedColor)}
-                              className="text-xs bg-white text-black px-2 py-1 rounded-full font-bold border-2 border-black focus:outline-none focus:ring-2 focus:ring-black"
-                            >
-                              <option value="">Size</option>
-                              {item.sizes.map((size, idx) => (
-                                <option key={idx} value={size}>{size}</option>
-                              ))}
-                            </select>
-                          )}
-                          {item.colors && item.colors.length > 0 && (
-                            <select
-                              value={item.selectedColor || ''}
-                              onChange={(e) => updateCartItem(item.cart_item_id!, item.selectedSize, e.target.value)}
-                              className="text-xs bg-white text-black px-2 py-1 rounded-full font-bold border-2 border-black focus:outline-none focus:ring-2 focus:ring-black"
-                            >
-                              <option value="">Color</option>
-                              {item.colors.map((color, idx) => (
-                                <option key={idx} value={color}>{color}</option>
-                              ))}
-                            </select>
-                          )}
+                        {(item.sizes && item.sizes.length > 0 || item.colors && item.colors.length > 0) && (
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {item.sizes && item.sizes.length > 0 && (
+                              <select
+                                value={item.selectedSize || ''}
+                                onChange={(e) => updateCartItem(item.cart_item_id!, e.target.value, item.selectedColor)}
+                                className="text-xs bg-white text-black px-2 py-1 rounded-full font-bold border-2 border-black focus:outline-none focus:ring-2 focus:ring-black"
+                              >
+                                <option value="">Size</option>
+                                {item.sizes.map((size, idx) => (
+                                  <option key={idx} value={size}>{size}</option>
+                                ))}
+                              </select>
+                            )}
+                            {item.colors && item.colors.length > 0 && (
+                              <select
+                                value={item.selectedColor || ''}
+                                onChange={(e) => updateCartItem(item.cart_item_id!, item.selectedSize, e.target.value)}
+                                className="text-xs bg-white text-black px-2 py-1 rounded-full font-bold border-2 border-black focus:outline-none focus:ring-2 focus:ring-black"
+                              >
+                                <option value="">Color</option>
+                                {item.colors.map((color, idx) => (
+                                  <option key={idx} value={color}>{color}</option>
+                                ))}
+                              </select>
+                            )}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="mt-3">
+                        <p className="text-lg sm:text-xl font-bold text-black mb-2">
+                          {'₹'}{(getItemPrice(item) * item.quantity).toFixed(2)}
+                        </p>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => updateQuantity(item.cart_item_id!, item.quantity - 1)}
+                            className="w-8 h-8 bg-white rounded-lg flex items-center justify-center border-2 border-black hover:bg-gray-100 transition-colors"
+                            aria-label="Decrease quantity"
+                          >
+                            <Minus className="w-4 h-4 text-black" />
+                          </button>
+                          <span className="w-10 text-center font-bold text-black text-base">{item.quantity}</span>
+                          <button
+                            onClick={() => updateQuantity(item.cart_item_id!, item.quantity + 1)}
+                            className="w-8 h-8 bg-white rounded-lg flex items-center justify-center border-2 border-black hover:bg-gray-100 transition-colors"
+                            aria-label="Increase quantity"
+                          >
+                            <Plus className="w-4 h-4 text-black" />
+                          </button>
+                          <button
+                            onClick={() => removeFromCart(item.cart_item_id!)}
+                            className="ml-auto w-8 h-8 bg-white rounded-lg flex items-center justify-center border-2 border-black hover:bg-red-50 transition-colors"
+                            aria-label="Remove item"
+                          >
+                            <Trash2 className="w-4 h-4 text-black" />
+                          </button>
                         </div>
-                      )}
-
-                      <p className="text-xl font-bold text-black mb-3">
-                        {'₹'}{(getItemPrice(item) * item.quantity).toFixed(2)}
-                      </p>
-
-                      <div className="flex items-center gap-2 mt-auto">
-                        <button
-                          onClick={() => updateQuantity(item.cart_item_id!, item.quantity - 1)}
-                          className="w-9 h-9 bg-white rounded-lg flex items-center justify-center border-2 border-black hover:bg-gray-100 transition-colors"
-                        >
-                          <Minus className="w-4 h-4 text-black" />
-                        </button>
-                        <span className="w-12 text-center font-bold text-black text-lg">{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(item.cart_item_id!, item.quantity + 1)}
-                          className="w-9 h-9 bg-white rounded-lg flex items-center justify-center border-2 border-black hover:bg-gray-100 transition-colors"
-                        >
-                          <Plus className="w-4 h-4 text-black" />
-                        </button>
-                        <button
-                          onClick={() => removeFromCart(item.cart_item_id!)}
-                          className="ml-auto w-9 h-9 bg-white rounded-lg flex items-center justify-center border-2 border-black hover:bg-red-50 transition-colors"
-                        >
-                          <Trash2 className="w-4 h-4 text-black" />
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -124,14 +135,15 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
             )}
           </div>
 
+          {/* Cart Summary & Checkout */}
           {items.length > 0 && (
-            <div className="bg-white p-3 sm:p-6 border-t-4 border-black flex-shrink-0">
+            <div className="bg-white p-4 sm:p-6 border-t-4 border-black flex-shrink-0 space-y-4">
               {subtotal < 2000 && (
-                <div className="mb-3 sm:mb-4 p-2.5 sm:p-3 bg-[#B5E5CF] rounded-lg sm:rounded-xl border-2 border-black">
-                  <p className="text-xs sm:text-sm font-bold text-black mb-1">
+                <div className="p-3 bg-[#B5E5CF] rounded-xl border-2 border-black">
+                  <p className="text-xs sm:text-sm font-bold text-black mb-2">
                     {'Add ₹'}{(2000 - subtotal).toFixed(2)}{' more for FREE shipping!'}
                   </p>
-                  <div className="w-full bg-white rounded-full h-2 border-2 border-black">
+                  <div className="w-full bg-white rounded-full h-2 border-2 border-black overflow-hidden">
                     <div
                       className="bg-black h-full rounded-full transition-all duration-300"
                       style={{ width: `${Math.min((subtotal / 2000) * 100, 100)}%` }}
@@ -140,13 +152,14 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
                 </div>
               )}
               {subtotal >= 2000 && (
-                <div className="mb-3 sm:mb-4 p-2.5 sm:p-3 bg-[#B5E5CF] rounded-lg sm:rounded-xl border-2 border-black">
+                <div className="p-3 bg-[#B5E5CF] rounded-xl border-2 border-black">
                   <p className="text-xs sm:text-sm font-bold text-black text-center">
                     {"You've unlocked FREE shipping!"}
                   </p>
                 </div>
               )}
-              <div className="space-y-2 mb-3 sm:mb-4 text-sm sm:text-base">
+
+              <div className="space-y-2 text-sm sm:text-base">
                 <div className="flex items-center justify-between text-black">
                   <span className="font-medium">Subtotal</span>
                   <span className="font-bold">{'₹'}{subtotal.toFixed(2)}</span>
@@ -159,29 +172,30 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
                 </div>
                 {taxSettings?.is_enabled && !taxSettings?.include_in_price && taxAmount > 0 && (
                   <div className="flex items-center justify-between text-black">
-                    <span className="font-medium">{taxSettings.tax_label} ({taxSettings.tax_percentage}%)</span>
+                    <span className="font-medium text-xs sm:text-sm">{taxSettings.tax_label} ({taxSettings.tax_percentage}%)</span>
                     <span className="font-bold">{'₹'}{taxAmount.toFixed(2)}</span>
                   </div>
                 )}
                 {taxSettings?.is_enabled && taxSettings?.include_in_price && items.length > 0 && (
-                  <div className="flex items-center justify-between text-black text-xs sm:text-sm">
-                    <span className="font-medium">Inclusive of {taxSettings.tax_label} ({taxSettings.tax_percentage}%)</span>
+                  <div className="flex items-center justify-between text-black text-xs">
+                    <span className="font-medium">Inclusive of {taxSettings.tax_label}</span>
                     <span className="font-bold">{'₹'}{(subtotal - (subtotal / (1 + taxSettings.tax_percentage / 100))).toFixed(2)}</span>
                   </div>
                 )}
                 <div className="border-t-2 border-black pt-2 flex items-center justify-between">
                   <span className="text-lg sm:text-xl font-bold text-black">Total</span>
-                  <span className="text-2xl sm:text-3xl font-bold text-black">{'₹'}{total.toFixed(2)}</span>
+                  <span className="text-xl sm:text-2xl font-bold text-black">{'₹'}{total.toFixed(2)}</span>
                 </div>
               </div>
+
               <button
                 onClick={() => {
                   onCheckout();
                   onClose();
                 }}
-                className="w-full bg-[#B5E5CF] text-black py-3 sm:py-4 rounded-lg sm:rounded-xl font-bold text-sm sm:text-lg hover:bg-white transition-colors border-2 border-black flex items-center justify-center gap-2"
+                className="w-full bg-[#B5E5CF] text-black py-3 sm:py-4 rounded-lg sm:rounded-xl font-bold text-base sm:text-lg hover:bg-white transition-colors border-2 sm:border-3 border-black flex items-center justify-center gap-2 active:scale-95"
               >
-                <CreditCard className="w-4 sm:w-5 h-4 sm:h-5" />
+                <CreditCard className="w-5 h-5" />
                 Proceed to Checkout
               </button>
             </div>
@@ -191,5 +205,5 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
     </>
   );
 
-  return modalContent;
+  return createPortal(modalContent, document.body);
 }

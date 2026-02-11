@@ -82,14 +82,14 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
       />
 
       {/* Modal Container */}
-      <div className="modal-content flex items-center justify-center p-4">
-        <div className="w-full max-w-2xl max-h-[90dvh] overflow-y-auto bg-white rounded-2xl shadow-2xl border-4 border-black" style={{ overscrollBehavior: 'contain' }}>
+      <div className="modal-content flex flex-col items-center justify-end sm:justify-center w-full px-0 sm:px-4">
+        <div className="w-full sm:w-full sm:max-w-2xl max-h-[95dvh] sm:max-h-[90dvh] overflow-y-auto bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border-0 sm:border-4 border-b-4 border-black" style={{ overscrollBehavior: 'contain' }}>
           {/* Header */}
-          <div className="sticky top-0 z-20 bg-gradient-to-r from-teal-50 to-mint-50 px-4 sm:px-6 py-4 flex items-center justify-between border-b-4 border-black">
-            <h2 className="text-lg sm:text-xl font-bold text-gray-900 truncate">{product.name}</h2>
+          <div className="sticky top-0 z-20 bg-gradient-to-r from-teal-50 to-mint-50 px-4 sm:px-6 py-4 flex items-center justify-between border-b-4 border-black rounded-t-3xl sm:rounded-t-none">
+            <h2 className="text-base sm:text-lg font-bold text-gray-900 line-clamp-2">{product.name}</h2>
             <button
               onClick={onClose}
-              className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center bg-white hover:bg-gray-100 transition-all border-2 border-black"
+              className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center bg-white hover:bg-gray-100 transition-all border-2 border-black"
               aria-label="Close"
             >
               <X className="w-5 h-5 text-black" />
@@ -97,10 +97,10 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
           </div>
 
           {/* Content */}
-          <div className="p-4 sm:p-6 space-y-6">
+          <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
             {/* Image Gallery */}
-            <div className="space-y-3">
-              <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl overflow-hidden border-4 border-black aspect-square">
+            <div className="space-y-2 sm:space-y-3">
+              <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg sm:rounded-xl overflow-hidden border-2 sm:border-4 border-black aspect-square">
                 <LazyImage
                   src={currentImage}
                   alt={product.name}
@@ -111,40 +111,41 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
                   <>
                     <button
                       onClick={prevImage}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 rounded-full transition-all border-2 border-black"
+                      className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 sm:p-2.5 rounded-full transition-all border-2 border-black active:scale-90"
                       aria-label="Previous image"
                     >
-                      <ChevronLeft className="w-5 h-5 text-black" />
+                      <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
                     </button>
                     <button
                       onClick={nextImage}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 rounded-full transition-all border-2 border-black"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-2 sm:p-2.5 rounded-full transition-all border-2 border-black active:scale-90"
                       aria-label="Next image"
                     >
-                      <ChevronRight className="w-5 h-5 text-black" />
+                      <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
                     </button>
-                    <div className="absolute bottom-3 right-3 bg-black/70 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                    <div className="absolute bottom-3 right-3 bg-black/70 text-white px-2 sm:px-3 py-1 rounded-full text-xs font-semibold">
                       {currentImageIndex + 1} / {allImages.length}
                     </div>
                   </>
                 )}
 
                 {hasDiscount && (
-                  <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                  <div className="absolute top-3 left-3 bg-red-500 text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-bold">
                     -{discountPercentage}%
                   </div>
                 )}
               </div>
 
               {allImages.length > 1 && (
-                <div className="flex gap-2 overflow-x-auto pb-2">
+                <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
                   {allImages.map((img, idx) => (
                     <button
                       key={idx}
                       onClick={() => setCurrentImageIndex(idx)}
-                      className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-3 transition-all ${
+                      className={`flex-shrink-0 w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden border-3 transition-all ${
                         idx === currentImageIndex ? 'border-black' : 'border-gray-300'
                       }`}
+                      aria-label={`View image ${idx + 1}`}
                     >
                       <LazyImage src={img} alt={`${product.name} ${idx + 1}`} className="w-full h-full object-cover" />
                     </button>
@@ -168,16 +169,16 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
 
             {/* Options */}
             {(product.sizes && product.sizes.length > 0 || product.colors && product.colors.length > 0) && (
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {product.sizes && product.sizes.length > 0 && (
                   <div>
-                    <label className="block text-sm font-bold text-gray-900 mb-2">Size</label>
+                    <label className="block text-xs sm:text-sm font-bold text-gray-900 mb-2">Size</label>
                     <div className="flex flex-wrap gap-2">
                       {product.sizes.map((size) => (
                         <button
                           key={size}
                           onClick={() => setSelectedSize(size)}
-                          className={`px-4 py-2 rounded-lg border-3 font-semibold transition-all ${
+                          className={`px-3 sm:px-4 py-2 rounded-lg border-2 sm:border-3 font-semibold text-sm sm:text-base transition-all active:scale-95 ${
                             selectedSize === size
                               ? 'bg-black text-white border-black'
                               : 'bg-white text-black border-gray-300 hover:border-black'
@@ -192,13 +193,13 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
 
                 {product.colors && product.colors.length > 0 && (
                   <div>
-                    <label className="block text-sm font-bold text-gray-900 mb-2">Color</label>
+                    <label className="block text-xs sm:text-sm font-bold text-gray-900 mb-2">Color</label>
                     <div className="flex flex-wrap gap-2">
                       {product.colors.map((color) => (
                         <button
                           key={color}
                           onClick={() => setSelectedColor(color)}
-                          className={`px-4 py-2 rounded-lg border-3 font-semibold transition-all ${
+                          className={`px-3 sm:px-4 py-2 rounded-lg border-2 sm:border-3 font-semibold text-sm sm:text-base transition-all active:scale-95 ${
                             selectedColor === color
                               ? 'bg-black text-white border-black'
                               : 'bg-white text-black border-gray-300 hover:border-black'
@@ -215,18 +216,20 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
 
             {/* Quantity Selector */}
             <div>
-              <label className="block text-sm font-bold text-gray-900 mb-2">Quantity</label>
-              <div className="flex items-center gap-4 bg-gray-100 p-2 rounded-lg border-3 border-black w-fit">
+              <label className="block text-xs sm:text-sm font-bold text-gray-900 mb-2">Quantity</label>
+              <div className="flex items-center gap-3 bg-gray-100 p-2 rounded-lg border-2 sm:border-3 border-black w-fit">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-4 py-2 bg-white hover:bg-gray-200 rounded-lg font-bold transition-colors"
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-white hover:bg-gray-200 rounded-lg font-bold transition-colors text-sm sm:text-base active:scale-95"
+                  aria-label="Decrease quantity"
                 >
                   {'−'}
                 </button>
-                <span className="text-lg font-bold text-gray-900 w-8 text-center">{quantity}</span>
+                <span className="text-lg sm:text-xl font-bold text-gray-900 w-8 text-center">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="px-4 py-2 bg-white hover:bg-gray-200 rounded-lg font-bold transition-colors"
+                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-white hover:bg-gray-200 rounded-lg font-bold transition-colors text-sm sm:text-base active:scale-95"
+                  aria-label="Increase quantity"
                 >
                   +
                 </button>
@@ -234,47 +237,49 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
             </div>
 
             {/* Action Buttons */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:gap-3">
               <button
                 onClick={() => toggleFavorite(product.id)}
-                className={`py-3 rounded-xl font-bold border-3 transition-all flex items-center justify-center gap-2 ${
+                className={`py-3 rounded-lg sm:rounded-xl font-bold border-2 sm:border-3 transition-all flex items-center justify-center gap-2 active:scale-95 ${
                   isFavorite(product.id)
                     ? 'bg-red-500 text-white border-red-600 hover:bg-red-600'
                     : 'bg-white text-gray-900 border-black hover:bg-gray-100'
                 }`}
+                aria-label="Toggle wishlist"
               >
-                <Heart className={`w-5 h-5 ${isFavorite(product.id) ? 'fill-current' : ''}`} />
-                <span className="hidden sm:inline">Wishlist</span>
+                <Heart className={`w-4 sm:w-5 h-4 sm:h-5 ${isFavorite(product.id) ? 'fill-current' : ''}`} />
+                <span className="text-xs sm:text-base">Wishlist</span>
               </button>
 
               <button
                 onClick={handleAddToCart}
-                className={`py-3 rounded-xl font-bold border-3 transition-all flex items-center justify-center gap-2 ${
+                className={`py-3 rounded-lg sm:rounded-xl font-bold border-2 sm:border-3 transition-all flex items-center justify-center gap-2 active:scale-95 ${
                   isInCart(product.id)
                     ? 'bg-orange-500 text-white border-orange-600 hover:bg-orange-600'
                     : 'bg-emerald-500 text-white border-emerald-600 hover:bg-emerald-600'
                 }`}
               >
-                <ShoppingCart className="w-5 h-5" />
-                {isInCart(product.id) ? 'Update Cart' : 'Add to Cart'}
+                <ShoppingCart className="w-4 sm:w-5 h-4 sm:h-5" />
+                <span className="text-xs sm:text-base">{isInCart(product.id) ? 'Update' : 'Add'}</span>
               </button>
             </div>
 
             {/* Share Section */}
-            <div className="bg-blue-50 p-4 rounded-xl border-4 border-black">
+            <div className="bg-blue-50 p-3 sm:p-4 rounded-lg sm:rounded-xl border-2 sm:border-4 border-black">
               <button
                 onClick={handleCopyLink}
-                className="w-full flex items-center justify-center gap-2 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-bold transition-colors"
+                className="w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-bold text-sm sm:text-base transition-colors active:scale-95"
               >
                 {copySuccess ? (
                   <>
-                    <Check className="w-5 h-5" />
-                    Link Copied!
+                    <Check className="w-4 sm:w-5 h-4 sm:h-5" />
+                    Copied!
                   </>
                 ) : (
                   <>
-                    <Copy className="w-5 h-5" />
-                    Share Product Link
+                    <Copy className="w-4 sm:w-5 h-4 sm:h-5" />
+                    <span className="hidden sm:inline">Share Link</span>
+                    <span className="sm:hidden">Share</span>
                   </>
                 )}
               </button>
