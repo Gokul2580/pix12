@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { MessageSquare, X, Send } from 'lucide-react';
 
@@ -33,7 +35,7 @@ export default function FeedbackPanel() {
   return (
     <>
       <div
-        className={`fixed top-1/2 -translate-y-1/2 left-0 z-40 transition-all duration-300 ${
+        className={`fixed left-0 bottom-6 md:bottom-8 z-40 transition-all duration-300 ${
           isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'
         }`}
       >
@@ -51,7 +53,7 @@ export default function FeedbackPanel() {
       </div>
 
       <div
-        className={`fixed top-1/2 -translate-y-1/2 left-4 w-80 bg-white rounded-2xl shadow-2xl z-50 transform transition-all duration-300 ease-out ${
+        className={`fixed bottom-6 md:bottom-8 left-4 w-80 max-w-sm md:max-w-md bg-white rounded-2xl shadow-2xl z-50 transform transition-all duration-300 ease-out ${
           isOpen ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
         }`}
       >
