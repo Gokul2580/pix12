@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ShoppingCart, X, ChevronRight } from 'lucide-react';
+import { ShoppingCart, X, Sparkles, ArrowRight, MessageCircle } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { usePublishedData } from '../contexts/PublishedDataContext';
 import { objectToArray } from '../utils/publishedData';
@@ -12,161 +12,212 @@ interface CartFABProps {
   position?: 'right' | 'left';
 }
 
-const MARKETING_MESSAGES = [
-  "🎉 Don't miss this!",
-  "⚡ Limited stock!",
-  "✨ Trending now!",
-  "🔥 Hot deal!",
-  "💎 Customer favorite!",
-  "🚀 New arrival!",
-  "⏰ Ending soon!",
-  "🎁 Special offer!"
+const SUGGESTION_MESSAGES = [
+  { text: "We picked this for you", emoji: "✨" },
+  { text: "Don't miss this!", emoji: "🔥" },
+  { text: "Trending now", emoji: "📈" },
+  { text: "Add this beauty", emoji: "💎" },
+  { text: "Customer favorite", emoji: "⭐" },
+  { text: "Limited stock", emoji: "⏰" },
+  { text: "On sale today", emoji: "🎉" },
+  { text: "You'll love this", emoji: "💕" }
 ];
 
 export default function CartFAB({ onCartClick, position = 'right' }: CartFABProps) {
-  const { itemCount, cart } = useCart();
+  const { itemCount, cart, addToCart } = useCart();
   const { data: publishedData } = usePublishedData();
-  const [showNotification, setShowNotification] = useState(false);
-  const [lastProduct, setLastProduct] = useState<Product | null>(null);
-  const [marketingMessage, setMarketingMessage] = useState(MARKETING_MESSAGES[0]);
   const [expanded, setExpanded] = useState(false);
+  const [suggestedProduct, setSuggestedProduct] = useState<Product | null>(null);
+  const [currentMessage, setCurrentMessage] = useState(SUGGESTION_MESSAGES[0]);
+  const [showNotification, setShowNotification] = useState(false);
+  const [products, setProducts] = useState<Product[]>([]);
 
-  // Rotate marketing message periodically
+  // Get all products and pick a random one every 5 seconds
   useEffect(() => {
-    const timer = setInterval(() => {
-      setMarketingMessage(
-        MARKETING_MESSAGES[Math.floor(Math.random() * MARKETING_MESSAGES.length)]
-      );
-    }, 4000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  // Show notification when item is added
-  useEffect(() => {
-    if (cart && cart.length > 0) {
-      const products: Product[] = objectToArray<Product>(publishedData?.products || {});
-      const latestItem = cart[cart.length - 1];
-      const product = products.find(p => p.id === latestItem.product_id);
-      if (product) {
-        setLastProduct(product);
-        setShowNotification(true);
-        const timer = setTimeout(() => setShowNotification(false), 3000);
-        return () => clearTimeout(timer);
+    if (publishedData?.products) {
+      const allProducts = objectToArray<Product>(publishedData.products);
+      setProducts(allProducts);
+      
+      if (allProducts.length > 0) {
+        const randomProduct = allProducts[Math.floor(Math.random() * allProducts.length)];
+        setSuggestedProduct(randomProduct);
+        const randomMessage = SUGGESTION_MESSAGES[Math.floor(Math.random() * SUGGESTION_MESSAGES.length)];
+        setCurrentMessage(randomMessage);
       }
     }
-  }, [cart, publishedData]);
+  }, [publishedData]);
+
+  // Change suggestion every 5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (products.length > 0) {
+        const randomProduct = products[Math.floor(Math.random() * products.length)];
+        setSuggestedProduct(randomProduct);
+        const randomMessage = SUGGESTION_MESSAGES[Math.floor(Math.random() * SUGGESTION_MESSAGES.length)];
+        setCurrentMessage(randomMessage);
+      }
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [products]);
+
+  const handleAddSuggested = () => {
+    if (suggestedProduct) {
+      addToCart(suggestedProduct);
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 2000);
+    }
+  };
 
   const positionClasses = position === 'right' 
     ? 'bottom-6 right-6' 
     : 'bottom-6 left-6';
 
+  const expandedPositionClasses = position === 'right'
+    ? 'right-0'
+    : 'left-0';
+
   return (
     <>
-      {/* Notification Toast */}
-      {showNotification && lastProduct && (
+      {/* Chat Bubble Notification */}
+      {showNotification && (
         <div className="fixed bottom-32 right-6 z-40 animate-in fade-in slide-in-from-bottom-4 duration-300">
-          <div className="bg-white rounded-2xl shadow-2xl border-2 border-emerald-200 overflow-hidden max-w-xs">
+          <div className="bg-white rounded-3xl shadow-2xl border-2 border-emerald-200 overflow-hidden max-w-sm">
             <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-2 flex items-center gap-2">
-              <span className="text-white font-bold text-sm">✅ Added to cart!</span>
-            </div>
-            <div className="p-4 flex gap-3">
-              <img
-                src={lastProduct.image_url || "/placeholder.svg"}
-                alt={lastProduct.name}
-                className="w-16 h-16 object-cover rounded-lg border border-gray-200"
-              />
-              <div className="flex-1 min-w-0">
-                <p className="font-bold text-gray-900 text-sm line-clamp-1">
-                  {lastProduct.name}
-                </p>
-                <p className="text-teal-600 font-bold text-sm mt-1">
-                  ₹{lastProduct.price.toFixed(2)}
-                </p>
-                <p className="text-emerald-600 text-xs font-semibold mt-2">
-                  {marketingMessage}
-                </p>
-              </div>
+              <Sparkles className="w-5 h-5 text-white" />
+              <span className="text-white font-bold text-sm">Added to cart!</span>
             </div>
           </div>
         </div>
       )}
 
-      {/* Cart FAB */}
-      <div className={`fixed ${positionClasses} z-50`}>
-        {/* Expanded Menu */}
+      {/* Cart FAB Container */}
+      <div className={`fixed ${positionClasses} z-50 flex flex-col items-${position === 'right' ? 'end' : 'start'} gap-4`}>
+        {/* Expanded Chat Menu */}
         {expanded && (
-          <div className="absolute bottom-20 right-0 bg-white rounded-3xl shadow-2xl border-2 border-emerald-200 overflow-hidden p-4 min-w-64 animate-in fade-in slide-in-from-bottom-2 duration-200">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-bold text-gray-900">Quick Actions</h3>
+          <div className="absolute bottom-20 ${expandedPositionClasses} bg-white rounded-3xl shadow-2xl border-2 border-emerald-100 overflow-hidden min-w-80 max-w-sm animate-in fade-in slide-in-from-bottom-2 duration-200">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-white" />
+                <h3 className="font-bold text-white text-base">Smart Suggestions</h3>
+              </div>
               <button
                 onClick={() => setExpanded(false)}
-                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
               >
-                <X className="w-4 h-4 text-gray-600" />
+                <X className="w-4 h-4 text-white" />
               </button>
             </div>
 
-            {itemCount > 0 ? (
-              <div className="space-y-3">
+            {/* Cart Stats */}
+            {itemCount > 0 && (
+              <div className="bg-emerald-50 px-6 py-3 border-b border-emerald-100 flex items-center justify-between">
+                <span className="text-sm text-gray-700 font-medium">Items in cart</span>
+                <span className="text-2xl font-bold text-emerald-600">{itemCount}</span>
+              </div>
+            )}
+
+            {/* Suggested Product Chat Bubble */}
+            {suggestedProduct && (
+              <div className="p-6 space-y-4">
+                {/* Message Bubble */}
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center flex-shrink-0">
+                    <MessageCircle className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl rounded-tl-none px-4 py-3 border border-emerald-200">
+                      <p className="text-sm text-gray-900 font-semibold">{currentMessage.text}</p>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-1 ml-2">{currentMessage.emoji}</p>
+                  </div>
+                </div>
+
+                {/* Product Card */}
+                <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border-2 border-gray-200 overflow-hidden">
+                  <div className="aspect-square overflow-hidden bg-white">
+                    <img
+                      src={suggestedProduct.image_url || '/placeholder.svg'}
+                      alt={suggestedProduct.name}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <p className="font-bold text-gray-900 text-sm line-clamp-2">
+                      {suggestedProduct.name}
+                    </p>
+                    <div className="flex items-baseline gap-2 mt-2">
+                      <p className="text-emerald-600 font-bold text-lg">
+                        ₹{suggestedProduct.price.toFixed(0)}
+                      </p>
+                      {suggestedProduct.original_price && suggestedProduct.original_price > suggestedProduct.price && (
+                        <p className="text-gray-500 line-through text-xs">
+                          ₹{suggestedProduct.original_price.toFixed(0)}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Add Button */}
+                <button
+                  onClick={handleAddSuggested}
+                  className="w-full px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-2xl font-bold flex items-center justify-between hover:shadow-lg transition-all group active:scale-95"
+                >
+                  <span className="flex items-center gap-2">
+                    <ShoppingCart className="w-5 h-5" />
+                    Add to Cart
+                  </span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
+
+                {/* View Cart Button */}
                 <button
                   onClick={() => {
                     onCartClick();
                     setExpanded(false);
                   }}
-                  className="w-full px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl font-bold flex items-center justify-between hover:shadow-lg transition-all group"
+                  className="w-full px-4 py-2.5 bg-white text-emerald-600 rounded-2xl font-bold border-2 border-emerald-500 hover:bg-emerald-50 transition-all"
                 >
-                  <span className="flex items-center gap-2">
-                    <ShoppingCart className="w-5 h-5" />
-                    View Cart
-                  </span>
-                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  View Cart
                 </button>
-                <div className="text-center">
-                  <p className="text-sm text-gray-600 mb-1">Items in cart</p>
-                  <p className="text-2xl font-bold text-emerald-600">{itemCount}</p>
-                </div>
               </div>
-            ) : (
-              <div className="text-center py-4">
+            )}
+
+            {/* Empty State */}
+            {!suggestedProduct && (
+              <div className="p-8 text-center">
                 <ShoppingCart className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                <p className="text-sm text-gray-600">Your cart is empty</p>
-                <p className="text-xs text-gray-500 mt-1">Start shopping to add items</p>
+                <p className="text-sm text-gray-600 font-medium">Loading suggestions...</p>
               </div>
             )}
           </div>
         )}
 
-        {/* Main FAB Button */}
+        {/* Main FAB Button - Material Design */}
         <button
-          onClick={() => {
-            if (expanded) {
-              setExpanded(false);
-            } else {
-              setExpanded(!expanded);
-            }
+          onClick={() => setExpanded(!expanded)}
+          className="relative w-16 h-16 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 group flex items-center justify-center font-bold text-white border-4 border-white active:scale-95"
+          style={{
+            background: itemCount > 0
+              ? 'linear-gradient(135deg, #10b981 0%, #14b8a6 100%)'
+              : 'linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%)'
           }}
-          className={`relative w-16 h-16 rounded-full shadow-2xl border-4 border-white flex items-center justify-center font-bold text-white transition-all duration-300 group hover:shadow-xl ${
-            itemCount > 0
-              ? 'bg-gradient-to-br from-emerald-500 to-teal-600'
-              : 'bg-gradient-to-br from-gray-400 to-gray-500'
-          }`}
         >
           <ShoppingCart className="w-7 h-7 group-hover:scale-110 transition-transform" />
 
-          {/* Cart Counter Badge */}
+          {/* Counter Badge - Material Design */}
           {itemCount > 0 && (
-            <span className="absolute -top-2 -right-2 w-7 h-7 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg border-2 border-white animate-pulse">
+            <span className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg border-4 border-white animate-pulse">
               {itemCount > 99 ? '99+' : itemCount}
             </span>
           )}
 
-          {/* Marketing Badge */}
-          {itemCount > 0 && (
-            <div className="absolute -top-14 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-              {marketingMessage}
-            </div>
-          )}
+          {/* Floating Label */}
+          <div className="absolute -top-16 left-1/2 -translate-x-1/2 px-4 py-2 bg-gray-900 text-white text-xs font-bold rounded-full whitespace-nowrap shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+            {itemCount > 0 ? `${itemCount} items` : 'Add items'}
+          </div>
         </button>
       </div>
     </>
