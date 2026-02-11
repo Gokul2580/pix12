@@ -341,8 +341,8 @@ function AppContent({ onPageChange, onShowTryOnList, onShowColorMatchList, onSma
 
       {/* Show normal app if data exists or on admin pages */}
       {((!publishedDataError && appReady) || isAdminPage) && (
-        <div className={`min-h-screen min-h-[100dvh] w-full bg-white transition-opacity duration-500 flex flex-col overflow-x-hidden ${appReady ? 'opacity-100' : 'opacity-0'}`}>
-          <div className={`flex flex-col w-full overflow-x-hidden ${temporarilyClosed && !hideNavigation ? 'grayscale pointer-events-none' : ''}`}>
+        <div className={`min-h-screen w-full bg-white transition-opacity duration-500 flex flex-col ${appReady ? 'opacity-100' : 'opacity-0'}`}>
+          <div className={`flex flex-col w-full ${temporarilyClosed && !hideNavigation ? 'grayscale pointer-events-none' : ''}`}>
             {!hideNavigation && (
               <>
                 <TopBanner />

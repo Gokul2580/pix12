@@ -67,6 +67,7 @@ export default defineConfig({
     },
   },
   server: {
+    middlewareMode: true,
     hmr: {
       protocol: 'ws',
       host: 'localhost',

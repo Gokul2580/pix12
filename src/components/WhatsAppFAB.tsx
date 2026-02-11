@@ -122,19 +122,19 @@ export default function WhatsAppFAB() {
   };
 
   return (
-    <div className="fixed bottom-20 sm:bottom-24 right-3 sm:right-6 flex justify-end z-40 pointer-events-none">
+    <div className="absolute bottom-6 right-6 flex justify-end z-40 pointer-events-none">
       <div className="pointer-events-auto">
         <button
           onClick={() => setIsOpen(true)}
-          className="w-12 h-12 sm:w-14 sm:h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-200 active:scale-95"
+          className="w-14 h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-200 active:scale-95"
           aria-label="Chat on WhatsApp"
         >
-          <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
+          <MessageCircle className="w-6 h-6" />
         </button>
 
         {isOpen && (
-          <div className="fixed sm:absolute bottom-0 sm:bottom-20 right-0 w-full sm:w-96 sm:max-w-[calc(100vw-2rem)] z-50 pointer-events-auto">
-            <div className="bg-white border-2 border-gray-300 flex flex-col h-[100dvh] sm:h-[500px] sm:max-h-[80vh] rounded-t-2xl sm:rounded-2xl overflow-hidden shadow-2xl animate-scale-in">
+          <div className="absolute bottom-20 right-0 w-96 max-w-[calc(100vw-2rem)] z-50 pointer-events-auto">
+            <div className="bg-white border-2 border-gray-300 flex flex-col h-[450px] sm:h-[500px] max-h-[80vh] rounded-2xl overflow-hidden shadow-2xl animate-scale-in">
               <div className="bg-[#075E54] p-3 sm:p-4 flex items-center justify-between flex-shrink-0 border-b-2 border-gray-300">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center p-1.5 border-2 border-white">

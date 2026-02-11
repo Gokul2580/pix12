@@ -226,20 +226,20 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
 
   return (
     <nav className="w-full" style={{ backgroundColor: navStyle.background }}>
-      <div className="w-full px-2 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center py-2 sm:py-4 lg:py-6 gap-1.5 sm:gap-3">
+      <div className="w-full px-3 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-center py-3 sm:py-4 lg:py-6 gap-2 sm:gap-3">
           <button
             onClick={() => onNavigate('home')}
-            className="group flex flex-col items-center gap-1 sm:gap-2 mb-1 sm:mb-2"
+            className="group flex flex-col items-center gap-2 mb-2"
           >
             <img
               src="/logo.png"
               alt="Pixie Blooms"
-              className="w-16 h-16 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-44 lg:h-44 object-contain group-hover:scale-105 transition-transform duration-300"
+              className="w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-44 lg:h-44 object-contain group-hover:scale-105 transition-transform duration-300"
             />
           </button>
 
-          <div className="flex items-center gap-1 sm:gap-2 flex-wrap justify-center relative w-full max-w-full overflow-x-auto px-1 sm:px-0">
+          <div className="flex items-center gap-1 sm:gap-2 flex-wrap justify-center relative w-full">
             <button
               onClick={() => onNavigate('home')}
               className={getButtonClasses(currentPage === 'home')}
@@ -421,28 +421,28 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
       )}
 
       {searchOpen && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center pt-4 sm:pt-20 px-2 sm:px-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSearchOpen(false)}></div>
 
-          <div className="relative bg-white rounded-2xl sm:rounded-3xl border-2 border-teal-200 w-full max-w-2xl max-h-[90vh] sm:max-h-[80vh] flex flex-col overflow-hidden">
-            <div className="p-3 sm:p-6 border-b-2 border-teal-100">
-              <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+          <div className="relative bg-white rounded-3xl border-2 border-teal-200 w-full max-w-2xl max-h-[80vh] flex flex-col overflow-hidden">
+            <div className="p-6 border-b-2 border-teal-100">
+              <div className="flex items-center gap-3 mb-4">
                 <div className="flex-1 relative">
-                  <Search className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search for products..."
                     autoFocus
-                    className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-2.5 sm:py-3 border-2 border-teal-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-400 text-gray-900 text-sm sm:text-base"
+                    className="w-full pl-12 pr-4 py-3 border-2 border-teal-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-400 text-gray-900"
                   />
                 </div>
                 <button
                   onClick={() => setSearchOpen(false)}
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border-2 border-gray-300 hover:border-gray-400 transition-colors flex-shrink-0"
+                  className="w-10 h-10 rounded-full flex items-center justify-center border-2 border-gray-300 hover:border-gray-400 transition-colors"
                 >
-                  <X className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
+                  <X className="w-5 h-5 text-gray-600" />
                 </button>
               </div>
 
@@ -453,7 +453,7 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
               )}
             </div>
 
-            <div className="flex-1 overflow-y-auto p-3 sm:p-6">
+            <div className="flex-1 overflow-y-auto p-6">
               {loading ? (
                 <div className="text-center py-12">
                   <div className="inline-block w-8 h-8 border-4 border-teal-200 border-t-teal-600 rounded-full animate-spin"></div>
@@ -472,7 +472,7 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
                   <p className="text-gray-500 text-sm">Try different keywords</p>
                 </div>
               ) : (
-                <div className="space-y-2 sm:space-y-3">
+                <div className="space-y-3">
                   {filteredProducts.map((product) => (
                     <div
                       key={product.id}
@@ -483,23 +483,23 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
                           setSearchQuery('');
                         }
                       }}
-                      className="flex gap-2.5 sm:gap-4 bg-white rounded-xl sm:rounded-2xl p-2.5 sm:p-4 border-2 border-teal-200 hover:border-teal-400 transition-all cursor-pointer group"
+                      className="flex gap-4 bg-white rounded-2xl p-4 border-2 border-teal-200 hover:border-teal-400 transition-all cursor-pointer group"
                     >
                       <img
                         src={product.image_url || "/placeholder.svg"}
                         alt={product.name}
-                        className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-lg sm:rounded-xl border-2 border-gray-200 group-hover:scale-105 transition-transform flex-shrink-0"
+                        className="w-20 h-20 object-cover rounded-xl border-2 border-gray-200 group-hover:scale-105 transition-transform"
                       />
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-gray-900 mb-0.5 sm:mb-1 group-hover:text-teal-600 transition-colors text-sm sm:text-base truncate">
+                      <div className="flex-1">
+                        <h3 className="font-bold text-gray-900 mb-1 group-hover:text-teal-600 transition-colors">
                           {product.name}
                         </h3>
-                        <p className="text-xs sm:text-sm text-gray-600 line-clamp-1 sm:line-clamp-2 mb-1.5 sm:mb-2">
+                        <p className="text-sm text-gray-600 line-clamp-2 mb-2">
                           {product.description}
                         </p>
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-base sm:text-lg font-bold text-teal-600">
-                            {'₹'}{product.price.toFixed(2)}
+                        <div className="flex items-center justify-between">
+                          <span className="text-lg font-bold text-teal-600">
+                            ₹{product.price.toFixed(2)}
                           </span>
                           {product.in_stock && (
                             <button
@@ -507,14 +507,14 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
                                 e.stopPropagation();
                                 addToCart(product);
                               }}
-                              className="flex items-center gap-1.5 sm:gap-2 bg-teal-500 text-white px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-semibold hover:bg-teal-600 transition-colors flex-shrink-0"
+                              className="flex items-center gap-2 bg-teal-500 text-white px-3 py-1.5 rounded-lg text-sm font-semibold hover:bg-teal-600 transition-colors"
                             >
-                              <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                              <ShoppingCart className="w-4 h-4" />
                               Add
                             </button>
                           )}
                           {!product.in_stock && (
-                            <span className="text-xs sm:text-sm text-gray-500 font-semibold flex-shrink-0">Out of Stock</span>
+                            <span className="text-sm text-gray-500 font-semibold">Out of Stock</span>
                           )}
                         </div>
                       </div>

@@ -201,7 +201,7 @@ export default function Shop({ onCartClick }: ShopProps) {
           </div>
         </div>
       </div>
-      <div className="relative bg-gradient-to-br from-teal-50 via-mint-50 to-peach-100 py-6 sm:py-12 lg:py-16 xl:py-24 px-3 sm:px-6 lg:px-8 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-teal-50 via-mint-50 to-peach-100 py-8 sm:py-12 lg:py-16 xl:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="hidden md:block absolute top-10 right-20 w-64 h-64 bg-gradient-to-br from-teal-300/30 to-mint-400/30 blob"></div>
         <div className="hidden lg:block absolute bottom-10 left-20 w-80 h-80 bg-gradient-to-br from-peach-300/20 to-teal-300/20 blob" style={{ animationDelay: '3s' }}></div>
 

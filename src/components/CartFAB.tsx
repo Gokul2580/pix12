@@ -70,19 +70,19 @@ export default function CartFAB({ onCartClick, position = 'right' }: CartFABProp
   };
 
   const positionClasses = position === 'right' 
-    ? 'bottom-4 sm:bottom-6 right-3 sm:right-6 md:right-8' 
-    : 'bottom-4 sm:bottom-6 left-3 sm:left-6 md:left-8';
+    ? 'bottom-8 right-8 sm:right-6 md:right-8' 
+    : 'bottom-8 left-8 sm:left-6 md:left-8';
 
   const expandedMenuClasses = position === 'right'
-    ? 'bottom-24 sm:bottom-28 right-3 sm:right-6 md:right-8'
-    : 'bottom-24 sm:bottom-28 left-3 sm:left-6 md:left-8';
+    ? 'bottom-28 right-8 sm:right-6 md:right-8'
+    : 'bottom-28 left-8 sm:left-6 md:left-8';
 
   return (
     <>
       {/* Chat Bubble Notification - Fixed Position */}
       {showNotification && (
-        <div className="fixed bottom-48 sm:bottom-56 right-3 sm:right-6 md:right-8 z-40 animate-in fade-in slide-in-from-bottom-4 duration-300 pointer-events-auto">
-          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl border-2 border-emerald-200 overflow-hidden max-w-[calc(100vw-2rem)] sm:max-w-sm mx-2">
+        <div className="fixed bottom-56 right-8 sm:right-6 md:right-8 z-40 animate-in fade-in slide-in-from-bottom-4 duration-300 pointer-events-auto">
+          <div className="bg-white rounded-3xl shadow-2xl border-2 border-emerald-200 overflow-hidden max-w-sm mx-2">
             <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-2 flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-white flex-shrink-0" />
               <span className="text-white font-bold text-sm">Added to cart!</span>
@@ -99,7 +99,7 @@ export default function CartFAB({ onCartClick, position = 'right' }: CartFABProp
             className="fixed inset-0 z-40 pointer-events-auto sm:hidden"
             onClick={() => setExpanded(false)}
           />
-          <div className={`fixed ${expandedMenuClasses} z-50 bg-white rounded-2xl sm:rounded-3xl shadow-2xl border-2 border-emerald-100 overflow-hidden w-[calc(100vw-1.5rem)] max-w-xs sm:max-w-sm sm:w-full sm:mx-0 animate-in fade-in slide-in-from-bottom-2 duration-200 pointer-events-auto`}>
+          <div className={`fixed ${expandedMenuClasses} z-50 bg-white rounded-3xl shadow-2xl border-2 border-emerald-100 overflow-hidden w-full max-w-xs sm:max-w-sm mx-2 sm:mx-0 animate-in fade-in slide-in-from-bottom-2 duration-200 pointer-events-auto`}>
             {/* Header */}
             <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -191,8 +191,8 @@ export default function CartFAB({ onCartClick, position = 'right' }: CartFABProp
       </div>
 
       {/* Powered by branding - Responsive */}
-      <div className="fixed bottom-0.5 sm:bottom-1 right-3 sm:right-6 md:right-8 z-40 pointer-events-auto">
-        <p className="text-[10px] sm:text-xs text-gray-500 font-medium text-center whitespace-nowrap">
+      <div className="fixed bottom-2 right-8 sm:right-6 md:right-8 z-40 pointer-events-auto">
+        <p className="text-xs text-gray-500 font-medium text-center whitespace-nowrap">
           Powered by{' '}
           <a
             href="https://tagyverse.com"

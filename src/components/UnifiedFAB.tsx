@@ -68,8 +68,8 @@ export default function UnifiedFAB({ onTryOnClick, onColorMatchClick }: UnifiedF
   return (
     <>
       {/* Main FAB Container - Fixed positioning for true sticky behavior */}
-      <div className="fixed bottom-3 sm:bottom-6 right-3 sm:right-6 z-40 pointer-events-none">
-        <div className="flex flex-col items-end gap-2 sm:gap-4 pointer-events-auto">
+      <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-40 pointer-events-none">
+        <div className="flex flex-col items-end gap-3 sm:gap-4 pointer-events-auto">
           {/* Feature Chips - Show when FAB is open */}
           {isOpen && (
             <div className="flex flex-col gap-2 sm:gap-3 animate-in fade-in slide-in-from-right-3 duration-300">
@@ -84,11 +84,11 @@ export default function UnifiedFAB({ onTryOnClick, onColorMatchClick }: UnifiedF
                       animationDelay: `${index * 50}ms`
                     }}
                   >
-                    <div className="bg-gray-900 text-white px-2.5 sm:px-4 py-1 sm:py-2 rounded-full text-[11px] sm:text-sm font-semibold whitespace-nowrap shadow-lg group-hover:shadow-xl transition-all">
+                    <div className="bg-gray-900 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold whitespace-nowrap shadow-lg group-hover:shadow-xl transition-all">
                       {feature.label}
                     </div>
-                    <div className={`w-10 h-10 sm:w-14 sm:h-14 ${feature.bgColor} text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center active:scale-95`}>
-                      <Icon className="w-5 h-5 sm:w-7 sm:h-7" />
+                    <div className={`w-12 h-12 sm:w-14 sm:h-14 ${feature.bgColor} text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center active:scale-95`}>
+                      <Icon className="w-6 h-6 sm:w-7 sm:h-7" />
                     </div>
                   </button>
                 );
@@ -99,15 +99,15 @@ export default function UnifiedFAB({ onTryOnClick, onColorMatchClick }: UnifiedF
           {/* Main FAB Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-center active:scale-95 relative ${
+            className={`w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-center active:scale-95 relative ${
               isOpen ? 'rotate-45' : 'rotate-0'
             }`}
             aria-label="Toggle features menu"
           >
             {isOpen ? (
-              <X className="w-6 h-6 sm:w-8 sm:h-8" />
+              <X className="w-7 h-7 sm:w-8 sm:h-8" />
             ) : (
-              <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 animate-pulse" />
+              <Sparkles className="w-7 h-7 sm:w-8 sm:h-8 animate-pulse" />
             )}
           </button>
         </div>
