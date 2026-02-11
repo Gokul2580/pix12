@@ -25,21 +25,21 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
       <div className="modal-overlay" onClick={onClose} aria-hidden="true" />
 
       {/* Modal */}
-      <div className="modal-content flex flex-col items-center justify-end sm:justify-center w-full">
-        <div className="bg-white border-4 border-black w-full max-w-2xl h-[90dvh] sm:h-[85dvh] overflow-hidden flex flex-col animate-slide-up rounded-t-3xl sm:rounded-3xl">
-          <div className="flex-shrink-0 pt-2 pb-3 sm:pb-4 px-3 sm:px-6 border-b-4 border-black bg-[#B5E5CF] rounded-t-3xl">
-            <div className="w-12 h-1.5 bg-black rounded-full mx-auto mb-3 sm:mb-4"></div>
+      <div className="modal-content flex flex-col items-end justify-end sm:items-center sm:justify-center w-full">
+        <div className="bg-white border-2 sm:border-4 border-black w-full max-w-2xl h-[85dvh] sm:h-[85dvh] overflow-hidden flex flex-col animate-slide-up rounded-t-2xl sm:rounded-3xl">
+          <div className="flex-shrink-0 pt-2 pb-2 sm:pb-4 px-3 sm:px-6 border-b-2 sm:border-b-4 border-black bg-[#B5E5CF] rounded-t-2xl sm:rounded-t-3xl">
+            <div className="w-10 sm:w-12 h-1 sm:h-1.5 bg-black rounded-full mx-auto mb-2 sm:mb-4"></div>
 
-            <div className="flex items-start sm:items-center justify-between gap-2">
+            <div className="flex items-center justify-between gap-2">
               <div className="flex-1 min-w-0">
-                <h2 className="text-xl sm:text-2xl font-bold text-black truncate">Shopping Cart</h2>
-                <p className="text-black font-medium text-xs sm:text-sm mt-0.5 sm:mt-0 truncate">
+                <h2 className="text-lg sm:text-2xl font-bold text-black truncate">Shopping Cart</h2>
+                <p className="text-black font-medium text-[11px] sm:text-sm mt-0.5 truncate">
                   {items.length === 0 ? 'Your cart is empty' : `${items.length} ${items.length === 1 ? 'item' : 'items'} in cart`}
                 </p>
               </div>
               <button
                 onClick={onClose}
-                className="w-9 sm:w-10 h-9 sm:h-10 rounded-full flex items-center justify-center border-2 border-black hover:bg-white transition-all hover:scale-110 bg-white flex-shrink-0"
+                className="w-8 sm:w-10 h-8 sm:h-10 rounded-full flex items-center justify-center border-2 border-black hover:bg-white transition-all hover:scale-110 bg-white flex-shrink-0"
               >
                 <X className="w-4 sm:w-5 h-4 sm:h-5 text-black" />
               </button>
