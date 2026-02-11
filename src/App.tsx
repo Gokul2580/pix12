@@ -14,12 +14,10 @@ import MyOrdersSheet from './components/MyOrdersSheet';
 import PurchaseNotification from './components/PurchaseNotification';
 import OfferDialog from './components/OfferDialog';
 import WelcomeCouponDialog from './components/WelcomeCouponDialog';
-import FeedbackPanel from './components/FeedbackPanel';
 import ProductDetailsSheet from './components/ProductDetailsSheet';
 import SplashScreen from './components/SplashScreen';
 import Footer from './components/Footer';
-import WhatsAppFAB from './components/WhatsAppFAB';
-import SmartFeatureFAB from './components/SmartFeatureFAB';
+import UnifiedFAB from './components/UnifiedFAB';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import ComingSoon from './pages/ComingSoon';
@@ -42,6 +40,9 @@ import PageLoader from './components/PageLoader';
 import { monitorWebVitals, enableGPUAcceleration, respectReducedMotion, preloadCriticalImages } from './utils/performanceOptimization';
 import { generateAISiteDescription, generateAIKeywords, generateOrganizationSchema, injectSchema } from './utils/seoOptimization';
 import { preloadCriticalImages as preloadImages } from './utils/imageOptimization';
+import FeedbackPanel from './components/FeedbackPanel';
+import WhatsAppFAB from './components/WhatsAppFAB';
+import SmartFeatureFAB from './components/SmartFeatureFAB';
 
 type Page = 'home' | 'shop' | 'admin' | 'checkout' | 'superadmin' | 'privacy-policy' | 'shipping-policy' | 'refund-policy' | 'contact';
 
@@ -100,13 +101,13 @@ function getInitialPage(): Page {
 }
 
 interface AppContentProps {
-  onSmartFABToggle: (show: boolean) => void;
   onPageChange: (page: Page) => void;
   onShowTryOnList: (show: boolean) => void;
   onShowColorMatchList: (show: boolean) => void;
+  onSmartFABToggle: (show: boolean) => void;
 }
 
-function AppContent({ onSmartFABToggle, onPageChange, onShowTryOnList, onShowColorMatchList }: AppContentProps) {
+function AppContent({ onPageChange, onShowTryOnList, onShowColorMatchList, onSmartFABToggle }: AppContentProps) {
   const { data: publishedData, loading: publishedDataLoading, error: publishedDataError } = usePublishedData();
   const [currentPage, setCurrentPage] = useState<Page>(getInitialPage());
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -274,7 +275,7 @@ function AppContent({ onSmartFABToggle, onPageChange, onShowTryOnList, onShowCol
 
     switch (currentPage) {
       case 'home':
-        return <Home onNavigate={handleNavigate} onCartClick={() => setCartModalOpen(true)} onSmartFABToggle={onSmartFABToggle} />;
+        return <Home onNavigate={handleNavigate} onCartClick={() => setCartModalOpen(true)} />;
       case 'shop':
         return <Shop onCartClick={() => setCartModalOpen(true)} />;
       case 'admin':
@@ -320,7 +321,7 @@ function AppContent({ onSmartFABToggle, onPageChange, onShowTryOnList, onShowCol
           </Suspense>
         );
       default:
-        return <Home onNavigate={handleNavigate} onCartClick={() => setCartModalOpen(true)} />;
+        return <Home onNavigate={handleNavigate} onCartClick={() => setCartModalOpen(true)} onSmartFABToggle={onSmartFABToggle} />;
     }
   };
 
@@ -417,10 +418,10 @@ function AppContent({ onSmartFABToggle, onPageChange, onShowTryOnList, onShowCol
 }
 
 function App() {
-  const [showSmartFeatureFAB, setShowSmartFeatureFAB] = useState(false);
   const [currentPage, setCurrentPage] = useState<Page>(getInitialPage());
   const [showTryOnList, setShowTryOnList] = useState(false);
   const [showColorMatchList, setShowColorMatchList] = useState(false);
+  const [showSmartFeatureFAB, setShowSmartFeatureFAB] = useState(false);
 
   return (
     <>
@@ -441,16 +442,12 @@ function App() {
         </AuthProvider>
       </ErrorBoundary>
       
-      {/* FABs rendered OUTSIDE all providers for true fixed positioning - prevents scroll inheritance */}
+      {/* Unified FAB - Consolidated all features into one FAB with animated chip layout */}
       <div className="fixed bottom-0 left-0 right-0 top-0 pointer-events-none z-30">
-        <FeedbackPanel />
-        <WhatsAppFAB />
-        {showSmartFeatureFAB && (
-          <SmartFeatureFAB
-            onTryOnClick={() => setShowTryOnList(true)}
-            onColorMatchClick={() => setShowColorMatchList(true)}
-          />
-        )}
+        <UnifiedFAB
+          onTryOnClick={() => setShowTryOnList(true)}
+          onColorMatchClick={() => setShowColorMatchList(true)}
+        />
       </div>
     </>
   );

@@ -39,7 +39,7 @@ interface InfoSectionData {
 interface HomeProps {
   onNavigate: (page: 'shop', categoryId?: string) => void;
   onCartClick: () => void;
-  onSmartFABToggle?: (show: boolean) => void;
+  onSmartFABToggle?: (isVisible: boolean) => void;
 }
 
 interface Policy {
@@ -255,7 +255,6 @@ export default function Home({ onNavigate, onCartClick, onSmartFABToggle }: Home
 
             const fabVisible = visibility.smart_feature_fab !== undefined ? visibility.smart_feature_fab : false;
             setShowSmartFeatureFAB(fabVisible);
-            onSmartFABToggle?.(fabVisible);
 
             const defaultSections = [
               { id: 'banner_social', type: 'default' as const, order_index: visibility.order_banner_social ?? -1 },
