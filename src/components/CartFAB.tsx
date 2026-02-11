@@ -70,18 +70,18 @@ export default function CartFAB({ onCartClick, position = 'right' }: CartFABProp
   };
 
   const positionClasses = position === 'right' 
-    ? 'bottom-6 right-6' 
-    : 'bottom-6 left-6';
+    ? 'bottom-24 right-6' 
+    : 'bottom-24 left-6';
 
-  const expandedPositionClasses = position === 'right'
-    ? 'right-0'
-    : 'left-0';
+  const expandedMenuClasses = position === 'right'
+    ? 'bottom-28 right-6'
+    : 'bottom-28 left-6';
 
   return (
-    <>
+    <div>
       {/* Chat Bubble Notification */}
       {showNotification && (
-        <div className="fixed bottom-32 right-6 z-40 animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="fixed bottom-56 right-6 z-40 animate-in fade-in slide-in-from-bottom-4 duration-300">
           <div className="bg-white rounded-3xl shadow-2xl border-2 border-emerald-200 overflow-hidden max-w-sm">
             <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-2 flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-white" />
@@ -91,11 +91,9 @@ export default function CartFAB({ onCartClick, position = 'right' }: CartFABProp
         </div>
       )}
 
-      {/* Cart FAB Container */}
-      <div className={`fixed ${positionClasses} z-50 flex flex-col items-${position === 'right' ? 'end' : 'start'} gap-4`}>
-        {/* Expanded Chat Menu */}
-        {expanded && (
-          <div className="absolute bottom-20 ${expandedPositionClasses} bg-white rounded-3xl shadow-2xl border-2 border-emerald-100 overflow-hidden min-w-80 max-w-sm animate-in fade-in slide-in-from-bottom-2 duration-200">
+      {/* Expanded Chat Menu - Fixed Positioning */}
+      {expanded && (
+        <div className={`fixed ${expandedMenuClasses} z-50 bg-white rounded-3xl shadow-2xl border-2 border-emerald-100 overflow-hidden min-w-80 max-w-sm animate-in fade-in slide-in-from-bottom-2 duration-200`}>
             {/* Header */}
             <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -192,10 +190,11 @@ export default function CartFAB({ onCartClick, position = 'right' }: CartFABProp
                 <p className="text-sm text-gray-600 font-medium">Loading suggestions...</p>
               </div>
             )}
-          </div>
-        )}
+        </div>
+      )}
 
-        {/* Main FAB Button - Material Design */}
+      {/* Main FAB Button - Material Design - Fixed Sticky Position */}
+      <div className={`fixed ${positionClasses} z-50 flex flex-col items-center gap-4`}>
         <button
           onClick={() => setExpanded(!expanded)}
           className="relative w-16 h-16 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 group flex items-center justify-center font-bold text-white border-4 border-white active:scale-95"
@@ -220,6 +219,21 @@ export default function CartFAB({ onCartClick, position = 'right' }: CartFABProp
           </div>
         </button>
       </div>
-    </>
+
+      {/* Powered by Branding - Subtle Footer */}
+      <div className="fixed bottom-2 right-6 z-40 text-center">
+        <p className="text-xs text-gray-500 font-medium">
+          Powered by{' '}
+          <a
+            href="https://tagyverse.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-emerald-600 hover:text-emerald-700 font-bold transition-colors"
+          >
+            tagyverse.com
+          </a>
+        </p>
+      </div>
+    </div>
   );
 }
