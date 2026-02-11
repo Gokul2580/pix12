@@ -285,5 +285,6 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
     </>
   );
 
-  return createPortal(modalContent, document.body);
+  const modalElement = document.getElementById('modals') || document.body;
+  return createPortal(modalContent, modalElement);
 }

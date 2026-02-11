@@ -144,9 +144,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     </>
   );
 
+  const modalElement = document.getElementById('modals') || document.body;
   return (
     <>
-      {createPortal(modalContent, document.body)}
+      {createPortal(modalContent, modalElement)}
 
       {/* BottomSheet renders via its own portal - always outside LoginModal DOM */}
       <BottomSheet isOpen={showTerms} onClose={() => setShowTerms(false)} title="Terms & Conditions">

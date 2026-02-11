@@ -373,7 +373,7 @@ function AppContent() {
         </div>
       )}
 
-      {/* Modals rendered outside the grayscale container to fix position: fixed */}
+      {/* Modals using React Portals - rendered outside app DOM tree */}
       <LoginModal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
       <CartModal
         isOpen={cartModalOpen}
