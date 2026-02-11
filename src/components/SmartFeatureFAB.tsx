@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Shirt, Palette } from 'lucide-react';
-import { createPortal } from 'react-dom';
 
 interface SmartFeatureFABProps {
   onTryOnClick: () => void;
@@ -32,11 +31,11 @@ export default function SmartFeatureFAB({ onTryOnClick, onColorMatchClick }: Sma
     return () => clearInterval(autoShowInterval);
   }, []);
 
-  const fabContent = (
-    <div className="fab bottom-auto top-auto flex flex-col items-end gap-3" style={{ bottom: '120px', right: '24px' }}>
+  return (
+    <div className="fixed bottom-32 right-6 z-40 flex flex-col items-end gap-2">
       {showFeatures && (
         <>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 animate-in fade-in slide-in-from-bottom-2 duration-200">
             <div className="bg-pink-500 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-semibold whitespace-nowrap">
               Match with Dress
             </div>
@@ -53,7 +52,7 @@ export default function SmartFeatureFAB({ onTryOnClick, onColorMatchClick }: Sma
             </button>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 animate-in fade-in slide-in-from-bottom-2 duration-200" style={{ animationDelay: '50ms' }}>
             <div className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-semibold whitespace-nowrap">
               Virtual Try On
             </div>
@@ -91,6 +90,4 @@ export default function SmartFeatureFAB({ onTryOnClick, onColorMatchClick }: Sma
       </div>
     </div>
   );
-
-  return fabContent;
 }
