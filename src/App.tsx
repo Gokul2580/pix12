@@ -42,6 +42,7 @@ import { preloadCriticalImages as preloadImages } from './utils/imageOptimizatio
 import FeedbackPanel from './components/FeedbackPanel';
 import WhatsAppFAB from './components/WhatsAppFAB';
 import SmartFeatureFAB from './components/SmartFeatureFAB';
+import CartFAB from './components/CartFAB';
 
 type Page = 'home' | 'shop' | 'admin' | 'checkout' | 'superadmin' | 'privacy-policy' | 'shipping-policy' | 'refund-policy' | 'contact';
 
@@ -423,6 +424,7 @@ function App() {
   const [showTryOnList, setShowTryOnList] = useState(false);
   const [showColorMatchList, setShowColorMatchList] = useState(false);
   const [showSmartFeatureFAB, setShowSmartFeatureFAB] = useState(false);
+  const [cartModalOpen, setCartModalOpen] = useState(false);
 
   return (
     <>
@@ -442,6 +444,9 @@ function App() {
           </PublishedDataProvider>
         </AuthProvider>
       </ErrorBoundary>
+
+      {/* Cart FAB with Marketing Messages */}
+      <CartFAB onCartClick={() => setCartModalOpen(true)} position="right" />
     </>
   );
 }

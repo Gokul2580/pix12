@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ShoppingBag, Search, Home as HomeIcon, Store, User, LogOut, Settings, X, ShoppingCart, Package, MessageSquare, Shirt, Palette, MessageCircle, Plus } from 'lucide-react';
+import { ShoppingBag, Search, Home as HomeIcon, Store, User, LogOut, Settings, X, ShoppingCart, Package, MessageSquare, Shirt, Palette, MessageCircle, Plus, ChevronRight } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import { usePublishedData } from '../contexts/PublishedDataContext';
@@ -370,22 +370,40 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
                 More
               </button>
 
-              {/* Dropdown Menu */}
+              {/* Material Design Dropdown Menu */}
               {showMoreMenu && (
-                <div className="absolute top-full right-0 mt-2 bg-white rounded-2xl border-2 border-gray-200 shadow-lg overflow-hidden min-w-max z-50">
-                  {fabFeatures.map((feature) => {
-                    const Icon = feature.icon;
-                    return (
-                      <button
-                        key={feature.id}
-                        onClick={() => handleFeatureClick(feature.id)}
-                        className="w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-100 transition-colors border-b border-gray-100 last:border-b-0 text-left"
-                      >
-                        <Icon className={`w-5 h-5 ${feature.bgColor.split(' ')[0]}`} />
-                        <span className="text-sm font-semibold text-gray-900">{feature.label}</span>
-                      </button>
-                    );
-                  })}
+                <div className="absolute top-full right-0 mt-3 bg-white rounded-3xl shadow-2xl border-2 border-gray-100 overflow-hidden min-w-max z-50 backdrop-blur-sm bg-opacity-95 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-teal-50 to-emerald-50">
+                    <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Smart Features</p>
+                  </div>
+                  <div className="p-2">
+                    {fabFeatures.map((feature, idx) => {
+                      const Icon = feature.icon;
+                      return (
+                        <button
+                          key={feature.id}
+                          onClick={() => handleFeatureClick(feature.id)}
+                          className="w-full px-4 py-3.5 flex items-center gap-3 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 transition-all duration-200 text-left rounded-2xl group"
+                        >
+                          <div className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110 ${feature.bgColor} shadow-md group-hover:shadow-lg`}>
+                            <Icon className="w-5 h-5 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-max">
+                            <p className="font-bold text-gray-900 text-sm group-hover:text-teal-600 transition-colors">
+                              {feature.label}
+                            </p>
+                            <p className="text-xs text-gray-500 group-hover:text-gray-700 transition-colors">
+                              {idx === 0 && 'Share your feedback'}
+                              {idx === 1 && 'Try clothes virtually'}
+                              {idx === 2 && 'Find your color'}
+                              {idx === 3 && 'Chat with support'}
+                            </p>
+                          </div>
+                          <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-teal-600 group-hover:translate-x-1 transition-all opacity-0 group-hover:opacity-100" />
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
             </div>
