@@ -378,7 +378,7 @@ function AppContent() {
         </div>
       )}
 
-      {/* Modals and FABs rendered OUTSIDE all containers for proper fixed positioning */}
+      {/* Modals rendered OUTSIDE all containers for proper fixed positioning */}
       <LoginModal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
       <CartModal
         isOpen={cartModalOpen}
@@ -406,13 +406,6 @@ function AppContent() {
           }
         }}
       />
-      <WhatsAppFAB />
-      {showSmartFeatureFAB && currentPage === 'home' && (
-        <SmartFeatureFAB
-          onTryOnClick={() => setShowTryOnList(true)}
-          onColorMatchClick={() => setShowColorMatchList(true)}
-        />
-      )}
     </>
   );
 }
@@ -425,6 +418,8 @@ function App() {
           <CartProvider>
             <FavoritesProvider>
               <AppContent />
+              {/* FABs rendered at root level (outside all containers) for true fixed positioning - NOT INSIDE AppContent */}
+              <WhatsAppFAB />
             </FavoritesProvider>
           </CartProvider>
         </PublishedDataProvider>
