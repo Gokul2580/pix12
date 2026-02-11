@@ -423,31 +423,36 @@ function App() {
   const [showColorMatchList, setShowColorMatchList] = useState(false);
 
   return (
-    <ErrorBoundary>
-      <AuthProvider>
-        <PublishedDataProvider>
-          <CartProvider>
-            <FavoritesProvider>
-              <AppContent 
-                onSmartFABToggle={setShowSmartFeatureFAB}
-                onPageChange={setCurrentPage}
-                onShowTryOnList={setShowTryOnList}
-                onShowColorMatchList={setShowColorMatchList}
-              />
-              {/* FABs rendered at root level (outside all containers) for true fixed positioning */}
-              <FeedbackPanel />
-              <WhatsAppFAB />
-              {showSmartFeatureFAB && (
-                <SmartFeatureFAB
-                  onTryOnClick={() => setShowTryOnList(true)}
-                  onColorMatchClick={() => setShowColorMatchList(true)}
+    <>
+      <ErrorBoundary>
+        <AuthProvider>
+          <PublishedDataProvider>
+            <CartProvider>
+              <FavoritesProvider>
+                <AppContent 
+                  onSmartFABToggle={setShowSmartFeatureFAB}
+                  onPageChange={setCurrentPage}
+                  onShowTryOnList={setShowTryOnList}
+                  onShowColorMatchList={setShowColorMatchList}
                 />
-              )}
-            </FavoritesProvider>
-          </CartProvider>
-        </PublishedDataProvider>
-      </AuthProvider>
-    </ErrorBoundary>
+              </FavoritesProvider>
+            </CartProvider>
+          </PublishedDataProvider>
+        </AuthProvider>
+      </ErrorBoundary>
+      
+      {/* FABs rendered OUTSIDE all providers for true fixed positioning - prevents scroll inheritance */}
+      <div className="fixed bottom-0 left-0 right-0 top-0 pointer-events-none z-30">
+        <FeedbackPanel />
+        <WhatsAppFAB />
+        {showSmartFeatureFAB && (
+          <SmartFeatureFAB
+            onTryOnClick={() => setShowTryOnList(true)}
+            onColorMatchClick={() => setShowColorMatchList(true)}
+          />
+        )}
+      </div>
+    </>
   );
 }
 

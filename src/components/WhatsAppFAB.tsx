@@ -122,7 +122,7 @@ export default function WhatsAppFAB() {
   };
 
   return (
-    <div className="sticky bottom-6 right-6 flex justify-end z-40 pointer-events-none p-4" style={{ alignSelf: 'flex-end' }}>
+    <div className="absolute bottom-6 right-6 flex justify-end z-40 pointer-events-none">
       <div className="pointer-events-auto">
         <button
           onClick={() => setIsOpen(true)}
@@ -133,7 +133,7 @@ export default function WhatsAppFAB() {
         </button>
 
         {isOpen && (
-          <div className="absolute bottom-20 right-0 w-96 max-w-[calc(100vw-2rem)] z-50">
+          <div className="absolute bottom-20 right-0 w-96 max-w-[calc(100vw-2rem)] z-50 pointer-events-auto">
             <div className="bg-white border-2 border-gray-300 flex flex-col h-[450px] sm:h-[500px] max-h-[80vh] rounded-2xl overflow-hidden shadow-2xl animate-scale-in">
               <div className="bg-[#075E54] p-3 sm:p-4 flex items-center justify-between flex-shrink-0 border-b-2 border-gray-300">
                 <div className="flex items-center gap-3">

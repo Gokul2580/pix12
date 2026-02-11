@@ -35,8 +35,27 @@ export default function FeedbackPanel() {
   return (
     <>
       <div
-        className={`fixed left-0 bottom-16 sm:bottom-20 md:bottom-24 z-40 transition-all duration-300 pointer-events-auto ${
+        className={`absolute left-0 bottom-16 sm:bottom-20 md:bottom-24 z-40 transition-all duration-300 pointer-events-auto ${
           isOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        }`}
+      >
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="bg-gradient-to-b from-emerald-400 to-emerald-500 text-white px-2 sm:px-2.5 py-4 sm:py-5 rounded-r-lg shadow-lg hover:from-emerald-500 hover:to-emerald-600 transition-all duration-300 flex items-center gap-1 sm:gap-1.5 active:scale-95"
+          style={{
+            writingMode: 'vertical-rl',
+            textOrientation: 'mixed'
+          }}
+          aria-label="Open feedback panel"
+        >
+          <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 -rotate-90" />
+          <span className="font-semibold text-xs tracking-wider">FEEDBACK</span>
+        </button>
+      </div>
+
+      <div
+        className={`absolute bottom-16 sm:bottom-20 md:bottom-24 left-1 sm:left-2 md:left-4 w-72 sm:w-80 bg-white rounded-2xl shadow-2xl z-50 transform transition-all duration-300 ease-out ${
+          isOpen ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
         }`}
       >
         <button
@@ -126,7 +145,7 @@ export default function FeedbackPanel() {
 
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/30 z-40 animate-fade-in"
+          className="absolute inset-0 bg-black/30 z-40 animate-fade-in"
           onClick={() => setIsOpen(false)}
           role="button"
           tabIndex={-1}
