@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
-import { createPortal } from 'react-dom';
 
 type Message = {
   id: number;
@@ -122,20 +121,20 @@ export default function WhatsAppFAB() {
     });
   };
 
-  const fabContent = (
-    <>
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-200 active:scale-95 z-30"
-        aria-label="Chat on WhatsApp"
-      >
-        <MessageCircle className="w-6 h-6" />
-      </button>
+  return (
+    <div className="sticky bottom-6 right-6 flex justify-end z-40 pointer-events-none p-4" style={{ alignSelf: 'flex-end' }}>
+      <div className="pointer-events-auto">
+        <button
+          onClick={() => setIsOpen(true)}
+          className="w-14 h-14 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-200 active:scale-95"
+          aria-label="Chat on WhatsApp"
+        >
+          <MessageCircle className="w-6 h-6" />
+        </button>
 
-      {isOpen && (
-        <>
-          <div className="fixed bottom-20 right-4 sm:right-6 z-50 w-[calc(100%-2rem)] sm:w-96 max-w-md">
-            <div className="bg-white border-2 border-gray-300 flex flex-col h-[450px] sm:h-[500px] max-h-[80vh] rounded-2xl overflow-hidden animate-scale-in">
+        {isOpen && (
+          <div className="absolute bottom-20 right-0 w-96 max-w-[calc(100vw-2rem)] z-50">
+            <div className="bg-white border-2 border-gray-300 flex flex-col h-[450px] sm:h-[500px] max-h-[80vh] rounded-2xl overflow-hidden shadow-2xl animate-scale-in">
               <div className="bg-[#075E54] p-3 sm:p-4 flex items-center justify-between flex-shrink-0 border-b-2 border-gray-300">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center p-1.5 border-2 border-white">
@@ -158,7 +157,6 @@ export default function WhatsAppFAB() {
                   <X className="w-5 h-5" />
                 </button>
               </div>
-
               <div
                 className="flex-1 p-3 sm:p-4 space-y-3 overflow-y-auto overscroll-contain bg-[#ECE5DD] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iYSIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIj48cGF0aCBkPSJNMCAwaDQwdjQwSDB6IiBmaWxsPSIjZjBmMGYwIi8+PHBhdGggZD0iTTAgMGg0MHY0MEgweiIgZmlsbD0iI2Y1ZjVmNSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNhKSIvPjwvc3ZnPg==')]"
               >
@@ -184,9 +182,7 @@ export default function WhatsAppFAB() {
                       }`}
                     >
                       <p className="text-sm leading-relaxed break-words">{msg.text}</p>
-                      <div
-                        className={`flex items-center justify-end gap-1 mt-1 text-gray-500`}
-                      >
+                      <div className="flex items-center justify-end gap-1 mt-1 text-gray-500">
                         <span className="text-[10px]">{formatTime(msg.timestamp)}</span>
                         {msg.sender === 'user' && (
                           <svg width="16" height="11" viewBox="0 0 16 11" fill="none">
@@ -198,7 +194,6 @@ export default function WhatsAppFAB() {
                     </div>
                   </div>
                 ))}
-
                 {isTyping && (
                   <div className="flex justify-start animate-fade-in">
                     <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0 mr-2 border border-gray-200 p-1">
@@ -217,10 +212,8 @@ export default function WhatsAppFAB() {
                     </div>
                   </div>
                 )}
-
                 <div ref={chatEndRef} />
               </div>
-
               <div className="bg-[#F0F0F0] border-t-2 border-gray-300 flex-shrink-0">
                 {!awaitingName && messages.filter(m => m.sender === 'user').length > 1 && (
                   <div className="px-3 sm:px-4 pt-2.5 pb-1.5">
@@ -233,7 +226,6 @@ export default function WhatsAppFAB() {
                     </button>
                   </div>
                 )}
-
                 <div className="p-2.5 sm:p-3">
                   <div className="flex items-center gap-2">
                     <input
@@ -262,8 +254,8 @@ export default function WhatsAppFAB() {
               </div>
             </div>
           </div>
-        </>
-      )}
+        )}
+      </div>
 
       <style>{`
         @keyframes fade-in-up {
@@ -311,8 +303,6 @@ export default function WhatsAppFAB() {
           animation: typing-dot 1.4s ease-in-out infinite;
         }
       `}</style>
-    </>
+    </div>
   );
-
-  return fabContent;
 }

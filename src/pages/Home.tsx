@@ -39,6 +39,7 @@ interface InfoSectionData {
 interface HomeProps {
   onNavigate: (page: 'shop', categoryId?: string) => void;
   onCartClick: () => void;
+  onSmartFABToggle?: (show: boolean) => void;
 }
 
 interface Policy {
@@ -48,7 +49,7 @@ interface Policy {
   isEnabled: boolean;
 }
 
-export default function Home({ onNavigate, onCartClick }: HomeProps) {
+export default function Home({ onNavigate, onCartClick, onSmartFABToggle }: HomeProps) {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [newArrivalCategories, setNewArrivalCategories] = useState<Category[]>([]);
@@ -252,7 +253,9 @@ export default function Home({ onNavigate, onCartClick }: HomeProps) {
               marquee: visibility.marquee !== undefined ? visibility.marquee : true
             });
 
-            setShowSmartFeatureFAB(visibility.smart_feature_fab !== undefined ? visibility.smart_feature_fab : false);
+            const fabVisible = visibility.smart_feature_fab !== undefined ? visibility.smart_feature_fab : false;
+            setShowSmartFeatureFAB(fabVisible);
+            onSmartFABToggle?.(fabVisible);
 
             const defaultSections = [
               { id: 'banner_social', type: 'default' as const, order_index: visibility.order_banner_social ?? -1 },
