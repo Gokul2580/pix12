@@ -443,12 +443,10 @@ function App() {
       </ErrorBoundary>
       
       {/* Unified FAB - Consolidated all features into one FAB with animated chip layout */}
-      <div className="fixed bottom-0 left-0 right-0 top-0 pointer-events-none z-30">
-        <UnifiedFAB
-          onTryOnClick={() => setShowTryOnList(true)}
-          onColorMatchClick={() => setShowColorMatchList(true)}
-        />
-      </div>
+      <UnifiedFAB
+        onTryOnClick={() => setShowTryOnList(true)}
+        onColorMatchClick={() => setShowColorMatchList(true)}
+      />
     </>
   );
 }

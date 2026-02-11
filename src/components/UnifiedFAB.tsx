@@ -67,8 +67,8 @@ export default function UnifiedFAB({ onTryOnClick, onColorMatchClick }: UnifiedF
 
   return (
     <>
-      {/* Main FAB Container */}
-      <div className="absolute bottom-4 sm:bottom-6 right-4 sm:right-6 z-40 pointer-events-none">
+      {/* Main FAB Container - Fixed positioning for true sticky behavior */}
+      <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-40 pointer-events-none">
         <div className="flex flex-col items-end gap-3 sm:gap-4 pointer-events-auto">
           {/* Feature Chips - Show when FAB is open */}
           {isOpen && (
@@ -116,7 +116,7 @@ export default function UnifiedFAB({ onTryOnClick, onColorMatchClick }: UnifiedF
       {/* Overlay - Close FAB when clicked */}
       {isOpen && (
         <div
-          className="absolute inset-0 z-30 cursor-pointer"
+          className="fixed inset-0 z-30 cursor-pointer"
           onClick={() => setIsOpen(false)}
           aria-hidden="true"
         />
