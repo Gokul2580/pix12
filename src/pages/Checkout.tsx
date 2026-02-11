@@ -1,3 +1,7 @@
+'use client';
+
+import React from "react"
+
 import { useState, useEffect } from 'react';
 import { ArrowLeft, CreditCard, Loader, Truck, Tag, X } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
@@ -723,7 +727,7 @@ export default function Checkout({ onBack, onLoginClick }: CheckoutProps) {
                   </button>
                 </div>
               ) : (
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     type="text"
                     value={couponCode}
@@ -737,7 +741,7 @@ export default function Checkout({ onBack, onLoginClick }: CheckoutProps) {
                   <button
                     onClick={handleApplyCoupon}
                     disabled={couponLoading || !couponCode.trim()}
-                    className="px-6 py-2 bg-purple-600 text-white rounded-xl font-semibold hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                    className="w-full sm:w-auto px-6 py-2 bg-purple-600 text-white rounded-xl font-semibold hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
                   >
                     {couponLoading ? 'Applying...' : 'Apply'}
                   </button>
