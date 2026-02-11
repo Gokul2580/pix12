@@ -1,4 +1,7 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Shirt, Palette } from 'lucide-react';
 
 interface SmartFeatureFABProps {
@@ -29,7 +32,7 @@ export default function SmartFeatureFAB({ onTryOnClick, onColorMatchClick }: Sma
     return () => clearInterval(autoShowInterval);
   }, []);
 
-  return (
+  const fabContent = (
     <div className="fixed bottom-24 right-6 z-40 flex flex-col items-end gap-3">
       {showFeatures && (
         <>
@@ -88,4 +91,7 @@ export default function SmartFeatureFAB({ onTryOnClick, onColorMatchClick }: Sma
       </div>
     </div>
   );
+
+  const modalElement = document.getElementById('modals') || document.body;
+  return createPortal(fabContent, modalElement);
 }

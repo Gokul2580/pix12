@@ -1,4 +1,7 @@
+'use client';
+
 import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { MessageCircle, X, Send } from 'lucide-react';
 
 type Message = {
@@ -119,7 +122,7 @@ export default function WhatsAppFAB() {
     });
   };
 
-  return (
+  const fabContent = (
     <>
       <button
         onClick={() => setIsOpen(true)}
@@ -310,4 +313,7 @@ export default function WhatsAppFAB() {
       `}</style>
     </>
   );
+
+  const modalElement = document.getElementById('modals') || document.body;
+  return createPortal(fabContent, modalElement);
 }
