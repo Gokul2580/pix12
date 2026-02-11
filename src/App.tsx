@@ -17,7 +17,6 @@ import WelcomeCouponDialog from './components/WelcomeCouponDialog';
 import ProductDetailsSheet from './components/ProductDetailsSheet';
 import SplashScreen from './components/SplashScreen';
 import Footer from './components/Footer';
-import UnifiedFAB from './components/UnifiedFAB';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import ComingSoon from './pages/ComingSoon';
@@ -354,6 +353,8 @@ function AppContent({ onPageChange, onShowTryOnList, onShowColorMatchList, onSma
                   onCartClick={() => setCartModalOpen(true)}
                   onOrdersClick={() => setOrdersSheetOpen(true)}
                   onProductClick={handleProductClick}
+                  onTryOnClick={() => setShowTryOnList(true)}
+                  onColorMatchClick={() => setShowColorMatchList(true)}
                 />
               </>
             )}
@@ -441,12 +442,6 @@ function App() {
           </PublishedDataProvider>
         </AuthProvider>
       </ErrorBoundary>
-      
-      {/* Unified FAB - Consolidated all features into one FAB with animated chip layout */}
-      <UnifiedFAB
-        onTryOnClick={() => setShowTryOnList(true)}
-        onColorMatchClick={() => setShowColorMatchList(true)}
-      />
     </>
   );
 }

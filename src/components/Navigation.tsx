@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ShoppingBag, Search, Home as HomeIcon, Store, User, LogOut, Settings, X, ShoppingCart, Package } from 'lucide-react';
+import { ShoppingBag, Search, Home as HomeIcon, Store, User, LogOut, Settings, X, ShoppingCart, Package, MessageSquare, Shirt, Palette, MessageCircle, Plus } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import { usePublishedData } from '../contexts/PublishedDataContext';
 import { objectToArray } from '../utils/publishedData';
+import FeedbackModal from './FeedbackModal';
+import WhatsAppChatModal from './WhatsAppChatModal';
 import type { Product } from '../types';
 
 interface NavigationProps {
@@ -15,9 +17,11 @@ interface NavigationProps {
   onCartClick: () => void;
   onOrdersClick: () => void;
   onProductClick?: (product: Product) => void;
+  onTryOnClick?: () => void;
+  onColorMatchClick?: () => void;
 }
 
-export default function Navigation({ currentPage, onNavigate, onLoginClick, onCartClick, onOrdersClick, onProductClick }: NavigationProps) {
+export default function Navigation({ currentPage, onNavigate, onLoginClick, onCartClick, onOrdersClick, onProductClick, onTryOnClick, onColorMatchClick }: NavigationProps) {
   const { user, signOut } = useAuth();
   const { itemCount, addToCart } = useCart();
   const { data: publishedData } = usePublishedData();
@@ -27,7 +31,55 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const [activeModal, setActiveModal] = useState<'feedback' | 'whatsapp' | null>(null);
   const isDevelopment = import.meta.env.DEV;
+
+  const fabFeatures = [
+    {
+      id: 'feedback',
+      label: 'Feedback',
+      icon: MessageSquare,
+      color: 'from-emerald-400 to-emerald-500',
+      bgColor: 'bg-emerald-500 hover:bg-emerald-600'
+    },
+    {
+      id: 'tryon',
+      label: 'Virtual Try On',
+      icon: Shirt,
+      color: 'from-blue-400 to-blue-500',
+      bgColor: 'bg-blue-500 hover:bg-blue-600'
+    },
+    {
+      id: 'colormatch',
+      label: 'Color Match',
+      icon: Palette,
+      color: 'from-pink-400 to-pink-500',
+      bgColor: 'bg-pink-500 hover:bg-pink-600'
+    },
+    {
+      id: 'whatsapp',
+      label: 'Chat with us',
+      icon: MessageCircle,
+      color: 'from-green-400 to-green-500',
+      bgColor: 'bg-green-500 hover:bg-green-600'
+    }
+  ];
+
+  const handleFeatureClick = (featureId: string) => {
+    if (featureId === 'feedback') {
+      setActiveModal('feedback');
+    } else if (featureId === 'tryon') {
+      onTryOnClick?.();
+      setShowMoreMenu(false);
+    } else if (featureId === 'colormatch') {
+      onColorMatchClick?.();
+      setShowMoreMenu(false);
+    } else if (featureId === 'whatsapp') {
+      setActiveModal('whatsapp');
+    }
+    setShowMoreMenu(false);
+  };
 
   const [navStyle, setNavStyle] = useState({
     background: '#ffffff',
@@ -187,7 +239,7 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
             />
           </button>
 
-          <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center relative">
             <button
               onClick={() => onNavigate('home')}
               className={getButtonClasses(currentPage === 'home')}
@@ -302,9 +354,53 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
                 {buttonLabels.login}
               </button>
             )}
+
+            {/* More Features Menu */}
+            <div className="relative">
+              <button
+                onClick={() => setShowMoreMenu(!showMoreMenu)}
+                className={getButtonClasses(false)}
+                style={{
+                  backgroundColor: navStyle.inactiveButton,
+                  color: navStyle.text,
+                  borderColor: 'transparent'
+                }}
+              >
+                <Plus className="w-4 h-4" />
+                More
+              </button>
+
+              {/* Dropdown Menu */}
+              {showMoreMenu && (
+                <div className="absolute top-full right-0 mt-2 bg-white rounded-2xl border-2 border-gray-200 shadow-lg overflow-hidden min-w-max z-50">
+                  {fabFeatures.map((feature) => {
+                    const Icon = feature.icon;
+                    return (
+                      <button
+                        key={feature.id}
+                        onClick={() => handleFeatureClick(feature.id)}
+                        className="w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-100 transition-colors border-b border-gray-100 last:border-b-0 text-left"
+                      >
+                        <Icon className={`w-5 h-5 ${feature.bgColor.split(' ')[0]}`} />
+                        <span className="text-sm font-semibold text-gray-900">{feature.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Close menu when clicking outside */}
+      {showMoreMenu && (
+        <div
+          className="fixed inset-0 z-40"
+          onClick={() => setShowMoreMenu(false)}
+          aria-hidden="true"
+        />
+      )}
 
       {searchOpen && (
         <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4">
@@ -412,6 +508,10 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
           </div>
         </div>
       )}
+
+      {/* Modals */}
+      {activeModal === 'feedback' && <FeedbackModal onClose={() => setActiveModal(null)} />}
+      {activeModal === 'whatsapp' && <WhatsAppChatModal onClose={() => setActiveModal(null)} />}
     </nav>
   );
 }
