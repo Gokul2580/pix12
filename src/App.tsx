@@ -99,7 +99,14 @@ function getInitialPage(): Page {
   return 'home';
 }
 
-function AppContent() {
+interface AppContentProps {
+  onSmartFABToggle: (show: boolean) => void;
+  onPageChange: (page: Page) => void;
+  onShowTryOnList: (show: boolean) => void;
+  onShowColorMatchList: (show: boolean) => void;
+}
+
+function AppContent({ onSmartFABToggle, onPageChange, onShowTryOnList, onShowColorMatchList }: AppContentProps) {
   const { data: publishedData, loading: publishedDataLoading, error: publishedDataError } = usePublishedData();
   const [currentPage, setCurrentPage] = useState<Page>(getInitialPage());
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -107,7 +114,6 @@ function AppContent() {
   const [ordersSheetOpen, setOrdersSheetOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showProductDetails, setShowProductDetails] = useState(false);
-  const [showSmartFeatureFAB, setShowSmartFeatureFAB] = useState(false);
   const [showTryOnList, setShowTryOnList] = useState(false);
   const [showColorMatchList, setShowColorMatchList] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
@@ -186,6 +192,7 @@ function AppContent() {
 
   const handleNavigate = (page: Page, categoryId?: string) => {
     setCurrentPage(page);
+    onPageChange(page);
     setCartModalOpen(false);
     let path = page === 'home' ? '/' : `/${page}`;
     if (categoryId && page === 'shop') {
@@ -267,7 +274,7 @@ function AppContent() {
 
     switch (currentPage) {
       case 'home':
-        return <Home onNavigate={handleNavigate} onCartClick={() => setCartModalOpen(true)} />;
+        return <Home onNavigate={handleNavigate} onCartClick={() => setCartModalOpen(true)} onSmartFABToggle={onSmartFABToggle} />;
       case 'shop':
         return <Shop onCartClick={() => setCartModalOpen(true)} />;
       case 'admin':
@@ -411,15 +418,31 @@ function AppContent() {
 }
 
 function App() {
+  const [showSmartFeatureFAB, setShowSmartFeatureFAB] = useState(false);
+  const [currentPage, setCurrentPage] = useState<Page>(getInitialPage());
+  const [showTryOnList, setShowTryOnList] = useState(false);
+  const [showColorMatchList, setShowColorMatchList] = useState(false);
+
   return (
     <ErrorBoundary>
       <AuthProvider>
         <PublishedDataProvider>
           <CartProvider>
             <FavoritesProvider>
-              <AppContent />
-              {/* FABs rendered at root level (outside all containers) for true fixed positioning - NOT INSIDE AppContent */}
+              <AppContent 
+                onSmartFABToggle={setShowSmartFeatureFAB}
+                onPageChange={setCurrentPage}
+                onShowTryOnList={setShowTryOnList}
+                onShowColorMatchList={setShowColorMatchList}
+              />
+              {/* FABs rendered at root level (outside all containers) for true fixed positioning */}
               <WhatsAppFAB />
+              {showSmartFeatureFAB && currentPage === 'home' && (
+                <SmartFeatureFAB
+                  onTryOnClick={() => setShowTryOnList(true)}
+                  onColorMatchClick={() => setShowColorMatchList(true)}
+                />
+              )}
             </FavoritesProvider>
           </CartProvider>
         </PublishedDataProvider>
