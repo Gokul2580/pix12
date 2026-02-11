@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import { X, ShoppingCart, ChevronLeft, ChevronRight, Heart, Copy, Check } from 'lucide-react';
 import { useModalScroll } from '../hooks/useModalScroll';
 import type { Product } from '../types';
 import { useCart } from '../contexts/CartContext';
 import { useFavorites } from '../contexts/FavoritesContext';
 import LazyImage from './LazyImage';
+import { createPortal } from 'react-dom';
 
 interface ProductDetailsSheetProps {
   product: Product | null;
@@ -76,13 +76,13 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm transition-opacity duration-300"
+        className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Modal Container */}
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div className="w-full max-w-2xl max-h-[90dvh] overflow-y-auto bg-white rounded-2xl shadow-2xl border-4 border-black" style={{ overscrollBehavior: 'contain' }}>
           {/* Header */}
           <div className="sticky top-0 z-20 bg-gradient-to-r from-teal-50 to-mint-50 px-4 sm:px-6 py-4 flex items-center justify-between border-b-4 border-black">
@@ -285,6 +285,5 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
     </>
   );
 
-  const modalElement = document.getElementById('modals') || document.body;
-  return createPortal(modalContent, modalElement);
+  return modalContent;
 }

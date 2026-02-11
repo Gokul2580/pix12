@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import { Shirt, Palette } from 'lucide-react';
+import { createPortal } from 'react-dom';
 
 interface SmartFeatureFABProps {
   onTryOnClick: () => void;
@@ -92,6 +92,5 @@ export default function SmartFeatureFAB({ onTryOnClick, onColorMatchClick }: Sma
     </div>
   );
 
-  const modalElement = document.getElementById('modals') || document.body;
-  return createPortal(fabContent, modalElement);
+  return fabContent;
 }

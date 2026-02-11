@@ -1,10 +1,10 @@
 'use client';
 
-import { createPortal } from 'react-dom';
 import { X, Plus, Minus, Trash2, CreditCard } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useModalScroll } from '../hooks/useModalScroll';
 import LazyImage from './LazyImage';
+import { createPortal } from 'react-dom';
 
 interface CartModalProps {
   isOpen: boolean;
@@ -191,6 +191,5 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
     </>
   );
 
-  const modalElement = document.getElementById('modals') || document.body;
-  return createPortal(modalContent, modalElement);
+  return modalContent;
 }

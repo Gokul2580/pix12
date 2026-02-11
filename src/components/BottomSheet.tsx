@@ -1,7 +1,6 @@
 'use client';
 
 import React from "react"
-import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { useModalScroll } from '../hooks/useModalScroll';
 
@@ -17,7 +16,7 @@ export default function BottomSheet({ isOpen, onClose, title, children }: Bottom
 
   if (!isOpen) return null;
 
-  return createPortal(
+  return (
     <>
       {/* Backdrop */}
       <div
@@ -47,7 +46,6 @@ export default function BottomSheet({ isOpen, onClose, title, children }: Bottom
           </div>
         </div>
       </div>
-    </>,
-    document.getElementById('modals') || document.body
+    </>
   );
 }
