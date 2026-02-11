@@ -35,6 +35,7 @@ import { initAnalytics } from './utils/analytics';
 import { initPerformanceMonitoring } from './utils/performanceMonitoring';
 import { initFetchInterceptor } from './utils/fetchInterceptor';
 
+
 import PageLoader from './components/PageLoader';
 import { monitorWebVitals, enableGPUAcceleration, respectReducedMotion, preloadCriticalImages } from './utils/performanceOptimization';
 import { generateAISiteDescription, generateAIKeywords, generateOrganizationSchema, injectSchema } from './utils/seoOptimization';
@@ -42,7 +43,6 @@ import { preloadCriticalImages as preloadImages } from './utils/imageOptimizatio
 import FeedbackPanel from './components/FeedbackPanel';
 import WhatsAppFAB from './components/WhatsAppFAB';
 import SmartFeatureFAB from './components/SmartFeatureFAB';
-import CartFAB from './components/CartFAB';
 
 type Page = 'home' | 'shop' | 'admin' | 'checkout' | 'superadmin' | 'privacy-policy' | 'shipping-policy' | 'refund-policy' | 'contact';
 
@@ -426,7 +426,6 @@ function App() {
   const [showTryOnList, setShowTryOnList] = useState(false);
   const [showColorMatchList, setShowColorMatchList] = useState(false);
   const [showSmartFeatureFAB, setShowSmartFeatureFAB] = useState(false);
-  const [cartModalOpen, setCartModalOpen] = useState(false);
 
   return (
     <>
@@ -441,8 +440,7 @@ function App() {
                   onShowTryOnList={setShowTryOnList}
                   onShowColorMatchList={setShowColorMatchList}
                 />
-                {/* Cart FAB with Marketing Messages - Inside All Providers */}
-                <CartFAB onCartClick={() => setCartModalOpen(true)} position="right" />
+
               </FavoritesProvider>
             </CartProvider>
           </PublishedDataProvider>
