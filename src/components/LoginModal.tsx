@@ -41,10 +41,10 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
   const modalContent = (
     <>
       {/* Backdrop */}
-      <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
+      <div className="modal-overlay" onClick={onClose} aria-hidden="true" />
 
       {/* Modal Container */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="modal-content flex items-center justify-center p-4">
         <div className="relative bg-white rounded-3xl border-4 border-black w-full max-w-md flex flex-col max-h-[90dvh]">
           <div className="bg-[#B5E5CF] p-6 sm:p-8 text-black relative overflow-hidden rounded-t-3xl border-b-4 border-black">
             <button

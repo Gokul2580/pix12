@@ -76,13 +76,13 @@ export default function ProductDetailsSheet({ product, isOpen, onClose, onCartCl
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
+        className="modal-overlay"
         onClick={onClose}
         aria-hidden="true"
       />
 
       {/* Modal Container */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="modal-content flex items-center justify-center p-4">
         <div className="w-full max-w-2xl max-h-[90dvh] overflow-y-auto bg-white rounded-2xl shadow-2xl border-4 border-black" style={{ overscrollBehavior: 'contain' }}>
           {/* Header */}
           <div className="sticky top-0 z-20 bg-gradient-to-r from-teal-50 to-mint-50 px-4 sm:px-6 py-4 flex items-center justify-between border-b-4 border-black">

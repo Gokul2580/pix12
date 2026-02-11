@@ -21,35 +21,60 @@
   background: #999;
 }
 
-/* Proper scroll behavior and modal support */
-html {
-  scroll-behavior: auto;
-}
-
+/* Global reset and scroll fix */
+html,
 body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
   scroll-behavior: auto;
 }
 
-/* Allow smooth scroll for specific elements, but not * */
+/* Allow smooth scroll for specific elements */
 .smooth-scroll {
   scroll-behavior: smooth;
 }
 
-/* Modal overflow fix - prevent body scroll when modal is open */
+/* FAB FIX - prevents scrolling with page */
+.fab {
+  position: fixed !important;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9997 !important;
+}
+
+/* Prevent parent containers from affecting FAB */
+.fab-wrapper {
+  position: static !important;
+}
+
+/* Modal system - prevent background scroll when modal is open */
 body.modal-open {
   overflow: hidden;
+  height: 100vh;
 }
 
-/* Ensure modals are above everything */
+/* Full screen modal overlay */
 .modal-overlay {
-  position: fixed;
+  position: fixed !important;
   inset: 0;
-  z-index: 40;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 9998 !important;
 }
 
+/* Modal content container */
 .modal-content {
-  position: fixed;
-  z-index: 50;
+  position: fixed !important;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999 !important;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 

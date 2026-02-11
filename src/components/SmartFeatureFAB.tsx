@@ -33,7 +33,7 @@ export default function SmartFeatureFAB({ onTryOnClick, onColorMatchClick }: Sma
   }, []);
 
   const fabContent = (
-    <div className="fixed bottom-24 right-6 z-40 flex flex-col items-end gap-3">
+    <div className="fab bottom-auto top-auto flex flex-col items-end gap-3" style={{ bottom: '120px', right: '24px' }}>
       {showFeatures && (
         <>
           <div className="flex items-center gap-3">

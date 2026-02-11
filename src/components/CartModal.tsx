@@ -22,10 +22,10 @@ export default function CartModal({ isOpen, onClose, onCheckout }: CartModalProp
   const modalContent = (
     <>
       {/* Backdrop */}
-      <div className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
+      <div className="modal-overlay" onClick={onClose} aria-hidden="true" />
 
       {/* Modal */}
-      <div className="fixed inset-0 z-50 flex flex-col items-center justify-end sm:justify-center">
+      <div className="modal-content flex flex-col items-center justify-end sm:justify-center">
         <div className="bg-white border-4 border-black w-full sm:w-full sm:max-w-2xl h-[90dvh] sm:h-[85dvh] overflow-hidden flex flex-col animate-slide-up rounded-t-3xl sm:rounded-3xl">
           <div className="flex-shrink-0 pt-2 pb-4 px-4 sm:px-6 border-b-4 border-black bg-[#B5E5CF] rounded-t-3xl">
             <div className="w-12 h-1.5 bg-black rounded-full mx-auto mb-4"></div>
