@@ -1,3 +1,5 @@
+'use client';
+
 import { ArrowRight, Sparkles, Heart, Package, Star, ShoppingCart, MessageCircle, Shield } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import { db } from '../lib/firebase';
@@ -381,7 +383,7 @@ export default function Home({ onNavigate, onCartClick }: HomeProps) {
                   }`}
                 >
                   <img
-                    src={image}
+                    src={image || "/placeholder.svg"}
                     alt={`Slide ${index + 1}`}
                     className="w-full h-full object-cover object-center"
                   />
@@ -700,15 +702,6 @@ export default function Home({ onNavigate, onCartClick }: HomeProps) {
           </div>
         </div>
       </section>
-
-      <WhatsAppFAB />
-
-      {showSmartFeatureFAB && (
-        <SmartFeatureFAB
-          onTryOnClick={() => setShowTryOnList(true)}
-          onColorMatchClick={() => setShowColorMatchList(true)}
-        />
-      )}
 
       <TryOnProductList
         isOpen={showTryOnList}

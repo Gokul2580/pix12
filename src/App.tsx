@@ -18,6 +18,8 @@ import FeedbackPanel from './components/FeedbackPanel';
 import ProductDetailsSheet from './components/ProductDetailsSheet';
 import SplashScreen from './components/SplashScreen';
 import Footer from './components/Footer';
+import WhatsAppFAB from './components/WhatsAppFAB';
+import SmartFeatureFAB from './components/SmartFeatureFAB';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import ComingSoon from './pages/ComingSoon';
@@ -105,6 +107,9 @@ function AppContent() {
   const [ordersSheetOpen, setOrdersSheetOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showProductDetails, setShowProductDetails] = useState(false);
+  const [showSmartFeatureFAB, setShowSmartFeatureFAB] = useState(false);
+  const [showTryOnList, setShowTryOnList] = useState(false);
+  const [showColorMatchList, setShowColorMatchList] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
   const [appReady, setAppReady] = useState(false);
   const [temporarilyClosed, setTemporarilyClosed] = useState(false);
@@ -373,7 +378,7 @@ function AppContent() {
         </div>
       )}
 
-      {/* Modals using React Portals - rendered outside app DOM tree */}
+      {/* Modals and FABs rendered OUTSIDE all containers for proper fixed positioning */}
       <LoginModal isOpen={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
       <CartModal
         isOpen={cartModalOpen}
@@ -401,6 +406,13 @@ function AppContent() {
           }
         }}
       />
+      <WhatsAppFAB />
+      {showSmartFeatureFAB && currentPage === 'home' && (
+        <SmartFeatureFAB
+          onTryOnClick={() => setShowTryOnList(true)}
+          onColorMatchClick={() => setShowColorMatchList(true)}
+        />
+      )}
     </>
   );
 }
