@@ -439,14 +439,13 @@ function App() {
                   onShowTryOnList={setShowTryOnList}
                   onShowColorMatchList={setShowColorMatchList}
                 />
+                {/* Cart FAB with Marketing Messages - Inside All Providers */}
+                <CartFAB onCartClick={() => setCartModalOpen(true)} position="right" />
               </FavoritesProvider>
             </CartProvider>
           </PublishedDataProvider>
         </AuthProvider>
       </ErrorBoundary>
-
-      {/* Cart FAB with Marketing Messages */}
-      <CartFAB onCartClick={() => setCartModalOpen(true)} position="right" />
     </>
   );
 }
