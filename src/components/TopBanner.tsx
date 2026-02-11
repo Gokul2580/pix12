@@ -27,19 +27,29 @@ export default function TopBanner() {
     return null;
   }
 
+  // Ensure valid colors
+  const bgColor = bannerContent.backgroundColor && /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$|^rgb/.test(bannerContent.backgroundColor) 
+    ? bannerContent.backgroundColor 
+    : '#f59e0b';
+  const txtColor = bannerContent.textColor && /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$|^rgb/.test(bannerContent.textColor)
+    ? bannerContent.textColor
+    : '#ffffff';
+
   return (
     <div
-      className="py-2 overflow-hidden"
+      className="py-2.5 sm:py-3 overflow-hidden w-full"
       style={{
-        backgroundColor: bannerContent.backgroundColor,
-        color: bannerContent.textColor || '#ffffff'
+        backgroundColor: bgColor,
+        color: txtColor
       }}
+      role="status"
+      aria-live="polite"
     >
-      <div className="animate-marquee whitespace-nowrap inline-block">
-        <span className="text-sm font-semibold mx-8">{bannerContent.text}</span>
-        <span className="text-sm font-semibold mx-8">{bannerContent.text}</span>
-        <span className="text-sm font-semibold mx-8">{bannerContent.text}</span>
-        <span className="text-sm font-semibold mx-8">{bannerContent.text}</span>
+      <div className="animate-marquee whitespace-nowrap inline-block w-full">
+        <span className="text-xs sm:text-sm font-semibold mx-6 sm:mx-8 inline-block">{bannerContent.text}</span>
+        <span className="text-xs sm:text-sm font-semibold mx-6 sm:mx-8 inline-block">{bannerContent.text}</span>
+        <span className="text-xs sm:text-sm font-semibold mx-6 sm:mx-8 inline-block">{bannerContent.text}</span>
+        <span className="text-xs sm:text-sm font-semibold mx-6 sm:mx-8 inline-block">{bannerContent.text}</span>
       </div>
     </div>
   );

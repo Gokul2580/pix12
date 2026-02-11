@@ -69,17 +69,31 @@ export default function WelcomeBanner() {
     return null;
   }
 
-  // Determine if text color is light or dark for better contrast
-  const textColor = bannerContent.text_color || '#ffffff';
-  const bgColor = bannerContent.bg_color || '#06b6d4';
+  // Ensure valid colors with fallback
+  const isValidColor = (color: string) => color && (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$|^rgb/.test(color));
+  const textColor = isValidColor(bannerContent.text_color) ? bannerContent.text_color : '#ffffff';
+  const bgColor = isValidColor(bannerContent.bg_color) ? bannerContent.bg_color : '#06b6d4';
 
   return (
-    <div className="py-6 px-4 text-center" style={{ backgroundColor: bgColor }}>
+    <div 
+      className="py-6 sm:py-8 md:py-10 px-4 text-center w-full" 
+      style={{ backgroundColor: bgColor }}
+    >
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: textColor }}>{bannerContent.title}</h2>
-        <p className="text-sm md:text-base mb-4" style={{ color: textColor, opacity: 0.95 }}>{bannerContent.subtitle}</p>
+        <h2 
+          className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-3 leading-tight" 
+          style={{ color: textColor }}
+        >
+          {bannerContent.title}
+        </h2>
+        <p 
+          className="text-xs sm:text-sm md:text-base mb-4 sm:mb-6 leading-relaxed" 
+          style={{ color: textColor, opacity: 0.95 }}
+        >
+          {bannerContent.subtitle}
+        </p>
         
-        <div className="flex justify-center items-center gap-4 mt-4">
+        <div className="flex justify-center items-center gap-3 sm:gap-4 mt-4 sm:mt-6 flex-wrap">
           {socialLinks.map((social) => {
             const IconComponent = PLATFORM_ICONS[social.platform as keyof typeof PLATFORM_ICONS] || LinkIcon;
             return (
@@ -88,10 +102,11 @@ export default function WelcomeBanner() {
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-white/20 hover:bg-white/30 p-3 rounded-full transition-all transform hover:scale-110"
-                aria-label={social.platform}
+                className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full transition-all duration-200 transform active:scale-95 hover:scale-110 backdrop-blur-sm bg-white/25 hover:bg-white/40"
+                aria-label={`Follow us on ${social.platform}`}
+                title={social.platform}
               >
-                <IconComponent className="w-5 h-5" />
+                <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" style={{ color: textColor }} strokeWidth={2} />
               </a>
             );
           })}

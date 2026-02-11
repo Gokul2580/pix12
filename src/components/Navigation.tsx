@@ -370,26 +370,34 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
                 More
               </button>
 
-              {/* Material Design Dropdown Menu - Responsive */}
+              {/* iOS-Style Dropdown Menu */}
               {showMoreMenu && (
-                <div className="fixed sm:absolute top-1/2 sm:top-full left-1/2 sm:left-auto right-0 -translate-x-1/2 sm:translate-x-0 sm:mt-3 -translate-y-1/2 sm:translate-y-0 bg-white rounded-3xl shadow-2xl border-2 border-gray-100 overflow-hidden w-11/12 sm:w-auto sm:min-w-max z-50 backdrop-blur-sm bg-opacity-95 animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-teal-50 to-emerald-50">
-                    <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Smart Features</p>
+                <div className="fixed inset-x-0 bottom-0 sm:absolute sm:top-full sm:right-0 sm:left-auto sm:mt-3 sm:inset-auto bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl border-2 sm:border-2 border-gray-100 overflow-hidden w-full sm:w-auto sm:min-w-max z-50 backdrop-blur-sm bg-opacity-95 animate-in fade-in slide-in-from-bottom-2 sm:slide-in-from-top-2 duration-300">
+                  {/* Mobile Handle */}
+                  <div className="sm:hidden flex justify-center py-2">
+                    <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
                   </div>
-                  <div className="p-2 max-h-96 overflow-y-auto">
+                  
+                  {/* Header */}
+                  <div className="px-4 sm:px-4 py-3 sm:py-3 border-b border-gray-100 bg-gradient-to-r from-teal-50 to-emerald-50">
+                    <p className="text-xs font-bold text-gray-600 uppercase tracking-wider text-center sm:text-left">Smart Features</p>
+                  </div>
+                  
+                  {/* Menu Items */}
+                  <div className="p-2 sm:p-2 max-h-96 overflow-y-auto">
                     {fabFeatures.map((feature, idx) => {
                       const Icon = feature.icon;
                       return (
                         <button
                           key={feature.id}
                           onClick={() => handleFeatureClick(feature.id)}
-                          className="w-full px-3 sm:px-4 py-3 sm:py-3.5 flex items-center gap-2 sm:gap-3 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 transition-all duration-200 text-left rounded-2xl group"
+                          className="w-full px-3 sm:px-4 py-3 sm:py-3.5 flex items-center gap-3 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 active:bg-gray-100 transition-all duration-200 text-left rounded-2xl group"
                         >
-                          <div className={`w-8 sm:w-10 h-8 sm:h-10 flex-shrink-0 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110 ${feature.bgColor} shadow-md group-hover:shadow-lg`}>
-                            <Icon className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
+                          <div className={`w-10 sm:w-10 h-10 sm:h-10 flex-shrink-0 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110 group-active:scale-95 ${feature.bgColor} shadow-md group-hover:shadow-lg`}>
+                            <Icon className="w-5 sm:w-5 h-5 sm:h-5 text-white" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="font-bold text-gray-900 text-xs sm:text-sm group-hover:text-teal-600 transition-colors truncate">
+                            <p className="font-bold text-gray-900 text-sm sm:text-sm group-hover:text-teal-600 transition-colors">
                               {feature.label}
                             </p>
                             <p className="text-xs text-gray-500 group-hover:text-gray-700 transition-colors hidden sm:block">
@@ -399,10 +407,20 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
                               {idx === 3 && 'Chat with support'}
                             </p>
                           </div>
-                          <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-teal-600 group-hover:translate-x-1 transition-all opacity-0 sm:opacity-100 group-hover:opacity-100 flex-shrink-0" />
+                          <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-teal-600 group-hover:translate-x-1 transition-all hidden sm:block flex-shrink-0" />
                         </button>
                       );
                     })}
+                  </div>
+                  
+                  {/* Mobile Footer */}
+                  <div className="sm:hidden px-4 py-3 border-t border-gray-100 bg-gray-50">
+                    <button
+                      onClick={() => setShowMoreMenu(false)}
+                      className="w-full py-2 text-center text-gray-600 font-semibold text-sm rounded-lg hover:bg-gray-100 transition-colors"
+                    >
+                      Close
+                    </button>
                   </div>
                 </div>
               )}
