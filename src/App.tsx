@@ -362,7 +362,6 @@ function AppContent({ onSmartFABToggle, onPageChange, onShowTryOnList, onShowCol
             <PurchaseNotification />
             <OfferDialog />
             <WelcomeCouponDialog />
-            <FeedbackPanel />
 
             {!hideNavigation && <Footer onNavigate={handleNavigate} />}
           </div>
@@ -436,8 +435,9 @@ function App() {
                 onShowColorMatchList={setShowColorMatchList}
               />
               {/* FABs rendered at root level (outside all containers) for true fixed positioning */}
+              <FeedbackPanel />
               <WhatsAppFAB />
-              {showSmartFeatureFAB && currentPage === 'home' && (
+              {showSmartFeatureFAB && (
                 <SmartFeatureFAB
                   onTryOnClick={() => setShowTryOnList(true)}
                   onColorMatchClick={() => setShowColorMatchList(true)}
