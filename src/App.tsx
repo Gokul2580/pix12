@@ -341,8 +341,8 @@ function AppContent({ onPageChange, onShowTryOnList, onShowColorMatchList, onSma
 
       {/* Show normal app if data exists or on admin pages */}
       {((!publishedDataError && appReady) || isAdminPage) && (
-        <div className={`min-h-screen bg-white transition-opacity duration-500 ${appReady ? 'opacity-100' : 'opacity-0'}`}>
-          <div className={`${temporarilyClosed && !hideNavigation ? 'grayscale pointer-events-none' : ''}`}>
+        <div className={`min-h-screen w-full bg-white transition-opacity duration-500 flex flex-col ${appReady ? 'opacity-100' : 'opacity-0'}`}>
+          <div className={`flex flex-col w-full ${temporarilyClosed && !hideNavigation ? 'grayscale pointer-events-none' : ''}`}>
             {!hideNavigation && (
               <>
                 <TopBanner />
@@ -360,7 +360,9 @@ function AppContent({ onPageChange, onShowTryOnList, onShowColorMatchList, onSma
               </>
             )}
 
-            {renderPage()}
+            <main className="flex-1 w-full overflow-x-hidden">
+              {renderPage()}
+            </main>
 
             <PurchaseNotification />
             <OfferDialog />

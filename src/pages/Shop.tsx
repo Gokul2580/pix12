@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import { Filter, SlidersHorizontal, ShoppingCart, Heart, Star, X, MessageCircle, Shield } from 'lucide-react';
 import { db } from '../lib/firebase';
@@ -236,9 +238,9 @@ export default function Shop({ onCartClick }: ShopProps) {
         </div>
       </div>
 
-      <div id="products-section" className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-8 lg:py-12">
-        <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8">
-          <aside className="lg:w-72 flex-shrink-0">
+      <div id="products-section" className="w-full px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+        <div className="flex flex-col lg:flex-row gap-3 sm:gap-4 md:gap-6 lg:gap-8 max-w-7xl mx-auto">
+          <aside className="w-full lg:w-72 flex-shrink-0">
             <div className="lg:sticky lg:top-24">
               <button
                 onClick={() => setFilterOpen(!filterOpen)}
@@ -347,11 +349,11 @@ export default function Shop({ onCartClick }: ShopProps) {
             </div>
 
             {loading ? (
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 pr-4 sm:pr-6 lg:pr-8">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
                 <ShimmerLoader variant="product" count={6} className="contents" />
               </div>
             ) : products.length === 0 ? (
-              <div className="text-center py-12 sm:py-20 lg:py-32 px-4">
+              <div className="text-center py-12 sm:py-20 lg:py-32 px-3 sm:px-4">
                 <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 bg-teal-100 rounded-full mb-3 sm:mb-4 lg:mb-6">
                   <Filter className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-teal-600" />
                 </div>
@@ -359,7 +361,7 @@ export default function Shop({ onCartClick }: ShopProps) {
                 <p className="text-xs sm:text-sm lg:text-base text-gray-600">Try adjusting your filters to find what you're looking for</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 pr-4 sm:pr-6 lg:pr-8">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
                 {products.map((product, index) => (
                   <div
                     key={product.id}

@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { Mail, Phone, MapPin, Facebook, Instagram, Twitter, Linkedin, Youtube, Heart } from 'lucide-react';
 import { usePublishedData } from '../contexts/PublishedDataContext';
@@ -70,29 +72,29 @@ export default function Footer({ onNavigate }: FooterProps) {
         backgroundColor: config.backgroundColor,
         color: config.textColor,
       }}
-      className="py-12 px-4 sm:px-6 lg:px-8"
+      className="w-full py-8 sm:py-12 px-3 sm:px-6 lg:px-8"
     >
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+      <div className="w-full px-0">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8">
           <div className="lg:col-span-1">
             <h3
               style={{ color: config.headingColor }}
-              className="text-2xl font-bold mb-4"
+              className="text-xl sm:text-2xl font-bold mb-2 sm:mb-4"
             >
               {config.companyName}
             </h3>
-            <p className="text-sm leading-relaxed mb-4">{config.description}</p>
+            <p className="text-xs sm:text-sm leading-relaxed mb-4">{config.description}</p>
           </div>
 
           {config.showQuickLinks && Array.isArray(config.quickLinks) && config.quickLinks.length > 0 && (
             <div>
               <h4
                 style={{ color: config.headingColor }}
-                className="text-lg font-semibold mb-4"
+                className="text-sm sm:text-lg font-semibold mb-3 sm:mb-4"
               >
                 Quick Links
               </h4>
-              <ul className="space-y-2">
+              <ul className="space-y-1.5 sm:space-y-2">
                 {config.quickLinks.map((link, index) => (
                   <li key={index}>
                     <button
@@ -102,7 +104,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                       style={{
                         color: hoveredLink === `link-${index}` ? config.linkHoverColor : config.linkColor,
                       }}
-                      className="text-sm transition-colors hover:underline"
+                      className="text-xs sm:text-sm transition-colors hover:underline"
                     >
                       {link.label}
                     </button>
@@ -116,14 +118,14 @@ export default function Footer({ onNavigate }: FooterProps) {
             <div>
               <h4
                 style={{ color: config.headingColor }}
-                className="text-lg font-semibold mb-4"
+                className="text-sm sm:text-lg font-semibold mb-3 sm:mb-4"
               >
                 Contact Us
               </h4>
-              <ul className="space-y-3">
+              <ul className="space-y-2 sm:space-y-3">
                 {config.email && (
                   <li className="flex items-start gap-2">
-                    <Mail size={18} className="mt-0.5 flex-shrink-0" style={{ color: config.accentColor }} />
+                    <Mail size={16} className="mt-0.5 flex-shrink-0 sm:w-5 sm:h-5" style={{ color: config.accentColor }} />
                     <a
                       href={`mailto:${config.email}`}
                       onMouseEnter={() => setHoveredLink('email')}
@@ -131,7 +133,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                       style={{
                         color: hoveredLink === 'email' ? config.linkHoverColor : config.textColor,
                       }}
-                      className="text-sm transition-colors hover:underline"
+                      className="text-xs sm:text-sm transition-colors hover:underline break-all"
                     >
                       {config.email}
                     </a>
@@ -139,7 +141,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                 )}
                 {config.phone && (
                   <li className="flex items-start gap-2">
-                    <Phone size={18} className="mt-0.5 flex-shrink-0" style={{ color: config.accentColor }} />
+                    <Phone size={16} className="mt-0.5 flex-shrink-0 sm:w-5 sm:h-5" style={{ color: config.accentColor }} />
                     <a
                       href={`tel:${config.phone}`}
                       onMouseEnter={() => setHoveredLink('phone')}
@@ -147,7 +149,7 @@ export default function Footer({ onNavigate }: FooterProps) {
                       style={{
                         color: hoveredLink === 'phone' ? config.linkHoverColor : config.textColor,
                       }}
-                      className="text-sm transition-colors hover:underline"
+                      className="text-xs sm:text-sm transition-colors hover:underline"
                     >
                       {config.phone}
                     </a>
@@ -155,8 +157,8 @@ export default function Footer({ onNavigate }: FooterProps) {
                 )}
                 {config.address && (
                   <li className="flex items-start gap-2">
-                    <MapPin size={18} className="mt-0.5 flex-shrink-0" style={{ color: config.accentColor }} />
-                    <span className="text-sm">{config.address}</span>
+                    <MapPin size={16} className="mt-0.5 flex-shrink-0 sm:w-5 sm:h-5" style={{ color: config.accentColor }} />
+                    <span className="text-xs sm:text-sm">{config.address}</span>
                   </li>
                 )}
               </ul>
@@ -167,11 +169,11 @@ export default function Footer({ onNavigate }: FooterProps) {
             <div>
               <h4
                 style={{ color: config.headingColor }}
-                className="text-lg font-semibold mb-4"
+                className="text-sm sm:text-lg font-semibold mb-3 sm:mb-4"
               >
                 Follow Us
               </h4>
-              <div className="flex gap-3">
+              <div className="flex gap-2 sm:gap-3">
                 {socialIcons.map((social) => {
                   const Icon = social.icon;
                   return (
@@ -182,13 +184,13 @@ export default function Footer({ onNavigate }: FooterProps) {
                       rel="noopener noreferrer"
                       onMouseEnter={() => setHoveredLink(social.name)}
                       onMouseLeave={() => setHoveredLink(null)}
-                      className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                      className="w-8 sm:w-10 h-8 sm:h-10 rounded-full flex items-center justify-center transition-all hover:scale-110"
                       style={{
                         backgroundColor: hoveredLink === social.name ? social.color : config.accentColor,
                         opacity: hoveredLink === social.name ? 1 : 0.8,
                       }}
                     >
-                      <Icon size={20} style={{ color: '#FFFFFF' }} />
+                      <Icon size={16} className="sm:w-5 sm:h-5" style={{ color: '#FFFFFF' }} />
                     </a>
                   );
                 })}
@@ -198,16 +200,16 @@ export default function Footer({ onNavigate }: FooterProps) {
         </div>
 
         <div
-          className="border-t pt-6 mt-6"
+          className="border-t pt-4 sm:pt-6 mt-6 sm:mt-8"
           style={{ borderColor: config.accentColor + '30' }}
         >
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-center md:text-left">{config.copyrightText}</p>
-            <p className="text-sm flex items-center gap-1">
-              Made with <Heart size={16} style={{ color: config.accentColor }} fill={config.accentColor} /> for you
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
+            <p className="text-xs sm:text-sm text-center sm:text-left">{config.copyrightText}</p>
+            <p className="text-xs sm:text-sm flex items-center gap-1">
+              Made with <Heart size={14} className="sm:w-4 sm:h-4" style={{ color: config.accentColor }} fill={config.accentColor} /> for you
             </p>
           </div>
-          <div className="text-center mt-4 pt-4" style={{ borderColor: config.accentColor + '20', borderTopWidth: '1px' }}>
+          <div className="text-center mt-3 sm:mt-4 pt-3 sm:pt-4" style={{ borderColor: config.accentColor + '20', borderTopWidth: '1px' }}>
             <p className="text-xs" style={{ color: config.textColor, opacity: 0.7 }}>
               Crafted by <a href="https://tagyverse.com" target="_blank" rel="noopener noreferrer" className="font-semibold hover:opacity-100" style={{ color: config.linkColor }}>Tagyverse</a>
             </p>

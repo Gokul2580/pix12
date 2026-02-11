@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ShoppingCart, X, Sparkles, ArrowRight, MessageCircle } from 'lucide-react';
+import { ShoppingCart, X, Sparkles, ArrowRight, MessageCircle, Plus } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { usePublishedData } from '../contexts/PublishedDataContext';
 import { objectToArray } from '../utils/publishedData';
@@ -70,159 +70,129 @@ export default function CartFAB({ onCartClick, position = 'right' }: CartFABProp
   };
 
   const positionClasses = position === 'right' 
-    ? 'bottom-24 right-6' 
-    : 'bottom-24 left-6';
+    ? 'bottom-8 right-8 sm:right-6 md:right-8' 
+    : 'bottom-8 left-8 sm:left-6 md:left-8';
 
   const expandedMenuClasses = position === 'right'
-    ? 'bottom-28 right-6'
-    : 'bottom-28 left-6';
+    ? 'bottom-28 right-8 sm:right-6 md:right-8'
+    : 'bottom-28 left-8 sm:left-6 md:left-8';
 
   return (
-    <div>
-      {/* Chat Bubble Notification */}
+    <>
+      {/* Chat Bubble Notification - Fixed Position */}
       {showNotification && (
-        <div className="fixed bottom-56 right-6 z-40 animate-in fade-in slide-in-from-bottom-4 duration-300">
-          <div className="bg-white rounded-3xl shadow-2xl border-2 border-emerald-200 overflow-hidden max-w-sm">
+        <div className="fixed bottom-56 right-8 sm:right-6 md:right-8 z-40 animate-in fade-in slide-in-from-bottom-4 duration-300 pointer-events-auto">
+          <div className="bg-white rounded-3xl shadow-2xl border-2 border-emerald-200 overflow-hidden max-w-sm mx-2">
             <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-4 py-2 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-white" />
+              <Sparkles className="w-5 h-5 text-white flex-shrink-0" />
               <span className="text-white font-bold text-sm">Added to cart!</span>
             </div>
           </div>
         </div>
       )}
 
-      {/* Expanded Chat Menu - Fixed Positioning */}
+      {/* Expanded Chat Menu - Fixed Positioning & Responsive */}
       {expanded && (
-        <div className={`fixed ${expandedMenuClasses} z-50 bg-white rounded-3xl shadow-2xl border-2 border-emerald-100 overflow-hidden min-w-80 max-w-sm animate-in fade-in slide-in-from-bottom-2 duration-200`}>
+        <>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 z-40 pointer-events-auto sm:hidden"
+            onClick={() => setExpanded(false)}
+          />
+          <div className={`fixed ${expandedMenuClasses} z-50 bg-white rounded-3xl shadow-2xl border-2 border-emerald-100 overflow-hidden w-full max-w-xs sm:max-w-sm mx-2 sm:mx-0 animate-in fade-in slide-in-from-bottom-2 duration-200 pointer-events-auto`}>
             {/* Header */}
             <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-white" />
-                <h3 className="font-bold text-white text-base">Smart Suggestions</h3>
+                <h3 className="text-white font-bold text-lg">Suggestions</h3>
               </div>
               <button
                 onClick={() => setExpanded(false)}
-                className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
+                className="text-white hover:bg-emerald-600 rounded-lg p-1 transition-colors"
               >
-                <X className="w-4 h-4 text-white" />
+                <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Cart Stats */}
-            {itemCount > 0 && (
-              <div className="bg-emerald-50 px-6 py-3 border-b border-emerald-100 flex items-center justify-between">
-                <span className="text-sm text-gray-700 font-medium">Items in cart</span>
-                <span className="text-2xl font-bold text-emerald-600">{itemCount}</span>
-              </div>
-            )}
-
-            {/* Suggested Product Chat Bubble */}
+            {/* Product Card */}
             {suggestedProduct && (
-              <div className="p-6 space-y-4">
-                {/* Message Bubble */}
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center flex-shrink-0">
-                    <MessageCircle className="w-4 h-4 text-white" />
+              <div className="p-4 border-b border-gray-200">
+                <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-4 text-center">
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <span className="text-2xl">{currentMessage.emoji}</span>
+                    <p className="text-emerald-600 font-bold text-sm">{currentMessage.text}</p>
                   </div>
-                  <div className="flex-1">
-                    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl rounded-tl-none px-4 py-3 border border-emerald-200">
-                      <p className="text-sm text-gray-900 font-semibold">{currentMessage.text}</p>
+                  
+                  {suggestedProduct.image && (
+                    <div className="mb-4 aspect-square overflow-hidden rounded-xl bg-white">
+                      <img 
+                        src={suggestedProduct.image || "/placeholder.svg"} 
+                        alt={suggestedProduct.name}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                    <p className="text-xs text-gray-500 mt-1 ml-2">{currentMessage.emoji}</p>
-                  </div>
+                  )}
+                  
+                  <h4 className="font-bold text-gray-900 text-sm line-clamp-2 mb-2">{suggestedProduct.name}</h4>
+                  <p className="text-emerald-600 font-bold text-lg mb-4">
+                    {suggestedProduct.price ? `₹${suggestedProduct.price}` : 'Check price'}
+                  </p>
                 </div>
-
-                {/* Product Card */}
-                <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border-2 border-gray-200 overflow-hidden">
-                  <div className="aspect-square overflow-hidden bg-white">
-                    <img
-                      src={suggestedProduct.image_url || '/placeholder.svg'}
-                      alt={suggestedProduct.name}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <p className="font-bold text-gray-900 text-sm line-clamp-2">
-                      {suggestedProduct.name}
-                    </p>
-                    <div className="flex items-baseline gap-2 mt-2">
-                      <p className="text-emerald-600 font-bold text-lg">
-                        ₹{suggestedProduct.price.toFixed(0)}
-                      </p>
-                      {suggestedProduct.original_price && suggestedProduct.original_price > suggestedProduct.price && (
-                        <p className="text-gray-500 line-through text-xs">
-                          ₹{suggestedProduct.original_price.toFixed(0)}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Add Button */}
-                <button
-                  onClick={handleAddSuggested}
-                  className="w-full px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-2xl font-bold flex items-center justify-between hover:shadow-lg transition-all group active:scale-95"
-                >
-                  <span className="flex items-center gap-2">
-                    <ShoppingCart className="w-5 h-5" />
-                    Add to Cart
-                  </span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-
-                {/* View Cart Button */}
-                <button
-                  onClick={() => {
-                    onCartClick();
-                    setExpanded(false);
-                  }}
-                  className="w-full px-4 py-2.5 bg-white text-emerald-600 rounded-2xl font-bold border-2 border-emerald-500 hover:bg-emerald-50 transition-all"
-                >
-                  View Cart
-                </button>
               </div>
             )}
 
-            {/* Empty State */}
-            {!suggestedProduct && (
-              <div className="p-8 text-center">
-                <ShoppingCart className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                <p className="text-sm text-gray-600 font-medium">Loading suggestions...</p>
-              </div>
-            )}
-        </div>
+            {/* Action Button */}
+            <div className="p-4">
+              <button
+                onClick={handleAddSuggested}
+                className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+              >
+                <Plus className="w-5 h-5" />
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </>
       )}
 
       {/* Main FAB Button - Material Design - Fixed Sticky Position */}
-      <div className={`fixed ${positionClasses} z-50 flex flex-col items-center gap-4`}>
+      <div className={`fixed ${positionClasses} z-50 flex flex-col items-center gap-4 pointer-events-auto`}>
         <button
-          onClick={() => setExpanded(!expanded)}
-          className="relative w-16 h-16 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 group flex items-center justify-center font-bold text-white border-4 border-white active:scale-95"
-          style={{
-            background: itemCount > 0
-              ? 'linear-gradient(135deg, #10b981 0%, #14b8a6 100%)'
-              : 'linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%)'
-          }}
+          onClick={() => onCartClick()}
+          className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 relative ${
+            itemCount > 0
+              ? 'bg-gradient-to-br from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600'
+              : 'bg-gradient-to-br from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600'
+          }`}
+          title="View cart"
         >
-          <ShoppingCart className="w-7 h-7 group-hover:scale-110 transition-transform" />
-
-          {/* Counter Badge - Material Design */}
+          <ShoppingCart className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
+          
+          {/* Counter Badge */}
           {itemCount > 0 && (
-            <span className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-red-500 to-rose-600 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg border-4 border-white animate-pulse">
+            <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs sm:text-sm font-bold rounded-full w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center shadow-lg animate-pulse">
               {itemCount > 99 ? '99+' : itemCount}
-            </span>
+            </div>
           )}
-
-          {/* Floating Label */}
-          <div className="absolute -top-16 left-1/2 -translate-x-1/2 px-4 py-2 bg-gray-900 text-white text-xs font-bold rounded-full whitespace-nowrap shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-            {itemCount > 0 ? `${itemCount} items` : 'Add items'}
-          </div>
         </button>
+
+        {/* Suggestion Chip */}
+        {suggestedProduct && !expanded && (
+          <button
+            onClick={() => setExpanded(true)}
+            className="bg-white rounded-full shadow-xl border-2 border-emerald-200 px-4 py-2 flex items-center gap-2 hover:shadow-2xl transition-all duration-300 text-emerald-600 font-bold text-xs sm:text-sm pointer-events-auto whitespace-nowrap"
+          >
+            <span>{currentMessage.emoji}</span>
+            <span className="hidden sm:inline">{currentMessage.text}</span>
+            <span className="sm:hidden">{suggestedProduct.name.substring(0, 10)}...</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        )}
       </div>
 
-      {/* Powered by Branding - Subtle Footer */}
-      <div className="fixed bottom-2 right-6 z-40 text-center">
-        <p className="text-xs text-gray-500 font-medium">
+      {/* Powered by branding - Responsive */}
+      <div className="fixed bottom-2 right-8 sm:right-6 md:right-8 z-40 pointer-events-auto">
+        <p className="text-xs text-gray-500 font-medium text-center whitespace-nowrap">
           Powered by{' '}
           <a
             href="https://tagyverse.com"
@@ -234,6 +204,6 @@ export default function CartFAB({ onCartClick, position = 'right' }: CartFABProp
           </a>
         </p>
       </div>
-    </div>
+    </>
   );
 }

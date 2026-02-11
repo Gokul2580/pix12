@@ -206,10 +206,10 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
 
   const getButtonSizeClass = (size: string) => {
     const sizeMap: { [key: string]: { padding: string; text: string } } = {
-      'sm': { padding: 'px-3 py-1.5', text: 'text-xs' },
-      'md': { padding: 'px-4 sm:px-5 py-2 sm:py-2.5', text: 'text-sm' },
-      'lg': { padding: 'px-5 sm:px-6 py-2.5 sm:py-3', text: 'text-base' },
-      'xl': { padding: 'px-6 sm:px-7 py-3 sm:py-3.5', text: 'text-lg' }
+      'sm': { padding: 'px-2 py-1 sm:px-3 sm:py-1.5', text: 'text-xs sm:text-xs' },
+      'md': { padding: 'px-2 py-1.5 sm:px-4 sm:py-2 md:px-5 md:py-2.5', text: 'text-xs sm:text-sm' },
+      'lg': { padding: 'px-3 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3', text: 'text-sm sm:text-base' },
+      'xl': { padding: 'px-4 py-2 sm:px-6 sm:py-3 md:px-7 md:py-3.5', text: 'text-sm sm:text-lg' }
     };
     return sizeMap[size] || sizeMap['md'];
   };
@@ -226,20 +226,20 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
 
   return (
     <nav className="w-full" style={{ backgroundColor: navStyle.background }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center py-4 sm:py-6">
+      <div className="w-full px-3 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-center py-3 sm:py-4 lg:py-6 gap-2 sm:gap-3">
           <button
             onClick={() => onNavigate('home')}
-            className="group flex flex-col items-center gap-2 mb-4"
+            className="group flex flex-col items-center gap-2 mb-2"
           >
             <img
               src="/logo.png"
               alt="Pixie Blooms"
-              className="w-28 h-28 sm:w-36 sm:h-36 lg:w-44 lg:h-44 object-contain group-hover:scale-105 transition-transform duration-300"
+              className="w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 lg:w-44 lg:h-44 object-contain group-hover:scale-105 transition-transform duration-300"
             />
           </button>
 
-          <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-center relative">
+          <div className="flex items-center gap-1 sm:gap-2 flex-wrap justify-center relative w-full">
             <button
               onClick={() => onNavigate('home')}
               className={getButtonClasses(currentPage === 'home')}
@@ -370,36 +370,36 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
                 More
               </button>
 
-              {/* Material Design Dropdown Menu */}
+              {/* Material Design Dropdown Menu - Responsive */}
               {showMoreMenu && (
-                <div className="absolute top-full right-0 mt-3 bg-white rounded-3xl shadow-2xl border-2 border-gray-100 overflow-hidden min-w-max z-50 backdrop-blur-sm bg-opacity-95 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="fixed sm:absolute top-1/2 sm:top-full left-1/2 sm:left-auto right-0 -translate-x-1/2 sm:translate-x-0 sm:mt-3 -translate-y-1/2 sm:translate-y-0 bg-white rounded-3xl shadow-2xl border-2 border-gray-100 overflow-hidden w-11/12 sm:w-auto sm:min-w-max z-50 backdrop-blur-sm bg-opacity-95 animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-teal-50 to-emerald-50">
                     <p className="text-xs font-bold text-gray-600 uppercase tracking-wider">Smart Features</p>
                   </div>
-                  <div className="p-2">
+                  <div className="p-2 max-h-96 overflow-y-auto">
                     {fabFeatures.map((feature, idx) => {
                       const Icon = feature.icon;
                       return (
                         <button
                           key={feature.id}
                           onClick={() => handleFeatureClick(feature.id)}
-                          className="w-full px-4 py-3.5 flex items-center gap-3 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 transition-all duration-200 text-left rounded-2xl group"
+                          className="w-full px-3 sm:px-4 py-3 sm:py-3.5 flex items-center gap-2 sm:gap-3 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 transition-all duration-200 text-left rounded-2xl group"
                         >
-                          <div className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110 ${feature.bgColor} shadow-md group-hover:shadow-lg`}>
-                            <Icon className="w-5 h-5 text-white" />
+                          <div className={`w-8 sm:w-10 h-8 sm:h-10 flex-shrink-0 rounded-2xl flex items-center justify-center transition-all group-hover:scale-110 ${feature.bgColor} shadow-md group-hover:shadow-lg`}>
+                            <Icon className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
                           </div>
-                          <div className="flex-1 min-w-max">
-                            <p className="font-bold text-gray-900 text-sm group-hover:text-teal-600 transition-colors">
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-gray-900 text-xs sm:text-sm group-hover:text-teal-600 transition-colors truncate">
                               {feature.label}
                             </p>
-                            <p className="text-xs text-gray-500 group-hover:text-gray-700 transition-colors">
+                            <p className="text-xs text-gray-500 group-hover:text-gray-700 transition-colors hidden sm:block">
                               {idx === 0 && 'Share your feedback'}
                               {idx === 1 && 'Try clothes virtually'}
                               {idx === 2 && 'Find your color'}
                               {idx === 3 && 'Chat with support'}
                             </p>
                           </div>
-                          <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-teal-600 group-hover:translate-x-1 transition-all opacity-0 group-hover:opacity-100" />
+                          <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-teal-600 group-hover:translate-x-1 transition-all opacity-0 sm:opacity-100 group-hover:opacity-100 flex-shrink-0" />
                         </button>
                       );
                     })}
@@ -414,7 +414,7 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
       {/* Close menu when clicking outside */}
       {showMoreMenu && (
         <div
-          className="fixed inset-0 z-40"
+          className="fixed inset-0 z-40 sm:hidden"
           onClick={() => setShowMoreMenu(false)}
           aria-hidden="true"
         />
