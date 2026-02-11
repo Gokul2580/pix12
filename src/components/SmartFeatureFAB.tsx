@@ -32,7 +32,7 @@ export default function SmartFeatureFAB({ onTryOnClick, onColorMatchClick }: Sma
   }, []);
 
   return (
-    <div className="absolute bottom-16 sm:bottom-20 md:bottom-24 right-1 sm:right-2 md:right-4 flex justify-end z-40 pointer-events-none">
+    <div className="fixed bottom-32 sm:bottom-36 md:bottom-40 right-3 sm:right-4 md:right-6 flex justify-end z-40 pointer-events-none">
       <div className="flex flex-col items-end gap-2 sm:gap-3 pointer-events-auto">
         {showFeatures && (
           <>

@@ -376,7 +376,7 @@ export default function Home({ onNavigate, onCartClick, onSmartFABToggle }: Home
           {loading ? (
             <ShimmerLoader variant="banner" />
           ) : (
-            <div className="relative h-[320px] sm:h-[400px] lg:h-[500px] overflow-hidden bg-gray-100">
+            <div className="relative h-[220px] sm:h-[400px] lg:h-[500px] overflow-hidden bg-gray-100">
               {carouselImages.map((image, index) => (
                 <div
                   key={index}
@@ -478,7 +478,7 @@ export default function Home({ onNavigate, onCartClick, onSmartFABToggle }: Home
         <section className="py-8 sm:py-12 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-8">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
                 ALL CATEGORIES
                 <span className="relative flex items-center">
                   <span className="absolute inline-flex h-3 w-3 rounded-full bg-red-400 opacity-75 animate-ping"></span>
@@ -523,10 +523,10 @@ export default function Home({ onNavigate, onCartClick, onSmartFABToggle }: Home
               </div>
             </div>
 
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center mt-6 sm:mt-8">
               <button
                 onClick={() => onNavigate('shop')}
-                className="px-8 py-4 bg-teal-500 text-white rounded-full font-bold text-lg border-2 border-teal-600 hover:bg-teal-600 transition-all flex items-center justify-center gap-2"
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-teal-500 text-white rounded-full font-bold text-base sm:text-lg border-2 border-teal-600 hover:bg-teal-600 transition-all flex items-center justify-center gap-2 w-full sm:w-auto max-w-xs"
               >
                 Shop Now
                 <ArrowRight className="w-5 h-5" />
@@ -577,14 +577,14 @@ export default function Home({ onNavigate, onCartClick, onSmartFABToggle }: Home
       )}
 
       {defaultSectionsVisibility.shop_by_category && (
-        <section className="relative py-12 sm:py-16 lg:py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8 sm:mb-12">
-              <span className="text-xs sm:text-sm font-semibold text-teal-600 tracking-widest uppercase">Featured</span>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mt-3 sm:mt-4 mb-4 sm:mb-6 px-4">
+        <section className="relative py-8 sm:py-16 lg:py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div className="text-center mb-6 sm:mb-12">
+              <span className="text-[10px] sm:text-sm font-semibold text-teal-600 tracking-widest uppercase">Featured</span>
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900 mt-2 sm:mt-4 mb-3 sm:mb-6 px-2 sm:px-4">
                 Shop by Category
               </h2>
-            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-4 mb-8">
+            <p className="text-sm sm:text-lg text-gray-600 max-w-2xl mx-auto px-2 sm:px-4 mb-6 sm:mb-8">
               Discover our curated collections
             </p>
           </div>
@@ -653,20 +653,20 @@ export default function Home({ onNavigate, onCartClick, onSmartFABToggle }: Home
         );
       })}
 
-      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
+      <section className="py-8 sm:py-12 lg:py-20 px-3 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-8 sm:mb-10">
-            <span className="text-xs sm:text-sm font-semibold text-teal-600 tracking-widest uppercase">Why Choose Us</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mt-3 sm:mt-4 mb-3 sm:mb-4">
+          <div className="text-center mb-6 sm:mb-10">
+            <span className="text-[10px] sm:text-sm font-semibold text-teal-600 tracking-widest uppercase">Why Choose Us</span>
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900 mt-2 sm:mt-4 mb-2 sm:mb-4">
               The Pixie Blooms Promise
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            <div className="group relative bg-white rounded-3xl overflow-hidden border-2 border-teal-200 hover:border-teal-400 transition-all duration-500 transform hover:-translate-y-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
+            <div className="group relative bg-white rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-teal-200 hover:border-teal-400 transition-all duration-500 transform hover:-translate-y-2">
               <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 via-teal-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative p-8 sm:p-10 lg:p-12">
-                <div className="relative inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 mb-6 sm:mb-8">
+              <div className="relative p-5 sm:p-10 lg:p-12">
+                <div className="relative inline-flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 mb-4 sm:mb-8">
                   <div className="absolute inset-0 bg-gradient-to-br from-teal-400 to-teal-600 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-500"></div>
                   <div className="relative bg-white rounded-2xl w-full h-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 border-2 border-teal-200">
                     <Heart className="w-10 h-10 sm:w-12 sm:h-12 text-teal-600 fill-teal-600" />
@@ -682,10 +682,10 @@ export default function Home({ onNavigate, onCartClick, onSmartFABToggle }: Home
               </div>
             </div>
 
-            <div className="group relative bg-white rounded-3xl overflow-hidden border-2 border-rose-200 hover:border-rose-400 transition-all duration-500 transform hover:-translate-y-2">
+            <div className="group relative bg-white rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-rose-200 hover:border-rose-400 transition-all duration-500 transform hover:-translate-y-2">
               <div className="absolute inset-0 bg-gradient-to-br from-rose-500/10 via-rose-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative p-8 sm:p-10 lg:p-12">
-                <div className="relative inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 mb-6 sm:mb-8">
+              <div className="relative p-5 sm:p-10 lg:p-12">
+                <div className="relative inline-flex items-center justify-center w-16 h-16 sm:w-24 sm:h-24 mb-4 sm:mb-8">
                   <div className="absolute inset-0 bg-gradient-to-br from-rose-400 to-rose-600 rounded-2xl rotate-6 group-hover:rotate-12 transition-transform duration-500"></div>
                   <div className="relative bg-white rounded-2xl w-full h-full flex items-center justify-center group-hover:scale-110 transition-transform duration-500 border-2 border-rose-200">
                     <Sparkles className="w-10 h-10 sm:w-12 sm:h-12 text-rose-600" />
