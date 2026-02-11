@@ -414,7 +414,7 @@ export default function Navigation({ currentPage, onNavigate, onLoginClick, onCa
       {/* Close menu when clicking outside */}
       {showMoreMenu && (
         <div
-          className="fixed inset-0 z-40 sm:hidden"
+          className="fixed inset-0 z-40"
           onClick={() => setShowMoreMenu(false)}
           aria-hidden="true"
         />

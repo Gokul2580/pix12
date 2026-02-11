@@ -43,6 +43,8 @@ import { preloadCriticalImages as preloadImages } from './utils/imageOptimizatio
 import FeedbackPanel from './components/FeedbackPanel';
 import WhatsAppFAB from './components/WhatsAppFAB';
 import SmartFeatureFAB from './components/SmartFeatureFAB';
+import TryOnProductList from './components/TryOnProductList';
+import ColorMatchProductList from './components/ColorMatchProductList';
 
 type Page = 'home' | 'shop' | 'admin' | 'checkout' | 'superadmin' | 'privacy-policy' | 'shipping-policy' | 'refund-policy' | 'contact';
 
@@ -416,6 +418,14 @@ function AppContent({ onPageChange, onShowTryOnList, onShowColorMatchList, onSma
             window.history.pushState({}, '', currentPath);
           }
         }}
+      />
+      <TryOnProductList
+        isOpen={showTryOnList}
+        onClose={() => setShowTryOnList(false)}
+      />
+      <ColorMatchProductList
+        isOpen={showColorMatchList}
+        onClose={() => setShowColorMatchList(false)}
       />
     </>
   );
